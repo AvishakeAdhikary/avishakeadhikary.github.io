@@ -11,7 +11,7 @@ export default function Home() {
     <main className="dark">
       <Hero />
       <SkillsSection />
-      {/* <ProjectsParallax /> */}
+      <ProjectsParallax />
       {/* <MacbookScroll src="/images/gallery/MCAGrad.jpg" title="I've graduated from Amity University" showGradient={true}/> */}
       
     </main>
