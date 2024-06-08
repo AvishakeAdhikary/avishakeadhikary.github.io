@@ -111,7 +111,7 @@ export const Header = () => {
       <p className="max-w-2xl text-base md:text-xl mt-8 dark:text-neutral-200">
         Explore the projects that I have built along the way...
         <br /><br />
-        <Button className="z-20">Explore Projects</Button>
+        <Link href={"/projects"}><Button className="z-20">Explore Projects</Button></Link>
       </p>
     </div>
   );

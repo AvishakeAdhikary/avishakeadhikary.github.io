@@ -1,6 +1,4 @@
-import { HeroParallax } from "@/app/components/ui/hero-parallax";
-
-const parallaxProjects = [
+export const projects = [
     {
       title: "First React Robot Generator",
       link: "https://github.com/AvishakeAdhikary/FirstReactRobotGenerator",
@@ -77,9 +75,3 @@ const parallaxProjects = [
       thumbnail: "/images/projects/texttoimage.jpg"
     }
 ];
-
-export default function ProjectsParallax () {
-    return (
-        <HeroParallax products={parallaxProjects} />
-    );
-}
