@@ -45,9 +45,9 @@ export const projects = [
       thumbnail: "/images/projects/rtsldlm.png"
     },
     {
-      title: "Text to Image Generator",
-      link: "https://github.com/AvishakeAdhikary/Text-To-Image-Generator",
-      thumbnail: "/images/projects/texttoimage.jpg"
+      title: "Minimalist Portfolio",
+      link: "/",
+      thumbnail: "/images/projects/minimalistportfolio.png"
     },
     {
       title: "Realtime-Sign-Language-Detection-Using-React.js",
