@@ -189,7 +189,7 @@ export const skills = [
         id: 32,
         name: "Matlab",
         designation: "Programming Language",
-        image: "/images/skills/Matlab_Logo.png"
+        image: "/images/skills/matlab.svg"
     },
     {
         id: 33,
