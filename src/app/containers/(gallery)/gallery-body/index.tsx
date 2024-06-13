@@ -23,7 +23,7 @@ export default function GalleryBody() {
                 className="z-50 flex flex-col justify-center items-center"
             >
                 <motion.p className="font-bold text-xl md:text-6xl text-center bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 py-4">
-                Avishake's life<br /> in a nutshell
+                Avishake&apos;s life<br /> in a nutshell
                 </motion.p>
             </motion.div>
         </ImagesSlider>
