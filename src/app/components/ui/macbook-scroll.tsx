@@ -24,17 +24,24 @@ import { IconCommand } from "@tabler/icons-react";
 import { IconCaretLeftFilled } from "@tabler/icons-react";
 import { IconCaretDownFilled } from "@tabler/icons-react";
 import Image from "next/image";
+import { Button } from "./moving-border";
+import Link from "next/link";
+
 
 export const MacbookScroll = ({
   src,
   showGradient,
   title,
   badge,
+  buttonTitle,
+  buttonLink,
 }: {
   src?: string;
   showGradient?: boolean;
   title?: string | React.ReactNode;
   badge?: React.ReactNode;
+  buttonTitle?: string;
+  buttonLink?: string;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -90,6 +97,8 @@ export const MacbookScroll = ({
         scaleY={scaleY}
         rotate={rotate}
         translate={translate}
+        buttonTitle={buttonTitle}
+        buttonLink={buttonLink}
       />
       {/* Base area */}
       <div className="h-[22rem] w-[32rem] bg-gray-200 dark:bg-[#272729] rounded-2xl overflow-hidden relative -z-10">
@@ -125,12 +134,16 @@ export const Lid = ({
   rotate,
   translate,
   src,
+  buttonTitle,
+  buttonLink,
 }: {
   scaleX: MotionValue<number>;
   scaleY: MotionValue<number>;
   rotate: MotionValue<number>;
   translate: MotionValue<number>;
   src?: string;
+  buttonTitle?: string;
+  buttonLink?: string | "";
 }) => {
   return (
     <div className="relative [perspective:800px]">
@@ -149,7 +162,7 @@ export const Lid = ({
           className="absolute inset-0 bg-[#010101] rounded-lg flex items-center justify-center"
         >
           <span className="text-white">
-            <AceternityLogo />
+            <Image src={"/images/icons/code.svg"} alt="code-icon" height={20} width={20} />
           </span>
         </div>
       </div>
@@ -171,6 +184,7 @@ export const Lid = ({
           fill
           className="object-cover object-left-top absolute rounded-lg inset-0 h-full w-full"
         />
+        {buttonLink && <Link href={buttonLink}><Button>{buttonTitle}</Button></Link>}
       </motion.div>
     </div>
   );
@@ -640,27 +654,6 @@ export const OptionKey = ({ className }: { className: string }) => {
         width="32"
         height="32"
         stroke="none"
-      />
-    </svg>
-  );
-};
-
-const AceternityLogo = () => {
-  return (
-    <svg
-      width="66"
-      height="65"
-      viewBox="0 0 66 65"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className="h-3 w-3 text-white"
-    >
-      <path
-        d="M8 8.05571C8 8.05571 54.9009 18.1782 57.8687 30.062C60.8365 41.9458 9.05432 57.4696 9.05432 57.4696"
-        stroke="currentColor"
-        strokeWidth="15"
-        strokeMiterlimit="3.86874"
-        strokeLinecap="round"
       />
     </svg>
   );
