@@ -7,9 +7,6 @@ import TimelineSection from "./containers/(home)/home-timeline";
 import RecommendationsSection from "./containers/(home)/home-recommendations";
 import LocationSection from "./containers/(home)/home-location";
 
-
-
-
 export default function Home() {
   return (
     <main className="dark">
