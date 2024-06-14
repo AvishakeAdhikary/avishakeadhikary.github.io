@@ -33,7 +33,7 @@ export default function Image() {
         <div style={{ 
           marginTop: 40,
         }}>
-          Avishake Adhikary's Portfolio
+          Avishake Adhikary&apos;s Portfolio
         </div>
       </div>
     ),
