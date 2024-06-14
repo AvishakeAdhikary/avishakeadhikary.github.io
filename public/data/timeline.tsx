@@ -32,7 +32,7 @@ export const timeline = [
         </>
         ),
         badge: "Amity University Kolkata",
-        image: "/images/gallery/AvishakeAmityMCAGradMain.jpg"
+        image: "/images/gallery/AvishakeAmityMCAGradMain.JPG"
     },
     {
         title: "Web Developer Intern",
