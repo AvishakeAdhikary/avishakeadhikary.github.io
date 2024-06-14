@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og'
 
-export const alt = "About Avishake"
+export const alt = "Avishake Adhikary"
 export const size = {
   width: 3840,
   height: 2160,
@@ -8,7 +8,9 @@ export const size = {
  
 export const contentType = 'image/png'
 
-const imageUrl = "/images/gallery/AvishakeAmityMerc.png"; // Relative URL to the image in your public folder
+// const imageUrl = "/images/gallery/AvishakeAmityMerc.png";
+const imageUrl = "https://github.com/AvishakeAdhikary/avishakeadhikary.github.io/blob/main/public/images/gallery/AvishakeAmityMerc.png?raw=true"
+
 
 export default function Image() {
   return new ImageResponse(
@@ -21,19 +23,20 @@ export default function Image() {
           flexDirection: 'column', 
           alignItems: 'center', 
           justifyContent: 'center',
-          backgroundColor: 'black',
-          color: 'white',
+          backgroundImage: `url("${imageUrl}")`,
+          color: 'black',
           fontSize: 128, 
           fontWeight: 'bold', 
         }}
       >
-        <img src='https://github.com/AvishakeAdhikary/avishakeadhikary.github.io/blob/main/public/images/gallery/AvishakeAmityMerc.png?raw=true' 
-            style={{borderRadius: '50%' }} 
-            height={1024} width={1024}/>
         <div style={{ 
           marginTop: 40,
         }}>
           Avishake Adhikary&apos;s Portfolio
+        </div>
+        <div style={{ 
+          marginTop: 40,
+        }}>
         </div>
       </div>
     ),
