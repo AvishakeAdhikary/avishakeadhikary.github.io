@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, type JSX } from "react";
+import React, { useState } from "react";
 import {
   motion,
   AnimatePresence,

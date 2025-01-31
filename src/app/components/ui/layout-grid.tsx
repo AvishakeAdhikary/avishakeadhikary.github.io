@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef, useEffect, type JSX } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/app/utils/cn";
 import Image from "next/image";

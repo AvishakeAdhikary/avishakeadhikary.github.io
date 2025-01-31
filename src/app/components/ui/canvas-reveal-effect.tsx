@@ -192,7 +192,7 @@ const ShaderMaterial = ({
   uniforms: Uniforms;
 }) => {
   const { size } = useThree();
-  const ref = useRef<THREE.Mesh>(undefined);
+  const ref = useRef<THREE.Mesh>();
   let lastFrameTime = 0;
 
   useFrame(({ clock }) => {
