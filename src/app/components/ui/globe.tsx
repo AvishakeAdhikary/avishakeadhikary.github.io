@@ -167,8 +167,14 @@ export function Globe({ globeConfig, data }: WorldProps) {
   const startAnimation = () => {
     if (!globeRef.current || !globeData) return;
 
+    const validData = data.filter(d => 
+      !isNaN(d.startLat) && !isNaN(d.startLng) && 
+      !isNaN(d.endLat) && !isNaN(d.endLng) && 
+      !isNaN(d.arcAlt)
+    );
+
     globeRef.current
-      .arcsData(data)
+      .arcsData(validData)
       .arcStartLat((d) => (d as { startLat: number }).startLat * 1)
       .arcStartLng((d) => (d as { startLng: number }).startLng * 1)
       .arcEndLat((d) => (d as { endLat: number }).endLat * 1)
