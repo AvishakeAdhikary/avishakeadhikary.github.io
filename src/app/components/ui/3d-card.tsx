@@ -96,7 +96,7 @@ export const CardBody = ({
 };
 
 export const CardItem = <T extends keyof React.JSX.IntrinsicElements = "div">({
-  as: Tag = "div",
+  as: Tag = "div" as T,
   children,
   className,
   translateX = 0,
