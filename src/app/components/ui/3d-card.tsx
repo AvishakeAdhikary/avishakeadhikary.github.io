@@ -107,7 +107,7 @@ export const CardItem = ({
   rotateZ = 0,
   ...rest
 }: {
-  as?: React.ElementType;
+  as?: React.ComponentType<any>;
   children: React.ReactNode;
   className?: string;
   translateX?: number | string;
