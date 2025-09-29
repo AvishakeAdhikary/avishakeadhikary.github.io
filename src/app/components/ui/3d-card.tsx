@@ -95,7 +95,7 @@ export const CardBody = ({
   );
 };
 
-export const CardItem = <T extends React.ElementType = "div">({
+export const CardItem = <T extends keyof JSX.IntrinsicElements = "div">({
   as: Tag = "div",
   children,
   className,
@@ -127,9 +127,9 @@ export const CardItem = <T extends React.ElementType = "div">({
   const handleAnimations = () => {
     if (!ref.current) return;
     if (isMouseEntered) {
-      (ref.current as HTMLElement).style.transform = `translateX(${translateX}px) translateY(${translateY}px) translateZ(${translateZ}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg)`;
+      (ref.current as unknown as HTMLElement).style.transform = `translateX(${translateX}px) translateY(${translateY}px) translateZ(${translateZ}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg)`;
     } else {
-      (ref.current as HTMLElement).style.transform = `translateX(0px) translateY(0px) translateZ(0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg)`;
+      (ref.current as unknown as HTMLElement).style.transform = `translateX(0px) translateY(0px) translateZ(0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg)`;
     }
   };
 
