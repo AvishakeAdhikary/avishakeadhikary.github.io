@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     basePath: "",
-    // output: "export",
+    output: "export",
     reactStrictMode: true,
     eslint: {
         // Warning: This allows production builds to successfully complete even if
