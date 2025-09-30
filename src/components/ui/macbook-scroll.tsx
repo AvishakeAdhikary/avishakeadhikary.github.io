@@ -24,6 +24,8 @@ import { IconCommand } from "@tabler/icons-react";
 import { IconCaretLeftFilled } from "@tabler/icons-react";
 import { IconCaretDownFilled } from "@tabler/icons-react";
 import Image from "next/image";
+import Link from "next/link";
+import { Button } from "./moving-border";
 
 
 export const MacbookScroll = ({
@@ -95,6 +97,8 @@ export const MacbookScroll = ({
         scaleY={scaleY}
         rotate={rotate}
         translate={translate}
+        buttonTitle={buttonTitle}
+        buttonLink={buttonLink}
       />
       {/* Base area */}
       <div className="relative -z-10 h-[22rem] w-[32rem] overflow-hidden rounded-2xl bg-gray-200 dark:bg-[#272729]">
@@ -130,12 +134,16 @@ export const Lid = ({
   rotate,
   translate,
   src,
+  buttonTitle,
+  buttonLink,
 }: {
   scaleX: MotionValue<number>;
   scaleY: MotionValue<number>;
   rotate: MotionValue<number>;
   translate: MotionValue<number>;
   src?: string;
+  buttonTitle?: string;
+  buttonLink?: string;
 }) => {
   return (
     <div className="relative [perspective:800px]">
@@ -172,9 +180,10 @@ export const Lid = ({
         <div className="absolute inset-0 rounded-lg bg-[#272729]" />
         <img
           src={src as string}
-          alt="aceternity logo"
+          alt="code logo"
           className="absolute inset-0 h-full w-full rounded-lg object-cover object-left-top"
         />
+        {buttonLink && <Button><Link className="z-10" href={buttonLink}>{buttonTitle}</Link></Button>}
       </motion.div>
     </div>
   );

@@ -12,7 +12,7 @@ export default function SkillsSection () {
                 <p className="text-stone-200 max-w-lg mx-auto my-2 text-sm text-center relative z-10">
                     Explore the skills that I have developed throughout the years... 
                     <br /><br />
-                    <Link href={"/skills"}><Button>Explore Now</Button></Link>
+                    <Button><Link href={"/skills"}>Explore Now</Link></Button>
                 </p>
             </div>
             <BackgroundBeams />

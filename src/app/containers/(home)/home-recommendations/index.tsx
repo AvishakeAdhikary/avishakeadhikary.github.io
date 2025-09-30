@@ -15,8 +15,8 @@ export default function RecommendationsSection() {
         speed="slow"
       />
       <div className="mt-4 w-full flex justify-evenly">
-        <Link href={"/contact-me"}><Button>Contact-Me</Button></Link>
-        <Link href={"/gallery"}><Button>View Gallery</Button></Link>
+        <Button><Link href={"/contact-me"}>Contact-Me</Link></Button>
+        <Button><Link href={"/gallery"}>View Gallery</Link></Button>
       </div>
     </div>
   );
