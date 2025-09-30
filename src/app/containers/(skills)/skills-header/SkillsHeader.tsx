@@ -1,5 +1,6 @@
+"use client";
 import React from "react";
-import { FlipWords } from "@/app/components/ui/flip-words";
+import { FlipWords } from "@/components/ui/flip-words";
 
 export function SkillsHeader() {
   const words = ["learnt", "have", "continue-to-develop"];

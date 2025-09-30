@@ -1,6 +1,6 @@
-import { AnimatedTooltip } from "@/app/components/ui/animated-tooltip";
-import { BackgroundBeams } from "@/app/components/ui/background-beams";
-import { Button } from "@/app/components/ui/moving-border";
+
+import { BackgroundBeams } from "@/components/ui/background-beams";
+import { Button } from "@/components/ui/moving-border";
 import Link from "next/link";
 
 export default function SkillsSection () {

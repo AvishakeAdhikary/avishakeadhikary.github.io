@@ -1,4 +1,4 @@
-import { MacbookScroll } from "@/app/components/ui/macbook-scroll";
+import { MacbookScroll } from "@/components/ui/macbook-scroll";
 
 export default function TimelineSection () {
     return (

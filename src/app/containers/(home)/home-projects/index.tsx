@@ -1,4 +1,5 @@
-import { HeroParallax } from "@/app/components/ui/hero-parallax";
+"use client";
+import { HeroParallax } from "@/components/ui/hero-parallax";
 import { projects } from "../../../../../public/data/projects";
 
 export default function ProjectsParallax () {

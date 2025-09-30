@@ -1,5 +1,5 @@
 import React from "react";
-import { TextGenerateEffect } from "@/app/components/ui/text-generate-effect";
+import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 
 export function TimelineHeader() {
 

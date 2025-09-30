@@ -1,8 +1,8 @@
 import React from "react";
-import { CardBody, CardContainer, CardItem } from "@/app/components/ui/3d-card";
+import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
 import Image from "next/image";
 import Link from "next/link";
-import { PinContainer } from "@/app/components/ui/3d-pin";
+import { PinContainer } from "@/components/ui/3d-pin";
 import { skills } from "../../../../../public/data/skills";
 
 export default function SkillsBody() {

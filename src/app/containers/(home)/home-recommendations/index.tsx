@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { InfiniteMovingCards } from "@/app/components/ui/infinite-moving-cards";
 import { recommendations } from "../../../../../public/data/recommendations";
-import { Button } from "@/app/components/ui/moving-border";
 import Link from "next/link";
+import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
+import { Button } from "@/components/ui/moving-border";
 
 export default function RecommendationsSection() {
   return (

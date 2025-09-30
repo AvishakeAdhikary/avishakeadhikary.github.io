@@ -1,5 +1,6 @@
+"use client";
 import React from "react";
-import { CardBody, CardContainer, CardItem } from "@/app/components/ui/3d-card";
+import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
 import Image from "next/image";
 import Link from "next/link";
 import { projects } from "../../../../../public/data/projects";

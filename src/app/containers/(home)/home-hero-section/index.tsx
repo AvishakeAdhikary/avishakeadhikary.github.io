@@ -1,5 +1,6 @@
-import { Boxes } from "@/app/components/ui/background-boxes";
-import { TypewriterEffect } from "@/app/components/ui/typewriter-effect";
+"use client";
+import { Boxes } from "@/components/ui/background-boxes";
+import { TypewriterEffect } from "@/components/ui/typewriter-effect";
 import Image from "next/image";
 
 export default function Hero () {

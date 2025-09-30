@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import { TracingBeam } from "@/app/components/ui/tracing-bean";
+import { TracingBeam } from "@/components/ui/tracing-beam";
 import { timeline } from "../../../../../public/data/timeline";
 
 export default function TimelineBody() {
