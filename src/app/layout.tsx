@@ -1,13 +1,20 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
+import LoadingScreen from "@/components/ui/loading-screen";
 
-const inter = Inter({ subsets: ["latin"] });
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-jetbrains-mono",
+});
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://avishakeadhikary.github.io"),
   title: "Avishake's Portfolio",
-  description: "Avishake Adhikary - Machine Learning Engineer | Full Stack Developer | Explore the dynamic portfolio of Avishake Adhikary, a proficient Machine Learning Engineer and Full Stack Developer based in Kolkata, India. With a strong foundation in Java, JavaScript, Python, and more, Avishake specializes in crafting innovative solutions that blend cutting-edge technology with user-centric design. Discover his expertise in AI, web development, and cloud computing through hands-on projects and professional experiences. Get in touch to collaborate on transformative tech ventures.",
+  description:
+    "Avishake Adhikary - Machine Learning Engineer | Full Stack Developer | Explore the dynamic portfolio of Avishake Adhikary, a proficient Machine Learning Engineer and Full Stack Developer based in Kolkata, India. With a strong foundation in Java, JavaScript, Python, and more, Avishake specializes in crafting innovative solutions that blend cutting-edge technology with user-centric design. Discover his expertise in AI, web development, and cloud computing through hands-on projects and professional experiences. Get in touch to collaborate on transformative tech ventures.",
   openGraph: {
     images: [
       {
@@ -15,8 +22,15 @@ export const metadata: Metadata = {
         width: 4032,
         height: 3024,
       },
-    ]
-  }
+    ],
+  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#000000",
 };
 
 export default function RootLayout({
@@ -25,10 +39,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      data-scroll-behavior="smooth"
+      className={jetbrainsMono.variable}
+    >
+      <body className={`${jetbrainsMono.className} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
-          {children}
+          <LoadingScreen>{children}</LoadingScreen>
         </ThemeProvider>
       </body>
     </html>

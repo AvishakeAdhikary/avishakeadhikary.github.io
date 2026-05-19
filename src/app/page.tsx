@@ -1,11 +1,21 @@
+import dynamic from "next/dynamic";
 import Hero from "./containers/(home)/home-hero-section";
-import ProjectsParallax from "./containers/(home)/home-projects";
 import SkillsSection from "./containers/(home)/home-skills";
-import ResumeDownloadButton from "@/components/ui/resume-download-button";
 import Highlights from "./containers/(home)/home-highlights";
-import TimelineSection from "./containers/(home)/home-timeline";
-import RecommendationsSection from "./containers/(home)/home-recommendations";
-import LocationSection from "./containers/(home)/home-location";
+import ResumeDownloadButton from "@/components/ui/resume-download-button";
+
+const ProjectsParallax = dynamic(
+  () => import("./containers/(home)/home-projects"),
+);
+const RecommendationsSection = dynamic(
+  () => import("./containers/(home)/home-recommendations"),
+);
+const LocationSection = dynamic(
+  () => import("./containers/(home)/home-location"),
+);
+const TimelineSection = dynamic(
+  () => import("./containers/(home)/home-timeline"),
+);
 
 export default function Home() {
   return (

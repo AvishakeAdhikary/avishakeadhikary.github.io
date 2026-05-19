@@ -1,11 +1,12 @@
 "use client";
-import React, { useId, useMemo } from "react";
+import React, { useId } from "react";
 import { useEffect, useState } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import type { Container, SingleOrMultiple } from "@tsparticles/engine";
 import { loadSlim } from "@tsparticles/slim";
 import { cn } from "@/lib/utils";
 import { motion, useAnimation } from "motion/react";
+import { useLowPower } from "@/lib/use-low-power";
 
 type ParticlesProps = {
   id?: string;
@@ -29,14 +30,20 @@ export const SparklesCore = (props: ParticlesProps) => {
     particleColor,
     particleDensity,
   } = props;
+  const lowPower = useLowPower();
   const [init, setInit] = useState(false);
   useEffect(() => {
+    if (lowPower) return;
     initParticlesEngine(async (engine) => {
       await loadSlim(engine);
     }).then(() => {
       setInit(true);
     });
-  }, []);
+  }, [lowPower]);
+
+  const effectiveDensity = lowPower
+    ? Math.min(40, particleDensity || 80)
+    : particleDensity || 80;
   const controls = useAnimation();
 
   const particlesLoaded = async (container?: Container) => {
@@ -61,7 +68,7 @@ export const SparklesCore = (props: ParticlesProps) => {
           options={{
             background: {
               color: {
-                value: background || "#0d47a1",
+                value: background || "#000000",
               },
             },
             fullScreen: {
@@ -69,7 +76,7 @@ export const SparklesCore = (props: ParticlesProps) => {
               zIndex: 1,
             },
 
-            fpsLimit: 120,
+            fpsLimit: 60,
             interactivity: {
               events: {
                 onClick: {
@@ -230,7 +237,7 @@ export const SparklesCore = (props: ParticlesProps) => {
                   mode: "delete",
                   value: 0,
                 },
-                value: particleDensity || 120,
+                value: effectiveDensity,
               },
               opacity: {
                 value: {

@@ -1,7 +1,8 @@
 "use client";
 import { GoogleGeminiEffect } from "@/components/ui/google-gemini-effect";
-import { useScroll, useTransform } from "framer-motion";
+import { useScroll, useTransform } from "motion/react";
 import React from "react";
+import { useLowPower } from "@/lib/use-low-power";
 
 
 export default function ContactMeMain() {
@@ -10,6 +11,7 @@ export default function ContactMeMain() {
     target: ref,
     offset: ["start start", "end start"],
   });
+  const lowPower = useLowPower();
 
   const pathLengthFirst = useTransform(scrollYProgress, [0, 0.8], [0.2, 1.2]);
   const pathLengthSecond = useTransform(scrollYProgress, [0, 0.8], [0.15, 1.2]);
@@ -19,7 +21,7 @@ export default function ContactMeMain() {
 
   return (
     <div
-      className="h-[400vh] bg-black w-full dark:border dark:border-white/[0.1] rounded-md relative pt-40 overflow-clip"
+      className={`${lowPower ? "h-[200vh]" : "h-[300vh] sm:h-[400vh]"} bg-black w-full dark:border dark:border-white/[0.1] rounded-md relative pt-20 sm:pt-40 overflow-clip`}
       ref={ref}
     >
       <GoogleGeminiEffect
