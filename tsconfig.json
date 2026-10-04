@@ -3,7 +3,7 @@
     "lib": [
       "dom",
       "dom.iterable",
-      "esnext"
+      "es2023"
     ],
     "allowJs": true,
     "skipLibCheck": true,
@@ -26,7 +26,7 @@
         "./src/*"
       ]
     },
-    "target": "ES2017"
+    "target": "ES2022"
   },
   "include": [
     "next-env.d.ts",
@@ -36,6 +36,9 @@
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "out",
+    ".next",
+    "media"
   ]
 }

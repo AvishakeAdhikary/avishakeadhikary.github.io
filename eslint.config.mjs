@@ -1,26 +1,33 @@
 import nextConfig from "eslint-config-next";
 
-export default [
+const config = [
   {
     ignores: [
       ".next/**",
       "out/**",
       "node_modules/**",
       "public/**",
+      "media/**",
+      ".media-cache/**",
       "next-env.d.ts",
     ],
   },
   ...nextConfig,
   {
+    // Explicit version: eslint-plugin-react's auto-detection uses an API removed in ESLint 10.
+    settings: { react: { version: "19.3" } },
     rules: {
-      "@next/next/no-img-element": "off",
-      "react/no-unescaped-entities": "off",
-      "react-hooks/exhaustive-deps": "warn",
-      "react-hooks/purity": "off",
-      "react-hooks/refs": "off",
-      "react-hooks/immutability": "off",
-      "react-hooks/set-state-in-effect": "off",
-      "import/no-anonymous-default-export": "off",
+      // Full React Compiler-era hook rules stay on (purity, refs, immutability,
+      // set-state-in-effect). Opt out per line with a justification comment.
+      "react-hooks/exhaustive-deps": "error",
+      "@next/next/no-img-element": "error",
+      "no-console": ["warn", { allow: ["warn", "error"] }],
     },
   },
+  {
+    files: ["scripts/**/*.mjs"],
+    rules: { "no-console": "off" },
+  },
 ];
+
+export default config;

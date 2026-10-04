@@ -8,9 +8,14 @@
 .yarn/install-state.gz
 .pnpm-store/
 
-# testing
+# testing / browser automation
 /coverage
 /.nyc_output
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+.playwright-mcp/
 
 # next.js
 /.next/
@@ -19,6 +24,9 @@
 # production
 /build
 /dist
+
+# media pipeline cache (outputs in public/media ARE committed)
+/.media-cache/
 
 # misc
 .DS_Store
@@ -36,13 +44,14 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# local env files
+# env files (keep the documented example)
 .env
-.env.local
-.env*.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env*
+!.env.example
+*.local.*
+
+# npm auth
+.npmrc
 
 # vercel
 .vercel
@@ -60,6 +69,10 @@ next-env.d.ts
 *.swo
 *~
 
+# AI agent local state (shared config like .mcp.json and CLAUDE.md is committed)
+.claude/settings.local.json
+.claude/worktrees/
+
 # OS / temp
 *.tmp
 *.bak
@@ -75,7 +88,3 @@ next-env.d.ts
 
 # husky shim folder (auto-generated)
 .husky/_/
-
-# ignored helper logs
-dev.log
-build.log

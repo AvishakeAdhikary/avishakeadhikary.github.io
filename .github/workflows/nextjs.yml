@@ -1,14 +1,18 @@
-# Deploy Next.js (static export) to GitHub Pages with a lint gate
+# Build and deploy the static site to GitHub Pages.
 #
-# - Lint job runs first and must pass
-# - Build runs only after lint succeeds
-# - Deploy publishes the static export
-name: Deploy Next.js site to Pages
+# Runs on every push to main, on manual dispatch, and monthly on a schedule.
+# Each run refreshes live data first (GitHub repos + Google Scholar), so the
+# deployed site is always current without anyone committing anything.
+# If a data source is down, the committed snapshot is used (the build never
+# fails because of it).
+name: Deploy site
 
 on:
   push:
     branches: ["main"]
   workflow_dispatch:
+  schedule:
+    - cron: "17 3 1 * *" # 03:17 UTC on the 1st of every month
 
 permissions:
   contents: read
@@ -16,76 +20,62 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: pages
   cancel-in-progress: false
 
 jobs:
-  lint:
-    name: Lint
+  check:
+    name: Lint & typecheck
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: "20"
+          node-version: 24
           cache: npm
-
-      - name: Install dependencies
-        run: npm ci --legacy-peer-deps
-
-      - name: Run ESLint
-        run: npm run lint
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
 
   build:
     name: Build
-    needs: lint
+    needs: check
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: "20"
+          node-version: 24
           cache: npm
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
+      - uses: actions/cache@v6
         with:
-          static_site_generator: next
-
-      - name: Restore Next.js cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            .next/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
-          restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
-
-      - name: Install dependencies
-        run: npm ci --legacy-peer-deps
-
-      - name: Build with Next.js
-        run: npx next build
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+          path: .next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('package-lock.json') }}-${{ hashFiles('src/**') }}
+          restore-keys: ${{ runner.os }}-nextjs-${{ hashFiles('package-lock.json') }}-
+      - run: npm ci
+      - name: Sync live data (GitHub + Scholar)
+        run: npm run sync
+        env:
+          GITHUB_TOKEN: ${{ secrets.PORTFOLIO_SYNC_TOKEN || secrets.GITHUB_TOKEN }}
+      - run: npm run build
+      - name: Browser checks (every route, no hidden content, terminal, crash flow)
+        run: |
+          npx playwright install --with-deps chromium
+          npx --yes serve out -l 3000 -n > /dev/null 2>&1 &
+          for i in $(seq 1 30); do curl -sf http://localhost:3000/ > /dev/null && break; sleep 1; done
+          npm run verify -- chromium
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: ./out
 
   deploy:
     name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - id: deployment
+        uses: actions/deploy-pages@v5

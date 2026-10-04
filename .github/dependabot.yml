@@ -1,0 +1,29 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 5
+    groups:
+      next-react:
+        patterns: ["next", "react", "react-dom", "@types/react", "@types/react-dom", "eslint-config-next"]
+      tooling:
+        patterns: ["eslint", "typescript", "tailwindcss", "@tailwindcss/*", "postcss", "husky", "lint-staged", "shadcn"]
+      ui:
+        patterns: ["lucide-react", "simple-icons", "radix-ui", "cmdk", "cobe", "tw-animate-css", "class-variance-authority", "clsx", "tailwind-merge"]
+      media:
+        patterns: ["sharp", "svgo", "ffmpeg-static"]
+    ignore:
+      # Majors that need ecosystem support first (see AGENTS.md → Dependency notes).
+      - dependency-name: "eslint"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns: ["*"]
