@@ -1,54 +1,145 @@
 import type { Metadata, Viewport } from "next";
-import { JetBrains_Mono } from "next/font/google";
+import { ViewTransition } from "react";
+import { CrashController } from "@/components/crash/crash-controller";
+import { Boot } from "@/components/runtime/boot";
+import { Delights } from "@/components/runtime/delights";
+import { Effects } from "@/components/runtime/effects";
+import { Hud } from "@/components/runtime/hud";
+import { SiteTicker } from "@/components/layout/site-ticker";
+import { TerminalDock } from "@/components/terminal/terminal-dock";
+import { SiteFooter } from "@/components/layout/site-footer";
+import { SiteHeader } from "@/components/layout/site-header";
+import { degrees, roles } from "@/content/experience";
+import { profile } from "@/content/profile";
+import { publications } from "@/content/publications";
+import { SETTINGS_SCRIPT } from "@/lib/settings-script";
+import { hud, inter, mono } from "./fonts";
 import "./globals.css";
-import { ThemeProvider } from "next-themes";
-import LoadingScreen from "@/components/ui/loading-screen";
 
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-jetbrains-mono",
-});
+const description = `${profile.name}: ${profile.headline} in ${profile.location.city}, ${profile.location.country}. Fine-tuned & quantized LLMs (LoRA/QLoRA, MXFP4, llama.cpp), agentic AI and MCP servers, healthcare AI deployed internationally, computer vision, and full-stack engineering.`;
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://avishakeadhikary.github.io"),
-  title: "Avishake's Portfolio",
-  description:
-    "Avishake Adhikary - Machine Learning Engineer | Full Stack Developer | Explore the dynamic portfolio of Avishake Adhikary, a proficient Machine Learning Engineer and Full Stack Developer based in Kolkata, India. With a strong foundation in Java, JavaScript, Python, and more, Avishake specializes in crafting innovative solutions that blend cutting-edge technology with user-centric design. Discover his expertise in AI, web development, and cloud computing through hands-on projects and professional experiences. Get in touch to collaborate on transformative tech ventures.",
-  openGraph: {
-    images: [
-      {
-        url: "https://github.com/AvishakeAdhikary/avishakeadhikary.github.io/blob/main/public/images/gallery/AvishakeAmityMerc.png?raw=true",
-        width: 4032,
-        height: 3024,
-      },
-    ],
+  metadataBase: new URL(profile.site),
+  title: {
+    default: `${profile.name} · ${profile.headline}`,
+    template: `%s · ${profile.name}`,
   },
+  description,
+  applicationName: profile.name,
+  authors: [{ name: profile.name, url: profile.site }],
+  creator: profile.name,
+  keywords: [
+    "Avishake Adhikary",
+    "Machine Learning Engineer",
+    "Agentic AI",
+    "LLM fine-tuning",
+    "Quantization",
+    "MXFP4",
+    "llama.cpp",
+    "MedGemma",
+    "Healthcare AI",
+    "Computer Vision",
+    "Model Context Protocol",
+    "Kolkata",
+    "India",
+  ],
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "profile",
+    url: profile.site,
+    siteName: profile.name,
+    title: `${profile.name} · ${profile.headline}`,
+    description,
+    firstName: profile.firstName,
+    lastName: profile.lastName,
+    locale: "en_US",
+  },
+  twitter: { card: "summary_large_image", title: `${profile.name} · ${profile.headline}`, description },
+  robots: { index: true, follow: true },
+  formatDetection: { telephone: false },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  themeColor: "#000000",
+  themeColor: "#0d0a0a",
+  colorScheme: "dark",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: profile.name,
+  url: profile.site,
+  image: `${profile.site}/opengraph-image.png`,
+  jobTitle: profile.headline,
+  description,
+  email: `mailto:${profile.email}`,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: profile.location.city,
+    addressRegion: profile.location.region,
+    addressCountry: profile.location.countryCode,
+  },
+  worksFor: { "@type": "Organization", name: roles[0].org },
+  alumniOf: degrees.map((d) => ({
+    "@type": "CollegeOrUniversity",
+    name: d.school,
+    department: d.institute,
+  })),
+  knowsLanguage: profile.languages.map((l) => l.name),
+  knowsAbout: ["Machine Learning", "Large Language Models", "Agentic AI", "Computer Vision", "Healthcare AI", "Full-stack development"],
+  sameAs: Object.values(profile.socials),
+  hasCredential: degrees.map((d) => ({
+    "@type": "EducationalOccupationalCredential",
+    credentialCategory: "degree",
+    name: d.degree,
+    recognizedBy: { "@type": "CollegeOrUniversity", name: d.school },
+  })),
+  workExample: publications.map((p) => ({
+    "@type": "ScholarlyArticle",
+    name: p.title,
+    datePublished: p.date,
+    url: p.url,
+    publisher: p.publisher,
+  })),
+};
+
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      data-scroll-behavior="smooth"
-      className={jetbrainsMono.variable}
-    >
-      <body className={`${jetbrainsMono.className} antialiased`}>
-        <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
-          <LoadingScreen>{children}</LoadingScreen>
-        </ThemeProvider>
+    <html lang="en" className={`${inter.variable} ${mono.variable} ${hud.variable}`} data-scroll-behavior="smooth" suppressHydrationWarning>
+      <head>
+        {/* Applies visitor settings + boot/animation state before first paint (no flash). */}
+        <script dangerouslySetInnerHTML={{ __html: SETTINGS_SCRIPT }} />
+      </head>
+      <body>
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[80] focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-white"
+        >
+          Skip to content
+        </a>
+        <script
+          type="application/ld+json"
+          // Static, build-time JSON; no user input.
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+        />
+        <Boot />
+        <SiteHeader />
+        <ViewTransition default="route">
+          <main id="main" className="min-h-[70dvh]">
+            {children}
+          </main>
+        </ViewTransition>
+        <SiteFooter />
+        <SiteTicker />
+        <TerminalDock />
+        <Hud />
+        <CrashController email={profile.email} />
+        <Delights email={profile.email} />
+        <Effects />
+        <div className="crt-layer" aria-hidden />
       </body>
     </html>
   );

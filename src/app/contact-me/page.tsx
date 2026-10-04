@@ -1,12 +1,10 @@
-"use client";
-import HomeButton from "@/components/ui/home-button";
-import ContactMeMain from "../containers/(contact-me)/ContactMeMain";
+import type { Metadata } from "next";
+import ContactPage from "../contact/page";
 
-export default function ContactMe(){
-    return (
-        <>
-            <ContactMeMain />
-            <HomeButton />
-        </>
-    );
-}
+export const metadata: Metadata = {
+  title: "Contact",
+  alternates: { canonical: "/contact/" },
+};
+
+/** Legacy URL kept alive; canonical is /contact/. */
+export default ContactPage;

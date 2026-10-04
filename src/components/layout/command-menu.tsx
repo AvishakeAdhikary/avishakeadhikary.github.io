@@ -1,0 +1,54 @@
+"use client";
+
+import { Search } from "lucide-react";
+import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
+
+export interface CommandEntry {
+  group: "Navigate" | "Projects" | "Links" | "Actions";
+  label: string;
+  hint?: string;
+  href?: string;
+  action?: "copy-email" | "toggle-audio";
+  keywords?: string;
+}
+
+// cmdk + dialog are only downloaded the first time the palette opens.
+const CommandPalette = dynamic(() => import("./command-palette").then((m) => m.CommandPalette), { ssr: false });
+
+export function CommandMenu({ entries, email }: { entries: CommandEntry[]; email: string }) {
+  const [open, setOpen] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.key === "k" || e.key === "K") && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setLoaded(true);
+        setOpen((o) => !o);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => {
+          setLoaded(true);
+          setOpen(true);
+        }}
+        onPointerEnter={() => setLoaded(true)}
+        className="group flex h-9 cursor-pointer items-center gap-2 rounded-md border border-border px-3 text-sm text-muted-foreground transition-colors hover:border-border-strong hover:text-foreground"
+        aria-label="Open command menu"
+      >
+        <Search className="size-3.5" />
+        <span className="hidden xl:inline">Search</span>
+        <kbd className="hidden rounded border border-border bg-white/[0.04] px-1.5 font-mono text-[0.65rem] sm:inline">⌘K</kbd>
+      </button>
+      {loaded ? <CommandPalette open={open} onOpenChange={setOpen} entries={entries} email={email} /> : null}
+    </>
+  );
+}
