@@ -1,0 +1,944 @@
+{
+  "user": "AvishakeAdhikary",
+  "syncedAt": "2026-10-04T09:11:24.765Z",
+  "totals": {
+    "repos": 33,
+    "stars": 183,
+    "forks": 46
+  },
+  "repos": [
+    {
+      "name": "AvishakeAdhikary",
+      "description": "",
+      "summary": "I build things at the intersection of Machine Learning and full-stack web development — from training and evaluating models to shipping the product around them.",
+      "url": "https://github.com/AvishakeAdhikary/AvishakeAdhikary",
+      "homepage": null,
+      "stars": 3,
+      "forks": 0,
+      "language": null,
+      "languages": [],
+      "topics": [],
+      "license": null,
+      "createdAt": "2023-06-08T08:12:40Z",
+      "pushedAt": "2026-10-04T04:05:52Z",
+      "pinned": false,
+      "readmeImage": "https://raw.githubusercontent.com/AvishakeAdhikary/AvishakeAdhikary/main/media/images/Github%20Banner.gif",
+      "socialImage": "https://opengraph.githubassets.com/1/AvishakeAdhikary/AvishakeAdhikary"
+    },
+    {
+      "name": "tone-sphere",
+      "description": "",
+      "summary": "Low-latency audio routing, mixing and VST3 hosting. On Windows the audio runs on a native real-time engine — C++ behind a C ABI, with WASAPI and ASIO backends and a VST3 host — driven by a Python control plane. Linux and macOS run the same application on a PortAudio host. Every latency figure is labelled for what it is, and a figure nobody measured reads --.",
+      "url": "https://github.com/AvishakeAdhikary/tone-sphere",
+      "homepage": "https://avishakeadhikary.github.io/tone-sphere/",
+      "stars": 1,
+      "forks": 0,
+      "language": "Python",
+      "languages": [
+        {
+          "name": "Python",
+          "share": 0.67
+        },
+        {
+          "name": "C++",
+          "share": 0.245
+        },
+        {
+          "name": "C",
+          "share": 0.065
+        }
+      ],
+      "topics": [],
+      "license": "MIT",
+      "createdAt": "2025-09-25T18:28:44Z",
+      "pushedAt": "2026-10-02T07:58:17Z",
+      "pinned": false,
+      "readmeImage": "https://raw.githubusercontent.com/AvishakeAdhikary/tone-sphere/main/assets/images/ToneSphereBanner.gif",
+      "socialImage": "https://opengraph.githubassets.com/1/AvishakeAdhikary/tone-sphere"
+    },
+    {
+      "name": "blog",
+      "description": "",
+      "summary": "A minimal, monospace-themed blog built with Next.js 15, React 19, TypeScript, and Tailwind CSS. Statically exported and ready for GitHub Pages.",
+      "url": "https://github.com/AvishakeAdhikary/blog",
+      "homepage": "https://avishakeadhikary.github.io/blog/",
+      "stars": 2,
+      "forks": 0,
+      "language": "TypeScript",
+      "languages": [
+        {
+          "name": "TypeScript",
+          "share": 0.862
+        },
+        {
+          "name": "CSS",
+          "share": 0.08
+        },
+        {
+          "name": "JavaScript",
+          "share": 0.057
+        }
+      ],
+      "topics": [],
+      "license": "MIT",
+      "createdAt": "2024-10-13T11:52:38Z",
+      "pushedAt": "2026-09-16T09:32:00Z",
+      "pinned": false,
+      "readmeImage": null,
+      "socialImage": "https://opengraph.githubassets.com/1/AvishakeAdhikary/blog"
+    },
+    {
+      "name": "solidworks-mcp-server",
+      "description": "",
+      "summary": "Drive SolidWorks from an MCP client (Claude Code, Claude Desktop, any MCP host) through its COM API. Pure Python — no SolidWorks.Interop. assemblies, no .NET service, no generated type-library cache. One install drives SolidWorks 2018 through 2026 — directly verified, tool by tool, against a live SolidWorks 2023 install; every other supported year runs on the same code path and is checked automatically at connect…",
+      "url": "https://github.com/AvishakeAdhikary/solidworks-mcp-server",
+      "homepage": null,
+      "stars": 0,
+      "forks": 0,
+      "language": "Python",
+      "languages": [
+        {
+          "name": "Python",
+          "share": 1
+        }
+      ],
+      "topics": [],
+      "license": "MIT",
+      "createdAt": "2026-08-03T18:51:02Z",
+      "pushedAt": "2026-08-05T12:16:37Z",
+      "pinned": false,
+      "readmeImage": null,
+      "socialImage": "https://opengraph.githubassets.com/1/AvishakeAdhikary/solidworks-mcp-server"
+    },
+    {
+      "name": "3D-Portfolio",
+      "description": "3D Portfolio Created Using Vanilla JS and THREE JS. Created using Codesandbox.",
+      "summary": "An interactive, open-world portfolio. Nine city districts, nine entries from a real CV, plus every public GitHub repository pulled live and scattered through the streets as collectibles. Walk or drive between them, step into a beam of light, read the file.",
+      "url": "https://github.com/AvishakeAdhikary/3D-Portfolio",
+      "homepage": "https://avishakeadhikary.github.io/3D-Portfolio/",
+      "stars": 4,
+      "forks": 1,
+      "language": "JavaScript",
+      "languages": [
+        {
+          "name": "JavaScript",
+          "share": 0.897
+        },
+        {
+          "name": "CSS",
+          "share": 0.073
+        },
+        {
+          "name": "HTML",
+          "share": 0.03
+        }
+      ],
+      "topics": [
+        "3d",
+        "3dwebsite",
+        "javascript",
+        "threejs",
+        "vanilla-javascript",
+        "vanilla-js"
+      ],
+      "license": null,
+      "createdAt": "2022-08-28T11:37:44Z",
+      "pushedAt": "2026-08-03T22:36:44Z",
+      "pinned": false,
+      "readmeImage": null,
+      "socialImage": "https://opengraph.githubassets.com/1/AvishakeAdhikary/3D-Portfolio"
+    },
+    {
+      "name": "NexGuild",
+      "description": "",
+      "summary": "Host and manage Discord bots without writing code. NexGuild by Neural Nexus Studios is a Windows desktop app (and tray-resident background service) where every bot behavior — commands, events, moderation, music, AI, and more — is built on a single visual node-graph + templating language. Drag triggers → conditions → actions onto a canvas, fill in friendly pickers, and your bot does the rest. No code, no hosting…",
+      "url": "https://github.com/AvishakeAdhikary/NexGuild",
+      "homepage": "https://avishakeadhikary.github.io/NexGuild/",
+      "stars": 0,
+      "forks": 0,
+      "language": "C#",
+      "languages": [
+        {
+          "name": "C#",
+          "share": 0.996
+        }
+      ],
+      "topics": [],
+      "license": null,
+      "createdAt": "2026-05-31T03:55:09Z",
+      "pushedAt": "2026-08-01T19:39:44Z",
+      "pinned": false,
+      "readmeImage": null,
+      "socialImage": "https://opengraph.githubassets.com/1/AvishakeAdhikary/NexGuild"
+    },
+    {
+      "name": "RadxaZero3EHomeAssistant",
+      "description": "",
+      "summary": "Transforms the vendor Radxa Zero 3E Debian 12 (bookworm) desktop image into a minimal, headless Home Assistant appliance with Supervisor (Add-ons, Backups), while preserving 100% of the vendor's board support (U-Boot, kernel, device tree, Wi-Fi/BT firmware).",
+      "url": "https://github.com/AvishakeAdhikary/RadxaZero3EHomeAssistant",
+      "homepage": null,
+      "stars": 0,
+      "forks": 0,
+      "language": "Shell",
+      "languages": [
+        {
+          "name": "Shell",
+          "share": 1
+        }
+      ],
+      "topics": [],
+      "license": "MIT",
+      "createdAt": "2026-07-21T18:21:16Z",
+      "pushedAt": "2026-07-28T17:42:43Z",
+      "pinned": false,
+      "readmeImage": "https://design.home-assistant.io/images/brand/logo.png",
+      "socialImage": "https://opengraph.githubassets.com/1/AvishakeAdhikary/RadxaZero3EHomeAssistant"
+    },
+    {
+      "name": "HomeAssistantPlayitGGCustom",
+      "description": "",
+      "summary": "A Home Assistant add-on that exposes your Home Assistant instance to the internet through a playit.gg tunnel. No port forwarding, no static/public IP, no reverse proxy, no messing with your router — playit.gg's agent makes an outbound-only connection to their relay, so it works from behind CGNAT too.",
+      "url": "https://github.com/AvishakeAdhikary/HomeAssistantPlayitGGCustom",
+      "homepage": null,
+      "stars": 0,
+      "forks": 0,
+      "language": "Shell",
+      "languages": [
+        {
+          "name": "Shell",
+          "share": 0.796
+        },
+        {
+          "name": "Dockerfile",
+          "share": 0.204
+        }
+      ],
+      "topics": [],
+      "license": "MIT",
+      "createdAt": "2026-07-25T21:46:11Z",
+      "pushedAt": "2026-07-25T21:46:27Z",
+      "pinned": false,
+      "readmeImage": null,
+      "socialImage": "https://opengraph.githubassets.com/1/AvishakeAdhikary/HomeAssistantPlayitGGCustom"
+    },
+    {
+      "name": "NexRemote",
+      "description": "",
+      "summary": "Control your Windows PC from your Android device. Screen sharing · Gamepad · Keyboard & Mouse · Camera · File Explorer · Media Control",
+      "url": "https://github.com/AvishakeAdhikary/NexRemote",
+      "homepage": "https://avishakeadhikary.github.io/NexRemote/",
+      "stars": 1,
+      "forks": 0,
+      "language": "PowerShell",
+      "languages": [
+        {
+          "name": "PowerShell",
+          "share": 0.497
+        },
+        {
+          "name": "C#",
+          "share": 0.253
+        },
+        {
+          "name": "Kotlin",
+          "share": 0.25
+        }
+      ],
+      "topics": [],
+      "license": "MIT",
+      "createdAt": "2026-01-12T18:53:31Z",
+      "pushedAt": "2026-07-08T22:26:50Z",
+      "pinned": false,
+      "readmeImage": "https://raw.githubusercontent.com/AvishakeAdhikary/NexRemote/master/windows_app/NexRemote/NexRemote/Assets/Brand/logo.png",
+      "socialImage": "https://opengraph.githubassets.com/1/AvishakeAdhikary/NexRemote"
+    },
+    {
+      "name": "NexCode",
+      "description": "",
+      "summary": "",
+      "url": "https://github.com/AvishakeAdhikary/NexCode",
+      "homepage": "https://avishakeadhikary.github.io/NexCode/",
+      "stars": 0,
+      "forks": 0,
+      "language": "C#",
+      "languages": [
+        {
+          "name": "C#",
+          "share": 0.982
+        }
+      ],
+      "topics": [],
+      "license": "MIT",
+      "createdAt": "2026-04-17T21:41:04Z",
+      "pushedAt": "2026-06-15T18:36:29Z",
+      "pinned": false,
+      "readmeImage": null,
+      "socialImage": "https://opengraph.githubassets.com/1/AvishakeAdhikary/NexCode"
+    },
+    {
+      "name": "NexScout",
+      "description": "",
+      "summary": "NexScout is an always-on, autonomous job-application agent. It discovers jobs across the web, scores them against your profile, tailors a LaTeX-rendered resume (and cover letter when required) per application, and submits the application through an undetected Chrome driver. It runs continuously as a crash-resilient nexscout autopilot loop or inside an OpenClaw / NemoClaw heartbeat, exposes a modern Tailwind web…",
+      "url": "https://github.com/AvishakeAdhikary/NexScout",
+      "homepage": null,
+      "stars": 0,
+      "forks": 0,
+      "language": "Python",
+      "languages": [
+        {
+          "name": "Python",
+          "share": 0.89
+        },
+        {
+          "name": "HTML",
+          "share": 0.045
+        },
+        {
+          "name": "PowerShell",
+          "share": 0.032
+        },
+        {
+          "name": "Shell",
+          "share": 0.026
+        }
+      ],
+      "topics": [],
+      "license": "AGPL-3.0",
+      "createdAt": "2026-05-20T20:31:23Z",
+      "pushedAt": "2026-06-14T21:21:59Z",
+      "pinned": false,
+      "readmeImage": null,
+      "socialImage": "https://opengraph.githubassets.com/1/AvishakeAdhikary/NexScout"
+    },
+    {
+      "name": "OS-Portfolio",
+      "description": "OS Portfolio is a customizable portfolio template built with Vue.js. It provides a desktop-like interface for showcasing your applications and organizing them in a visually appealing manner.",
+      "summary": "An interactive, desktop‑OS‑style portfolio. Boots like a real OS, has a lock and login screen, a working window manager, a virtual file system with routes, draggable / resizable / minimizable windows, a music player with a live audio visualizer, a terminal, a settings app with theme and accent customization — and a lot more.",
+      "url": "https://github.com/AvishakeAdhikary/OS-Portfolio",
+      "homepage": "https://avishakeadhikary.github.io/OS-Portfolio/",
+      "stars": 5,
+      "forks": 0,
+      "language": "Vue",
+      "languages": [
+        {
+          "name": "Vue",
+          "share": 0.858
+        },
+        {
+          "name": "JavaScript",
+          "share": 0.12
+        }
+      ],
+      "topics": [
+        "os",
+        "portfolio",
+        "vue"
+      ],
+      "license": "MIT",
+      "createdAt": "2023-06-10T16:42:49Z",
+      "pushedAt": "2026-05-28T14:19:45Z",
+      "pinned": false,
+      "readmeImage": null,
+      "socialImage": "https://opengraph.githubassets.com/1/AvishakeAdhikary/OS-Portfolio"
+    },
+    {
+      "name": "avishakeadhikary.github.io",
+      "description": "",
+      "summary": "This project is a simple and elegant solution to create your resume/portfolio website using Next.js, a React framework. With this setup, you can easily build a fast, dynamic, and SEO-friendly resume website hosted on GitHub Pages.",
+      "url": "https://github.com/AvishakeAdhikary/avishakeadhikary.github.io",
+      "homepage": "https://avishakeadhikary.github.io/",
+      "stars": 2,
+      "forks": 0,
+      "language": "TypeScript",
+      "languages": [
+        {
+          "name": "TypeScript",
+          "share": 0.983
+        }
+      ],
+      "topics": [],
+      "license": "MIT",
+      "createdAt": "2024-06-03T07:48:11Z",
+      "pushedAt": "2026-05-19T08:44:35Z",
+      "pinned": false,
+      "readmeImage": null,
+      "socialImage": "https://opengraph.githubassets.com/1/AvishakeAdhikary/avishakeadhikary.github.io"
+    },
+    {
+      "name": "nexcpp",
+      "description": "nexcpp is a Model Context Protocol (MCP) server that gives any MCP-compatible AI agent — Claude, Codex, Cursor, Windsurf — deep, structured knowledge of C++ development",
+      "summary": "nexcpp is a Model Context Protocol (MCP) server that gives any MCP-compatible AI agent — Claude, Codex, Cursor, Windsurf — deep, structured knowledge of C++ development: language and library docs, CMake, vcpkg/Conan, sandboxed builds, static analysis, code generation, and GitHub automation. It runs as a local subprocess and speaks JSON-RPC over stdio (or SSE for team deployments).",
+      "url": "https://github.com/AvishakeAdhikary/nexcpp",
+      "homepage": null,
+      "stars": 0,
+      "forks": 0,
+      "language": "Python",
+      "languages": [
+        {
+          "name": "Python",
+          "share": 0.907
+        },
+        {
+          "name": "Jinja",
+          "share": 0.078
+        }
+      ],
+      "topics": [],
+      "license": "MIT",
+      "createdAt": "2026-05-18T04:55:28Z",
+      "pushedAt": "2026-05-18T19:34:02Z",
+      "pinned": false,
+      "readmeImage": null,
+      "socialImage": "https://opengraph.githubassets.com/1/AvishakeAdhikary/nexcpp"
+    },
+    {
+      "name": "Neural-Nexus-Studios",
+      "description": "",
+      "summary": "Dark-themed Next.js site with ChatGPT-style animations, tailored for deployment under https://avishakeadhikary.github.io/Neural-Nexus-Studios/.",
+      "url": "https://github.com/AvishakeAdhikary/Neural-Nexus-Studios",
+      "homepage": "https://avishakeadhikary.github.io/Neural-Nexus-Studios/",
+      "stars": 1,
+      "forks": 0,
+      "language": "JavaScript",
+      "languages": [
+        {
+          "name": "JavaScript",
+          "share": 0.943
+        },
+        {
+          "name": "CSS",
+          "share": 0.057
+        }
+      ],
+      "topics": [],
+      "license": "MIT",
+      "createdAt": "2025-06-08T10:39:49Z",
+      "pushedAt": "2026-04-12T10:30:31Z",
+      "pinned": false,
+      "readmeImage": null,
+      "socialImage": "https://opengraph.githubassets.com/1/AvishakeAdhikary/Neural-Nexus-Studios"
+    },
+    {
+      "name": "Realtime-Sign-Language-Detection-Using-LSTM-Model",
+      "description": "Realtime Sign Language Detection: Deep learning model for accurate, real-time recognition of sign language gestures using Python and TensorFlow.",
+      "summary": "This section provides an overview of the Realtime Sign Language Detection Using LSTM Model project. It describes the project's purpose, which is to develop a system that can accurately detect and interpret sign language gestures in real time. It also highlights the use of LSTM (Long Short-Term Memory) models for this task and emphasizes the project's significance in improving communication accessibility for the…",
+      "url": "https://github.com/AvishakeAdhikary/Realtime-Sign-Language-Detection-Using-LSTM-Model",
+      "homepage": null,
+      "stars": 93,
+      "forks": 25,
+      "language": "Jupyter Notebook",
+      "languages": [
+        {
+          "name": "Jupyter Notebook",
+          "share": 0.988
+        }
+      ],
+      "topics": [
+        "artificial-intelligence",
+        "computer-vision",
+        "dataanalysis",
+        "datavisualization",
+        "deep-learning",
+        "gesture-recognition",
+        "lstm",
+        "machine-learning",
+        "modelevaluation",
+        "modeltraining",
+        "natural-language-processing",
+        "neural-network",
+        "opencv",
+        "python",
+        "realtime-detection",
+        "sign-language-recognition",
+        "tensorflow"
+      ],
+      "license": "MIT",
+      "createdAt": "2023-05-17T06:03:40Z",
+      "pushedAt": "2025-11-18T20:29:27Z",
+      "pinned": false,
+      "readmeImage": "https://github.com/AvhishekAdhikary/Realtime-Sign-Language-Detection-Using-LSTM-Model/assets/32614982/4d6a7542-2409-424f-9c9f-6b90a3236ea6",
+      "socialImage": "https://opengraph.githubassets.com/1/AvishakeAdhikary/Realtime-Sign-Language-Detection-Using-LSTM-Model"
+    },
+    {
+      "name": "discord-bot-slash-commands-deleter",
+      "description": "",
+      "summary": "A Python script to delete all slash commands (global and guild-specific) for a Discord bot using the Discord API.",
+      "url": "https://github.com/AvishakeAdhikary/discord-bot-slash-commands-deleter",
+      "homepage": null,
+      "stars": 0,
+      "forks": 0,
+      "language": "Python",
+      "languages": [
+        {
+          "name": "Python",
+          "share": 1
+        }
+      ],
+      "topics": [],
+      "license": "MIT",
+      "createdAt": "2025-09-27T06:52:57Z",
+      "pushedAt": "2025-09-27T08:38:47Z",
+      "pinned": false,
+      "readmeImage": null,
+      "socialImage": "https://opengraph.githubassets.com/1/AvishakeAdhikary/discord-bot-slash-commands-deleter"
+    },
+    {
+      "name": "EchoSight",
+      "description": "EchoSight Users interact with AI through Multimodal AI assistant — real-time camera, voice, and chat interaction with memory.",
+      "summary": "EchoSight is an open source FastAPI server that streams audio and image input to a multimodal model and returns low‑latency speech and text responses. It combines model streaming, VAD preprocessing, and SSE/WebSocket APIs to support realtime camera + microphone assistants similar in behavior to Google's Project Astra or GPT‑4o realtime vision, but fully open source.",
+      "url": "https://github.com/AvishakeAdhikary/EchoSight",
+      "homepage": null,
+      "stars": 1,
+      "forks": 0,
+      "language": "Python",
+      "languages": [
+        {
+          "name": "Python",
+          "share": 1
+        }
+      ],
+      "topics": [],
+      "license": "MIT",
+      "createdAt": "2025-08-21T06:44:10Z",
+      "pushedAt": "2025-08-23T10:23:20Z",
+      "pinned": false,
+      "readmeImage": null,
+      "socialImage": "https://opengraph.githubassets.com/1/AvishakeAdhikary/EchoSight"
+    },
+    {
+      "name": "EchoFlow",
+      "description": "A production-ready voice-to-voice AI communication system featuring a WebSocket server and a modern GUI client. The system supports real-time voice processing, text-based interaction, session management, and tool integration for text-to-speech.",
+      "summary": "A production-ready voice-to-voice AI communication system featuring a WebSocket server and a modern GUI client. The system supports real-time voice processing, text-based interaction, session management, and tool integration using an OpenAI-compatible API, Whisper for speech-to-text, and Kokoro TTS for text-to-speech.",
+      "url": "https://github.com/AvishakeAdhikary/EchoFlow",
+      "homepage": null,
+      "stars": 1,
+      "forks": 0,
+      "language": "Python",
+      "languages": [
+        {
+          "name": "Python",
+          "share": 1
+        }
+      ],
+      "topics": [],
+      "license": "MIT",
+      "createdAt": "2025-08-11T18:59:01Z",
+      "pushedAt": "2025-08-13T18:00:41Z",
+      "pinned": false,
+      "readmeImage": null,
+      "socialImage": "https://opengraph.githubassets.com/1/AvishakeAdhikary/EchoFlow"
+    },
+    {
+      "name": "Suit-Up-Lounge",
+      "description": "Suit-Up Lounge Discord Server Website",
+      "summary": "Open http://localhost:3000 with your browser to see the result.",
+      "url": "https://github.com/AvishakeAdhikary/Suit-Up-Lounge",
+      "homepage": "https://avishakeadhikary.github.io/Suit-Up-Lounge/",
+      "stars": 2,
+      "forks": 0,
+      "language": "TypeScript",
+      "languages": [
+        {
+          "name": "TypeScript",
+          "share": 0.866
+        },
+        {
+          "name": "CSS",
+          "share": 0.104
+        },
+        {
+          "name": "JavaScript",
+          "share": 0.03
+        }
+      ],
+      "topics": [],
+      "license": "MIT",
+      "createdAt": "2025-01-29T13:54:45Z",
+      "pushedAt": "2025-01-30T13:52:11Z",
+      "pinned": false,
+      "readmeImage": null,
+      "socialImage": "https://opengraph.githubassets.com/1/AvishakeAdhikary/Suit-Up-Lounge"
+    },
+    {
+      "name": "FirstReactRobotGenerator",
+      "description": "Robots Random Name and Email Generator Using ReactJS. Created with CodeSandbox.",
+      "summary": "This was my very first project with ReactJS which I created to learn the framework. Thanks to the mordern courses I was able to extend my knowledge with ReactJS and was able to create more projects with it.",
+      "url": "https://github.com/AvishakeAdhikary/FirstReactRobotGenerator",
+      "homepage": "https://avishakeadhikary.github.io/FirstReactRobotGenerator/",
+      "stars": 4,
+      "forks": 0,
+      "language": "JavaScript",
+      "languages": [
+        {
+          "name": "JavaScript",
+          "share": 0.65
+        },
+        {
+          "name": "CSS",
+          "share": 0.274
+        },
+        {
+          "name": "HTML",
+          "share": 0.075
+        }
+      ],
+      "topics": [
+        "codesandbox",
+        "css",
+        "html",
+        "javascript",
+        "npm",
+        "reactjs"
+      ],
+      "license": "MIT",
+      "createdAt": "2019-08-18T17:48:09Z",
+      "pushedAt": "2025-01-22T06:18:02Z",
+      "pinned": false,
+      "readmeImage": "https://github.com/AvhishekAdhikary/FirstReactRobotGenerator/assets/32614982/01f1bbd9-3a6a-4761-ab02-a97a8493ea1b",
+      "socialImage": "https://opengraph.githubassets.com/1/AvishakeAdhikary/FirstReactRobotGenerator"
+    },
+    {
+      "name": "TensorC",
+      "description": "",
+      "summary": "",
+      "url": "https://github.com/AvishakeAdhikary/TensorC",
+      "homepage": null,
+      "stars": 2,
+      "forks": 0,
+      "language": "C",
+      "languages": [
+        {
+          "name": "C",
+          "share": 0.662
+        },
+        {
+          "name": "CMake",
+          "share": 0.237
+        },
+        {
+          "name": "Makefile",
+          "share": 0.101
+        }
+      ],
+      "topics": [],
+      "license": "MIT",
+      "createdAt": "2024-11-02T09:35:00Z",
+      "pushedAt": "2024-11-26T17:54:22Z",
+      "pinned": false,
+      "readmeImage": "https://raw.githubusercontent.com/AvishakeAdhikary/TensorC/main/TensorCCover.png",
+      "socialImage": "https://opengraph.githubassets.com/1/AvishakeAdhikary/TensorC"
+    },
+    {
+      "name": "All-in-One-Discord-JavaScript-BOT",
+      "description": "",
+      "summary": "Screenshots",
+      "url": "https://github.com/AvishakeAdhikary/All-in-One-Discord-JavaScript-BOT",
+      "homepage": null,
+      "stars": 2,
+      "forks": 1,
+      "language": "TypeScript",
+      "languages": [
+        {
+          "name": "TypeScript",
+          "share": 0.694
+        },
+        {
+          "name": "JavaScript",
+          "share": 0.296
+        }
+      ],
+      "topics": [],
+      "license": null,
+      "createdAt": "2024-09-10T07:48:35Z",
+      "pushedAt": "2024-10-10T14:12:43Z",
+      "pinned": false,
+      "readmeImage": "https://raw.githubusercontent.com/AvishakeAdhikary/All-in-One-Discord-JavaScript-BOT/main/AIOJSDiscordBOT.png",
+      "socialImage": "https://opengraph.githubassets.com/1/AvishakeAdhikary/All-in-One-Discord-JavaScript-BOT"
+    },
+    {
+      "name": "All-in-One-Discord-Python-BOT",
+      "description": "",
+      "summary": "Welcome to the All-in-One-Discord-Python-BOT repository! This project features a versatile Discord bot built with Python, using discord.py and Quart for asynchronous operations, and integrates with Google Gemini and ChatGPT for advanced functionalities. MongoDB is used for data storage.",
+      "url": "https://github.com/AvishakeAdhikary/All-in-One-Discord-Python-BOT",
+      "homepage": null,
+      "stars": 2,
+      "forks": 0,
+      "language": "Python",
+      "languages": [
+        {
+          "name": "Python",
+          "share": 0.554
+        },
+        {
+          "name": "HTML",
+          "share": 0.428
+        }
+      ],
+      "topics": [],
+      "license": "MIT",
+      "createdAt": "2024-08-24T10:04:15Z",
+      "pushedAt": "2024-09-10T07:47:39Z",
+      "pinned": false,
+      "readmeImage": "https://raw.githubusercontent.com/AvishakeAdhikary/All-in-One-Discord-Python-BOT/main/static/AIOPythonDiscordBOT.png",
+      "socialImage": "https://opengraph.githubassets.com/1/AvishakeAdhikary/All-in-One-Discord-Python-BOT"
+    },
+    {
+      "name": "Neural-Networks-From-Scratch",
+      "description": "Implementing neural networks from scratch for a deeper understanding of concepts, featuring a Jupyter notebook with derivative-based implementations.",
+      "summary": "This repository contains a sequence of Jupyter notebooks, each representing a step in understanding and implementing neural networks from scratch. The primary focus is on understanding the underlying concepts and implementing them without relying on external libraries. The lecture series takes you from basic concepts to advanced architectures, demonstrating the conversion of traditional programming approaches to…",
+      "url": "https://github.com/AvishakeAdhikary/Neural-Networks-From-Scratch",
+      "homepage": null,
+      "stars": 5,
+      "forks": 1,
+      "language": "Jupyter Notebook",
+      "languages": [
+        {
+          "name": "Jupyter Notebook",
+          "share": 0.995
+        }
+      ],
+      "topics": [
+        "artificial-intelligence",
+        "gpt",
+        "machine-learning",
+        "mlp",
+        "neural-network",
+        "python"
+      ],
+      "license": "MIT",
+      "createdAt": "2024-01-12T14:40:03Z",
+      "pushedAt": "2024-08-22T10:31:07Z",
+      "pinned": false,
+      "readmeImage": null,
+      "socialImage": "https://opengraph.githubassets.com/1/AvishakeAdhikary/Neural-Networks-From-Scratch"
+    },
+    {
+      "name": "HealthApp",
+      "description": "Health Application: For prediction of health through basic health inputs and static BMI graph using ReactJS.",
+      "summary": "This is a simple health app built using React that allows users to input their health data and assess their risk of diabetes. It consists of two main components: Input and Udata.",
+      "url": "https://github.com/AvishakeAdhikary/HealthApp",
+      "homepage": "https://avishakeadhikary.github.io/HealthApp/",
+      "stars": 4,
+      "forks": 1,
+      "language": "JavaScript",
+      "languages": [
+        {
+          "name": "JavaScript",
+          "share": 0.608
+        },
+        {
+          "name": "CSS",
+          "share": 0.369
+        },
+        {
+          "name": "HTML",
+          "share": 0.023
+        }
+      ],
+      "topics": [
+        "css",
+        "diabetes-prediction",
+        "html",
+        "javascript",
+        "reactjs"
+      ],
+      "license": "MIT",
+      "createdAt": "2019-11-22T14:28:20Z",
+      "pushedAt": "2024-06-24T06:51:22Z",
+      "pinned": false,
+      "readmeImage": null,
+      "socialImage": "https://opengraph.githubassets.com/1/AvishakeAdhikary/HealthApp"
+    },
+    {
+      "name": "AI-Job-Assistant-ChatApp",
+      "description": "AI Job Assistant Chat App: A Flask-based chat application utilizing OpenAI's Assistants API to create custom GPT-4-powered assistants, designed to aid both job seekers and recruiters in a conversational interface.",
+      "summary": "Welcome to the world's first Flask application based on OpenAI's new Assistants API! This project allows you to create your own fully custom GPTs with specific functions tailored to assist both job seekers and job recruiters.",
+      "url": "https://github.com/AvishakeAdhikary/AI-Job-Assistant-ChatApp",
+      "homepage": null,
+      "stars": 5,
+      "forks": 0,
+      "language": "Python",
+      "languages": [
+        {
+          "name": "Python",
+          "share": 0.481
+        },
+        {
+          "name": "JavaScript",
+          "share": 0.373
+        },
+        {
+          "name": "HTML",
+          "share": 0.146
+        }
+      ],
+      "topics": [
+        "custom-gpt",
+        "flask",
+        "generative-ai",
+        "gpt",
+        "gpt-4",
+        "machine-learning",
+        "openai-api",
+        "openai-assistants",
+        "python"
+      ],
+      "license": "MIT",
+      "createdAt": "2023-11-22T18:29:06Z",
+      "pushedAt": "2023-11-27T17:01:57Z",
+      "pinned": false,
+      "readmeImage": "https://github.com/AvishakeAdhikary/AI-Job-Assistant-ChatApp/assets/32614982/8b11e080-9cf6-4d7b-b049-b4f69167fc68",
+      "socialImage": "https://opengraph.githubassets.com/1/AvishakeAdhikary/AI-Job-Assistant-ChatApp"
+    },
+    {
+      "name": "Python-Code-Generator",
+      "description": "A pre-trained language model to generate code based on user input. It prompts the user to enter a prompt, tokenizes the input, and generates a sequence of tokens based on the input using a pre-trained model. The generated sequence is then decoded and printed to the console.",
+      "summary": "https://github.com/AvishakeAdhikary/Python-Code-Generator/assets/32614982/f86b2cbd-2e44-45ff-b432-43a1cc0e8e19",
+      "url": "https://github.com/AvishakeAdhikary/Python-Code-Generator",
+      "homepage": null,
+      "stars": 8,
+      "forks": 0,
+      "language": "Jupyter Notebook",
+      "languages": [
+        {
+          "name": "Jupyter Notebook",
+          "share": 1
+        }
+      ],
+      "topics": [
+        "codegenerator",
+        "huggingface",
+        "huggingface-transformers",
+        "python"
+      ],
+      "license": "MIT",
+      "createdAt": "2023-05-28T17:18:05Z",
+      "pushedAt": "2023-05-28T17:45:32Z",
+      "pinned": false,
+      "readmeImage": "https://github.com/AvishakeAdhikary/Python-Code-Generator/assets/32614982/57818749-8754-448e-a291-1f89c2f1d741",
+      "socialImage": "https://opengraph.githubassets.com/1/AvishakeAdhikary/Python-Code-Generator"
+    },
+    {
+      "name": "Text-To-Image-Generator",
+      "description": "Python GUI application that generates images based on user prompts using the StableDiffusionPipeline model from the diffusers module. The application allows users to enter a prompt, click a button to generate an image based on the prompt, and view the generated image in the GUI window.",
+      "summary": "To get started, you will need to have a GPU and install the following dependencies:",
+      "url": "https://github.com/AvishakeAdhikary/Text-To-Image-Generator",
+      "homepage": null,
+      "stars": 13,
+      "forks": 13,
+      "language": "Jupyter Notebook",
+      "languages": [
+        {
+          "name": "Jupyter Notebook",
+          "share": 0.993
+        }
+      ],
+      "topics": [
+        "customtkinter",
+        "gui",
+        "jupyter-notebook",
+        "python",
+        "text-to-image",
+        "tkinter"
+      ],
+      "license": "MIT",
+      "createdAt": "2023-05-28T11:47:22Z",
+      "pushedAt": "2023-05-28T14:59:04Z",
+      "pinned": false,
+      "readmeImage": "https://github.com/AvishakeAdhikary/Text-To-Image-Generator/assets/32614982/1fa835b0-f8e0-4900-a696-57fea1196573",
+      "socialImage": "https://opengraph.githubassets.com/1/AvishakeAdhikary/Text-To-Image-Generator"
+    },
+    {
+      "name": "Realtime-Sign-Language-Detection-Using-React.js",
+      "description": "Realtime Sign Language Application that detects signs based on object detection model.",
+      "summary": "Realtime Sign Language Detection Using React.js is a repository that contains a React application capable of detecting sign language in real-time. The application communicates with a sign language detection model stored in Amazon's S3, which has CORS enabled for seamless communication. The application draws signs to the screen in real-time, providing users with a visual representation of the detected sign language.",
+      "url": "https://github.com/AvishakeAdhikary/Realtime-Sign-Language-Detection-Using-React.js",
+      "homepage": "https://codesandbox.io/p/github/AvhishekAdhikary/Realtime-Sign-Language-Detection-Using-React.js",
+      "stars": 5,
+      "forks": 1,
+      "language": "JavaScript",
+      "languages": [],
+      "topics": [
+        "react",
+        "signlanguagedetection",
+        "tensorflow"
+      ],
+      "license": "MIT",
+      "createdAt": "2023-05-20T06:47:29Z",
+      "pushedAt": "2023-05-28T04:08:37Z",
+      "pinned": false,
+      "readmeImage": "https://github.com/AvhishekAdhikary/Realtime-Sign-Language-Detection-Using-React.js/assets/32614982/b2593ca9-6aac-4e50-984f-d8cbfce18c88",
+      "socialImage": "https://opengraph.githubassets.com/1/AvishakeAdhikary/Realtime-Sign-Language-Detection-Using-React.js"
+    },
+    {
+      "name": "My_Flutter_Card",
+      "description": "This app is a portfolio application completely developed in flutter framework and can be deployed to Android and iOS after building the complete application.",
+      "summary": "",
+      "url": "https://github.com/AvishakeAdhikary/My_Flutter_Card",
+      "homepage": null,
+      "stars": 5,
+      "forks": 0,
+      "language": "Java",
+      "languages": [],
+      "topics": [
+        "android",
+        "dart",
+        "flutter",
+        "ios"
+      ],
+      "license": "MIT",
+      "createdAt": "2020-06-28T17:21:45Z",
+      "pushedAt": "2023-05-28T03:52:55Z",
+      "pinned": false,
+      "readmeImage": null,
+      "socialImage": "https://opengraph.githubassets.com/1/AvishakeAdhikary/My_Flutter_Card"
+    },
+    {
+      "name": "MedItYourself",
+      "description": "Medical Services Android Application For Connecting People Together.",
+      "summary": "",
+      "url": "https://github.com/AvishakeAdhikary/MedItYourself",
+      "homepage": null,
+      "stars": 4,
+      "forks": 0,
+      "language": "Java",
+      "languages": [],
+      "topics": [
+        "android",
+        "gradle",
+        "java",
+        "xml"
+      ],
+      "license": "MIT",
+      "createdAt": "2020-07-01T16:57:18Z",
+      "pushedAt": "2023-05-27T20:21:45Z",
+      "pinned": false,
+      "readmeImage": null,
+      "socialImage": "https://opengraph.githubassets.com/1/AvishakeAdhikary/MedItYourself"
+    },
+    {
+      "name": "FaceRecognitionFlutter",
+      "description": "Face Recognition Flutter: Pre-trained MobileFaceNet model, real-time recognition of faces using Flutter and TensorFlowLite.",
+      "summary": "",
+      "url": "https://github.com/AvishakeAdhikary/FaceRecognitionFlutter",
+      "homepage": null,
+      "stars": 8,
+      "forks": 3,
+      "language": "Dart",
+      "languages": [],
+      "topics": [
+        "android",
+        "facerecognition",
+        "flutter",
+        "ios",
+        "mobilefacenet"
+      ],
+      "license": "MIT",
+      "createdAt": "2021-02-10T18:25:19Z",
+      "pushedAt": "2023-05-27T20:20:32Z",
+      "pinned": false,
+      "readmeImage": null,
+      "socialImage": "https://opengraph.githubassets.com/1/AvishakeAdhikary/FaceRecognitionFlutter"
+    }
+  ]
+}

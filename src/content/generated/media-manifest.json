@@ -1,0 +1,452 @@
+{
+  "images": {
+    "awards/baljit-shastri-award.jpg": {
+      "src": "/media/img/awards/baljit-shastri-award.webp",
+      "width": 3000,
+      "height": 4000,
+      "blurDataURL": "data:image/webp;base64,UklGRqYAAABXRUJQVlA4IJoAAAAwBACdASoQABUAPu1iqU2ppaOiMAgBMB2JagC+SdwA9LAFdkp4kGpIE2AA/tzqP5vAoegsoLp6kKwAFvPExf4GqoSmrRfmYrsyXrg0+AGKstnBgshtgRaORyo5I4u+RpFLYhTVOyJPJPCfr0xNNBLAw4GJKFJjha43fKIL8EWHC/3wED9VtZoM/nS0pB+fKp8H2vAfSX6ZAAAA"
+    },
+    "companies/amityuniversitykolkata.jpg": {
+      "src": "/media/img/companies/amityuniversitykolkata.webp",
+      "width": 1380,
+      "height": 600,
+      "blurDataURL": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAADwAQCdASoQAAcAA4BaJQBOgCKkjiF6zwAA/mg/0XbgfzGXTQKC64EznjWo/KqNleqeQYZjtqCwoyFO/I0AAA=="
+    },
+    "companies/travarsa-private-limited.jpg": {
+      "src": "/media/img/companies/travarsa-private-limited.webp",
+      "width": 1920,
+      "height": 1080,
+      "blurDataURL": "data:image/webp;base64,UklGRjgAAABXRUJQVlA4ICwAAADQAQCdASoQAAkAA4BaJaQAAudl+yggAAD+9QfO+gPEEB5CVayU9UD8QAAAAA=="
+    },
+    "gallery/AmityFriends.jpg": {
+      "src": "/media/img/gallery/amity-friends.webp",
+      "width": 1280,
+      "height": 853,
+      "blurDataURL": "data:image/webp;base64,UklGRnoAAABXRUJQVlA4IG4AAAAwAgCdASoQAAsAA4BaJbACdAYulvHalArGAAD+bJ0uyU6QSzn7t3b1S39b3p2pcceiMkGFIc/9YNwW5FKKhwaX12D6EfFyvqD7yiLj7UfzXH2Xv8SeRUd1Gt47Ypg9OZpXvJtfmtxRWjUEEoAAAA=="
+    },
+    "gallery/AvishakeAdhikaryDP.jpg": {
+      "src": "/media/img/gallery/avishake-adhikary-dp.webp",
+      "width": 1080,
+      "height": 1920,
+      "blurDataURL": "data:image/webp;base64,UklGRsoAAABXRUJQVlA4IL4AAAAQBQCdASoQABwAPu1iqU2ppaQiMAgBMB2JZgCdMoR3DhACIlFS8iTU/AeebgwQLeJAAPa16b3ieKu61iPRyznt8Aup5HOidP8RIBVsLI0EcRpqrHaXfLGL6vbmUL3LNEcejjeqPpKg5Kv2xxsfTrw7zJmJljoJnbPA1kBu2pU9/zzNaNJgQvY7nvLHx6RV3r7yT/ySoAWGWAgV+p1OJ2twnYBckQPU57BR5Ww3VDxFUIWImPSLky9yc/hVgAAA"
+    },
+    "gallery/AvishakeAdhikaryDPCropped.jpg": {
+      "src": "/media/img/gallery/avishake-adhikary-dpcropped.webp",
+      "width": 1080,
+      "height": 1080,
+      "blurDataURL": "data:image/webp;base64,UklGRoIAAABXRUJQVlA4IHYAAAAQAgCdASoQABAAA4BaJagCdADvPs7X0qwAAPuX3s5SsITgCEoa8GTRhlPp3Q2yFSq9p0vj/s0Crl7WdJvLqVHpoj0nn8pnzDm2N/F/a8BY8Z53iVsDf+pPmlYW81UW3SaB5M7BrVHGQyiBt7R5VwoQeiygsAAA"
+    },
+    "gallery/AvishakeAdhikaryFreshersDP.png": {
+      "src": "/media/img/gallery/avishake-adhikary-freshers-dp.webp",
+      "width": 9000,
+      "height": 9000,
+      "blurDataURL": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAAAQAgCdASoQABAAA4BaJaQAD5PwghdJcxsAAP7VFOdElTQyFvEpmHPSK0f3J41PsWr3I86W8GXwynxUTiJ6WHG2CwIwCZcJRCf1jfZYgGHD7wJ1jG61Hm1KgIjgzgAA"
+    },
+    "gallery/AvishakeAdhikaryFreshersDPOptimized.png": {
+      "src": "/media/img/gallery/avishake-adhikary-freshers-dpoptimized.webp",
+      "width": 2160,
+      "height": 2160,
+      "blurDataURL": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAAAQAgCdASoQABAAA4BaJaQAD5UQghpi8MsgAP7VFOfExiDG0tRJNWIW7B5BP3XrnKaEU0HM0KGbYMIVcsyNCCABGxsyLNKMn/zY52FLkdu0XqF3cZzA1NKsRQVNgAAA"
+    },
+    "gallery/AvishakeAmityBCAGrad.jpg": {
+      "src": "/media/img/gallery/avishake-amity-bcagrad.webp",
+      "width": 1600,
+      "height": 900,
+      "blurDataURL": "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAADwAQCdASoQAAkAA4BaJaACdAEKYYj7VfAA/gGRWSFe2hiRDbbBGnMbe/10PMDBuw+Z4KVpfm07vqwLwrj9B8g3yvHjt8JWU2/YfLuVYbDnK13eK/ndDFXA4J8c6aU5bl9QpKjaPPQAAA=="
+    },
+    "gallery/AvishakeAmityBCAJuniorFreshers.jpg": {
+      "src": "/media/img/gallery/avishake-amity-bcajunior-freshers.webp",
+      "width": 4496,
+      "height": 3000,
+      "blurDataURL": "data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAACwAQCdASoQAAsAA4BaJQBWABoePyAAAP0Alpkz27H+4DPZi0V2DcUxaqgOxHTbmGH+f7EkWT+TNiu7QICKFDCN8TBh2j4mRxuL8OzZGI72AL4M8QAAAA=="
+    },
+    "gallery/AvishakeAmityBCAJuniors.jpg": {
+      "src": "/media/img/gallery/avishake-amity-bcajuniors.webp",
+      "width": 4898,
+      "height": 3265,
+      "blurDataURL": "data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAADwAQCdASoQAAsAA4BaJZgCdAYu5EKe36YA/fA26Is51J6UDedqmLv/azVEYCjNZLgmZbJEWx9V9WmRBgqGYXF+jmgUuw0X3OqL+wjjjQNsOM/ARWAAAA=="
+    },
+    "gallery/AvishakeAmityBCAJuniorsAmiphoria.jpg": {
+      "src": "/media/img/gallery/avishake-amity-bcajuniors-amiphoria.webp",
+      "width": 3265,
+      "height": 4898,
+      "blurDataURL": "data:image/webp;base64,UklGRpoAAABXRUJQVlA4II4AAABQBACdASoQABgAPu1iqU2ppaOiMAgBMB2JZgDKAYxi5AiYIIOi3616taRQAP1QS4u51Qqu4ClnaORAqzT9x+s52pVmBRNIVUjoyO2rds0h3C7Udl/K5Dlgs7jCBUyr5FD/W7DtY8+gvCacz49kvvd4gT6g8VMYOe6DkNlogfc4VrzgejQYXmG9GuKbuVgA"
+    },
+    "gallery/AvishakeAmityBCAMahalaya.jpg": {
+      "src": "/media/img/gallery/avishake-amity-bcamahalaya.webp",
+      "width": 4496,
+      "height": 3000,
+      "blurDataURL": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAAAQAgCdASoQAAsAA4BaJQBdgCK45aWZ/3oAAP2bQfLpg4kIse2V2dgXuHDbzMOLjnyyBLNUrYU7MzdaBidtXHGR8V2Fkj7U/6//WVkFfwkTvl3AwUDnsGFzKnISAAAA"
+    },
+    "gallery/AvishakeAmityMCAGrad.jpg": {
+      "src": "/media/img/gallery/avishake-amity-mcagrad.webp",
+      "width": 960,
+      "height": 1280,
+      "blurDataURL": "data:image/webp;base64,UklGRr4AAABXRUJQVlA4ILIAAABwBACdASoQABUAPu1iqU2ppaOiMAgBMB2JbAC7AYvCyaHxF1Wx/MJ42WTJAAD+8rTPdvhIDLJxG8FeSrbPMHR7RhghSK0rbgf9Y0PKc906oc6BduTGacGD7a/IfiuqKt+LbIJG0ItbXz02OilbgR/cX5mOZE73dN/GqZekM8orPiu4Muxe75lOTCc6Jqmunv/33jH54CIqCp/5H/TzVoFceYhLDTc6P8RFy7CRHKf0AAAA"
+    },
+    "gallery/AvishakeAmityMCAGradMain.JPG": {
+      "src": "/media/img/gallery/avishake-amity-mcagrad-main.webp",
+      "width": 4000,
+      "height": 2660,
+      "blurDataURL": "data:image/webp;base64,UklGRnwAAABXRUJQVlA4IHAAAAAwAgCdASoQAAsAA4BaJbACdAEP5JhF7TjzhAD++Rfr5dhBBgJrpTqi8NYMDd1aWzopVCjHW9lSkBYC2oFrBWboH/JyPzuiHOgfKiVuw9e2I840kxtDuYBJ/JXLbadU/jvpxLAXogFLOpnij+dl4AAA"
+    },
+    "gallery/AvishakeAmityMerc.png": {
+      "src": "/media/img/gallery/avishake-amity-merc.webp",
+      "width": 4032,
+      "height": 3024,
+      "blurDataURL": "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAADQAQCdASoQAAwAA4BaJQBYdhbdOHb9AAD+887qA2N1ztfEWIrLsoWPT7BUlFv9e9qdWauPAJ1A81yRh7v4DENr6NQuKirJVb0/n/E9uRqbYbhyFzqynRn0XZVPknBwNgAAAA=="
+    },
+    "gallery/AvishakeCover.jpg": {
+      "src": "/media/img/gallery/avishake-cover.webp",
+      "width": 2048,
+      "height": 1365,
+      "blurDataURL": "data:image/webp;base64,UklGRmwAAABXRUJQVlA4IGAAAABQAgCdASoQAAsAA4BaJbACdH8AE51lWg++9gAA+6XpWvJm/N592QQF/PuRjEJ6RjHtANLLwToVFvsCS7lgrWZzaamgW4mCt1gEanSYhUt+M6PcJkcwyPXOcSkAF63dHgA="
+    },
+    "gallery/AVISHAKEpassportsizedphoto.jpg": {
+      "src": "/media/img/gallery/avishakepassportsizedphoto.webp",
+      "width": 432,
+      "height": 577,
+      "blurDataURL": "data:image/webp;base64,UklGRpgAAABXRUJQVlA4IIwAAACQAwCdASoQABUAPu1iqU2ppaOiMAgBMB2JZAAAQlCrSFWX8a2AAP7zgrknjhdu+6cKAIBd7WSavkV3FH17Llh0/ehVRNsLrMSfDpLloK8hv3ZRRISaSsESCkC4Tm0z34VUtio4Mn1Z171YOEsgfUQftn1vmjgkZ0UPd9LRp5pdPaBmPTLkMKvpc3gAAA=="
+    },
+    "gallery/AvishakeTanumay.jpg": {
+      "src": "/media/img/gallery/avishake-tanumay.webp",
+      "width": 2048,
+      "height": 1365,
+      "blurDataURL": "data:image/webp;base64,UklGRnwAAABXRUJQVlA4IHAAAABwAgCdASoQAAsAA4BaJbACdEf/i116zxicynpQAP7GcP1ZltkfF4ok/IkK7tUfHhXfyceo7l8GMRzuaa9dODjoZp6xbFfL++THwc+HXqu/KtBUtDJpIm1U7r8P7wf1Y513X34ca2dDzKyXBrL1AAAA"
+    },
+    "gallery/PTSGroup.jpg": {
+      "src": "/media/img/gallery/ptsgroup.webp",
+      "width": 3024,
+      "height": 2016,
+      "blurDataURL": "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAADwAQCdASoQAAsAA4BaJQBOgB+D49aWTKAA/BLHC3JBQn6ahxLuMEjb9tflcUSblCtjbHz89UjvygcfoebmZ8q+0V68iKK2IzWhh9ttE3sU+susmIlCkMnrFjJZ4WIIcgsgAA=="
+    },
+    "projects/3dportfolio.png": {
+      "src": "/media/img/projects/3dportfolio.webp",
+      "width": 1919,
+      "height": 994,
+      "blurDataURL": "data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAABwAgCdASoQAAgAA4BaJbACdLoAngAEkY9I1MiIAP3heoP6+EJCAe5g3EDDs5gEchy6SflT/3cSAinXMEZrhRJ9aGjr/5uGBdgPsd2vBvIx42yR/Z/jSYAA"
+    },
+    "projects/aiassistantchatapp.png": {
+      "src": "/media/img/projects/aiassistantchatapp.webp",
+      "width": 1920,
+      "height": 993,
+      "blurDataURL": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAAAQAgCdASoQAAgAA4BaJbACdHMAA5dFERDAAP7eLDokNYJ3P9nyC56piKzNzgBYSfBBkzm+k7/hS1H+P6vzVp+zzqf8XFdpQR/PYiMY98Vs3RxDLvQw6sJ/yjbHsiAA"
+    },
+    "projects/firstreactrobotgenerator.png": {
+      "src": "/media/img/projects/firstreactrobotgenerator.webp",
+      "width": 1918,
+      "height": 1045,
+      "blurDataURL": "data:image/webp;base64,UklGRkgAAABXRUJQVlA4IDwAAAAQAgCdASoQAAkAA4BaJbACdAEOgURet2nAAMtJBpVfMFmPLZ5H/PQ7sPbzmqHf/5TPxFP6KSx5wOxRCAA="
+    },
+    "projects/fluttercard.png": {
+      "src": "/media/img/projects/fluttercard.webp",
+      "width": 390,
+      "height": 843,
+      "blurDataURL": "data:image/webp;base64,UklGRo4AAABXRUJQVlA4IIIAAAAQBACdASoQACMAPulgp02pJaOiNVgIASAdCWYAnS+vA79hv98KgIuooAD+DDzgemSVEOxISBq/RSzMAiUT45/+LQ+Yf2Klh/VyLfa/EDzE21dR92+de415vzb5mLMQLZb50m+R8jpG7kJwBZpIPuBFVHJJljqk1B7l46jB4Sf6vNAA"
+    },
+    "projects/frf.png": {
+      "src": "/media/img/projects/frf.webp",
+      "width": 488,
+      "height": 1079,
+      "blurDataURL": "data:image/webp;base64,UklGRqIAAABXRUJQVlA4IJYAAAAQBQCdASoQACMAPu1mqU6ppaOiKqwBMB2JZACdL3+DwWd1uERbBDLR2lDhg6n6RiYAAP7pUzHFneJD0qHii7TWwDM5u+CxHFP/AfhdW9d45XOgbhpOJsB5xVLNd/GPexZwEy1QtnftfAhhEuaIa02+KT4mevlmsVq64sjFD9rTIrc7Codf9noVXwXLkR3UL7q81I1QAAA="
+    },
+    "projects/HealthApp.png": {
+      "src": "/media/img/projects/health-app.webp",
+      "width": 1919,
+      "height": 992,
+      "blurDataURL": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAACwAgCdASoQAAgAA4BaJbACdLoAyQDJAAWlPGci9VgA/tRsqcAVNc68Iwa9kTxR+K/WsqGdo24q5hFbrY6F//kVLLlPvK7yz+jDsHVllT5NMH/wWZlq/r06tZCk33BIU9X2/QAA"
+    },
+    "projects/KoyoX.png": {
+      "src": "/media/img/projects/koyo-x.webp",
+      "width": 1918,
+      "height": 990,
+      "blurDataURL": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAAAQAgCdASoQAAgAA4BaJaACdFKAAZ078BBgAP55Px8jkx7yoMhPrvEpNpT+nqiT1xsmNkUuifIxrEBYeHydOX0ldC5ZwE6HAAA="
+    },
+    "projects/medityourself.jpg": {
+      "src": "/media/img/projects/medityourself.webp",
+      "width": 720,
+      "height": 1560,
+      "blurDataURL": "data:image/webp;base64,UklGRn4AAABXRUJQVlA4IHIAAADQAwCdASoQACMAPu1qrVEppaQiqqgBMB2JYgCpFE3J/gNW1e86dwAA/u1PtfRv/HE2/gzL+u7cNwH/pTE9KVeEuq3FX5HcmdZXNbzb6ZL54EEZJR+vKBTCNiAotIyr7QFs53//KS2bmb3/+qS0zWb98AA="
+    },
+    "projects/minimalistportfolio.png": {
+      "src": "/media/img/projects/minimalistportfolio.webp",
+      "width": 1900,
+      "height": 990,
+      "blurDataURL": "data:image/webp;base64,UklGRjQAAABXRUJQVlA4ICgAAAAwAQCdASoQAAgAA4BaJaQAA3AA/vVgfXffH7X9KmPrvqQkiagZaAAA"
+    },
+    "projects/NNFS_GitHub_Banner.gif": {
+      "src": "/media/img/projects/nnfs-git-hub-banner.webp",
+      "width": 1920,
+      "height": 1080,
+      "blurDataURL": "data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAADwAQCdASoQAAkAA4BaJbACdADOnrXX/gAA/vWeEplFbaVNaxcraIm2/VK6vfhEh0dD45Pkgdi0cnacwxDZbWrE+fDs/w8nSsK8x3Od7F0vqtvRLQAAAA=="
+    },
+    "projects/osportfolio.png": {
+      "src": "/media/img/projects/osportfolio.webp",
+      "width": 1919,
+      "height": 992,
+      "blurDataURL": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAABQAgCdASoQAAgAA4BaJZQCdH8EwAAhbOwaL0AA/vS+JLEKbtdwP3wT01JGt1IHj46nzu2hlYXYersqYGra/WyTfglrgtYmwOm8ZwAA"
+    },
+    "projects/pcg.png": {
+      "src": "/media/img/projects/pcg.webp",
+      "width": 1024,
+      "height": 850,
+      "blurDataURL": "data:image/webp;base64,UklGRjwAAABXRUJQVlA4IDAAAADQAQCdASoQAA0AA4BaJZwAAveFkYTzOAD+9K8MFnQbgcApYo/QQMx5vYyiwAA1AAA="
+    },
+    "projects/rtsldlm.png": {
+      "src": "/media/img/projects/rtsldlm.webp",
+      "width": 548,
+      "height": 418,
+      "blurDataURL": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAADwAQCdASoQAAwAA4BaJZACdADw3TtrmwAA/guOJXG7pvJs1fp0TtobErN7sG9ZdLTlMeYrlMSZ9qn2HtgiJ3+O1VW9S3h3PyOh2RY2OrQ3BVKSuzNiVk+KieSZeZZKR6Z2M4AA"
+    },
+    "projects/rtsldr.png": {
+      "src": "/media/img/projects/rtsldr.webp",
+      "width": 1919,
+      "height": 1080,
+      "blurDataURL": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAADwAQCdASoQAAkAA4BaJYwAAvwc8Ji6OiAA/vOv5IrU/93oPuNhlvvPqIffkcMhkCoTCQXlDoiFK3Qi44swL12DqcCAAA=="
+    },
+    "projects/texttoimage.jpg": {
+      "src": "/media/img/projects/texttoimage.webp",
+      "width": 568,
+      "height": 484,
+      "blurDataURL": "data:image/webp;base64,UklGRpQAAABXRUJQVlA4IIgAAACwAgCdASoQAA4AA4BaJYgCdIIjgpC8udTS+UXbRAAA/Z1SAs94maeQdrHMAfTAQ8OWoQRBcjpt5ZEvWB+jIsBpksKz1MvBxbbNHTCSo8rgtoeeOrwKe3nsEioXqMqtCNfd044YNba285fSA9u5aDFAoZn1FU8HBLEVyUD+c8QFuDnPqC3HUAAA"
+    },
+    "projects/Yujj.png": {
+      "src": "/media/img/projects/yujj.webp",
+      "width": 1919,
+      "height": 991,
+      "blurDataURL": "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAAAQAgCdASoQAAgAA4BaJQBOiP/wPPJtU50AAP6VD3pOrW57gj6qX6eC7zOmDsCoBOut/j2qnDzAAanTNB9AvyAZxYjfD7CU7CgAAA=="
+    }
+  },
+  "svgs": {
+    "icons/briefcase.svg": {
+      "src": "/media/svg/icons/briefcase.svg"
+    },
+    "icons/code.svg": {
+      "src": "/media/svg/icons/code.svg"
+    },
+    "icons/file-download.svg": {
+      "src": "/media/svg/icons/file-download.svg"
+    },
+    "icons/home.svg": {
+      "src": "/media/svg/icons/home.svg"
+    },
+    "skills/amazonwebservices-original-wordmark.svg": {
+      "src": "/media/svg/skills/amazonwebservices-original-wordmark.svg"
+    },
+    "skills/angular.svg": {
+      "src": "/media/svg/skills/angular.svg"
+    },
+    "skills/arduino.svg": {
+      "src": "/media/svg/skills/arduino.svg"
+    },
+    "skills/babeljs-icon.svg": {
+      "src": "/media/svg/skills/babeljs-icon.svg"
+    },
+    "skills/blender_community_badge_white.svg": {
+      "src": "/media/svg/skills/blender-community-badge-white.svg"
+    },
+    "skills/bootstrap-plain-wordmark.svg": {
+      "src": "/media/svg/skills/bootstrap-plain-wordmark.svg"
+    },
+    "skills/c-original.svg": {
+      "src": "/media/svg/skills/c-original.svg"
+    },
+    "skills/cplusplus-original.svg": {
+      "src": "/media/svg/skills/cplusplus-original.svg"
+    },
+    "skills/csharp-original.svg": {
+      "src": "/media/svg/skills/csharp-original.svg"
+    },
+    "skills/css3-original-wordmark.svg": {
+      "src": "/media/svg/skills/css3-original-wordmark.svg"
+    },
+    "skills/dartlang-icon.svg": {
+      "src": "/media/svg/skills/dartlang-icon.svg"
+    },
+    "skills/django.svg": {
+      "src": "/media/svg/skills/django.svg"
+    },
+    "skills/express-original-wordmark.svg": {
+      "src": "/media/svg/skills/express-original-wordmark.svg"
+    },
+    "skills/figma-icon.svg": {
+      "src": "/media/svg/skills/figma-icon.svg"
+    },
+    "skills/firebase-icon.svg": {
+      "src": "/media/svg/skills/firebase-icon.svg"
+    },
+    "skills/flutterio-icon.svg": {
+      "src": "/media/svg/skills/flutterio-icon.svg"
+    },
+    "skills/framer-icon.svg": {
+      "src": "/media/svg/skills/framer-icon.svg"
+    },
+    "skills/getpostman-icon.svg": {
+      "src": "/media/svg/skills/getpostman-icon.svg"
+    },
+    "skills/git-scm-icon.svg": {
+      "src": "/media/svg/skills/git-scm-icon.svg"
+    },
+    "skills/gnu_bash-icon.svg": {
+      "src": "/media/svg/skills/gnu-bash-icon.svg"
+    },
+    "skills/go-original.svg": {
+      "src": "/media/svg/skills/go-original.svg"
+    },
+    "skills/google_cloud-icon.svg": {
+      "src": "/media/svg/skills/google-cloud-icon.svg"
+    },
+    "skills/heroku-icon.svg": {
+      "src": "/media/svg/skills/heroku-icon.svg"
+    },
+    "skills/html5-original-wordmark.svg": {
+      "src": "/media/svg/skills/html5-original-wordmark.svg"
+    },
+    "skills/java-original.svg": {
+      "src": "/media/svg/skills/java-original.svg"
+    },
+    "skills/javascript-original.svg": {
+      "src": "/media/svg/skills/javascript-original.svg"
+    },
+    "skills/kotlinlang-icon.svg": {
+      "src": "/media/svg/skills/kotlinlang-icon.svg"
+    },
+    "skills/kubernetes-icon.svg": {
+      "src": "/media/svg/skills/kubernetes-icon.svg"
+    },
+    "skills/linux-original.svg": {
+      "src": "/media/svg/skills/linux-original.svg"
+    },
+    "skills/mariadb-icon.svg": {
+      "src": "/media/svg/skills/mariadb-icon.svg"
+    },
+    "skills/materialize.svg": {
+      "src": "/media/svg/skills/materialize.svg"
+    },
+    "skills/matlab.svg": {
+      "src": "/media/svg/skills/matlab.svg"
+    },
+    "skills/microsoft_azure-icon.svg": {
+      "src": "/media/svg/skills/microsoft-azure-icon.svg"
+    },
+    "skills/microsoft-sql-server-logo.svg": {
+      "src": "/media/svg/skills/microsoft-sql-server-logo.svg"
+    },
+    "skills/mongodb-original-wordmark.svg": {
+      "src": "/media/svg/skills/mongodb-original-wordmark.svg"
+    },
+    "skills/mysql-original-wordmark.svg": {
+      "src": "/media/svg/skills/mysql-original-wordmark.svg"
+    },
+    "skills/nextjs-2.svg": {
+      "src": "/media/svg/skills/nextjs-2.svg"
+    },
+    "skills/nodejs-original-wordmark.svg": {
+      "src": "/media/svg/skills/nodejs-original-wordmark.svg"
+    },
+    "skills/opencv-icon.svg": {
+      "src": "/media/svg/skills/opencv-icon.svg"
+    },
+    "skills/oracle-original.svg": {
+      "src": "/media/svg/skills/oracle-original.svg"
+    },
+    "skills/pandas-original.svg": {
+      "src": "/media/svg/skills/pandas-original.svg"
+    },
+    "skills/photoshop-line.svg": {
+      "src": "/media/svg/skills/photoshop-line.svg"
+    },
+    "skills/php-original.svg": {
+      "src": "/media/svg/skills/php-original.svg"
+    },
+    "skills/postgresql-original-wordmark.svg": {
+      "src": "/media/svg/skills/postgresql-original-wordmark.svg"
+    },
+    "skills/python-original.svg": {
+      "src": "/media/svg/skills/python-original.svg"
+    },
+    "skills/pytorch-icon.svg": {
+      "src": "/media/svg/skills/pytorch-icon.svg"
+    },
+    "skills/react-original-wordmark.svg": {
+      "src": "/media/svg/skills/react-original-wordmark.svg"
+    },
+    "skills/redux-original.svg": {
+      "src": "/media/svg/skills/redux-original.svg"
+    },
+    "skills/sass-original.svg": {
+      "src": "/media/svg/skills/sass-original.svg"
+    },
+    "skills/Scikit_learn_logo_small.svg": {
+      "src": "/media/svg/skills/scikit-learn-logo-small.svg"
+    },
+    "skills/seaborn.svg": {
+      "src": "/media/svg/skills/seaborn.svg"
+    },
+    "skills/selenium-logo.svg": {
+      "src": "/media/svg/skills/selenium-logo.svg"
+    },
+    "skills/sqlite-icon.svg": {
+      "src": "/media/svg/skills/sqlite-icon.svg"
+    },
+    "skills/swift-original.svg": {
+      "src": "/media/svg/skills/swift-original.svg"
+    },
+    "skills/tailwindcss-icon.svg": {
+      "src": "/media/svg/skills/tailwindcss-icon.svg"
+    },
+    "skills/tensorflow-icon.svg": {
+      "src": "/media/svg/skills/tensorflow-icon.svg"
+    },
+    "skills/typescript-original.svg": {
+      "src": "/media/svg/skills/typescript-original.svg"
+    },
+    "skills/unreal-engine.svg": {
+      "src": "/media/svg/skills/unreal-engine.svg"
+    },
+    "skills/webpack-original-wordmark.svg": {
+      "src": "/media/svg/skills/webpack-original-wordmark.svg"
+    }
+  },
+  "videos": {
+    "projects/3dportfolio.mp4": {
+      "mp4": "/media/video/projects/3dportfolio.mp4",
+      "webm": null,
+      "poster": "/media/video/projects/3dportfolio.poster.webp",
+      "width": 1280,
+      "height": 720
+    },
+    "projects/frf.mp4": {
+      "mp4": "/media/video/projects/frf.mp4",
+      "webm": "/media/video/projects/frf.webm",
+      "poster": "/media/video/projects/frf.poster.webp",
+      "width": 576,
+      "height": 1280
+    },
+    "projects/osportfolio.mp4": {
+      "mp4": "/media/video/projects/osportfolio.mp4",
+      "webm": null,
+      "poster": "/media/video/projects/osportfolio.poster.webp",
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "audio": {
+    "chill-lofi-inspired.mp3": {
+      "src": "/media/audio/chill-lofi-inspired.m4a",
+      "bytes": 1531482
+    },
+    "cyberpunk-moonlight-sonata.mp3": {
+      "src": "/media/audio/cyberpunk-moonlight-sonata.m4a",
+      "bytes": 1470205
+    },
+    "snowfall.ogg": {
+      "src": "/media/audio/snowfall.m4a",
+      "bytes": 743401
+    },
+    "the-field-of-dreams.mp3": {
+      "src": "/media/audio/the-field-of-dreams.m4a",
+      "bytes": 1038148
+    }
+  }
+}

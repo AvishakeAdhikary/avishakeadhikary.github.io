@@ -1,0 +1,39 @@
+{
+  "profile": "https://scholar.google.com/citations?user=2fegUHYAAAAJ&hl=en",
+  "syncedAt": "2026-10-04T09:11:27.566Z",
+  "citations": 10,
+  "hIndex": 2,
+  "i10Index": 0,
+  "papers": [
+    {
+      "title": "International Conference on Mobile Computing and Sustainable Informatics: ICMCSI 2020",
+      "citations": 3,
+      "year": 2020
+    },
+    {
+      "title": "Development of a risk-based information security standard for adaption of blockchain-enabled systems",
+      "citations": 3,
+      "year": 2020
+    },
+    {
+      "title": "Design of an IoT-Based Mobile Healthcare Unit Using a Self-regulated React. js Database and Arduino",
+      "citations": 2,
+      "year": 2022
+    },
+    {
+      "title": "Machine Learning (ML) and Blockchain for IoE: A Deep Insight into Framework, Security, and its Applications with Industrial IoE",
+      "citations": 1,
+      "year": 2023
+    },
+    {
+      "title": "Deep Learning for COVID-19",
+      "citations": 1,
+      "year": 2021
+    },
+    {
+      "title": "Quantum Computing for Cryptography: An Extensive Survey",
+      "citations": 0,
+      "year": 2025
+    }
+  ]
+}
