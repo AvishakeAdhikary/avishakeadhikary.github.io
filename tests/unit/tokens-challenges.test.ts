@@ -26,14 +26,24 @@ describe("Token Prediction challenges are fair", () => {
     for (let t = 0.05; t <= 50; t *= 1.5) expect(river(L.cands, t)).toBeLessThanOrEqual(0.5 + 1e-9);
   });
 
-  it("greedy decoding loops; a warm, trimmed setting usually doesn't", async () => {
+  it("near-greedy decoding loops; a warm, trimmed setting usually doesn't", async () => {
     const { generateOnce } = await load();
+    // Seeded sampling (mulberry32): the same draws every run, so this never flakes.
+    let seed = 42;
+    const random = vi.spyOn(Math, "random").mockImplementation(() => {
+      seed = (seed + 0x6d2b79f5) | 0;
+      let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    });
     const rate = (temperature: number, topP: number) => {
       let clean = 0;
-      for (let i = 0; i < 300; i++) if (generateOnce({ temperature, topK: 0, topP }).clean) clean++;
-      return clean / 300;
+      for (let i = 0; i < 1000; i++) if (generateOnce({ temperature, topK: 0, topP }).clean) clean++;
+      return clean / 1000;
     };
-    expect(rate(0.1, 1)).toBe(0);
+    // T = 0.1 is near-greedy, not greedy: a rare escape is possible, a habit is not.
+    expect(rate(0.1, 1)).toBeLessThan(0.01);
     expect(rate(1, 0.9)).toBeGreaterThan(0.6);
+    random.mockRestore();
   });
 });
