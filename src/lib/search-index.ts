@@ -1,3 +1,5 @@
+import { GAME_INFO } from "@/components/arcade/registry";
+import { ACHIEVEMENTS } from "@/content/achievements";
 import { certifications } from "@/content/certifications";
 import { degrees, honors, roles } from "@/content/experience";
 import { profile } from "@/content/profile";
@@ -70,6 +72,18 @@ export function buildSearchIndex() {
         .filter((c) => c.highlight)
         .map((c) => `${c.name} (${c.issuer})`)
         .join(", ")}.`,
+    },
+    ...GAME_INFO.map((g) => ({
+      id: `game-${g.id}`,
+      title: `Arcade: ${g.name}`,
+      url: `/arcade/${g.id}/`,
+      text: `${g.name}, an interactive machine-learning mini-game in the Arcade. ${g.tagline} Concepts: ${g.concept}. Each game opens with a walkthrough.`,
+    })),
+    {
+      id: "site-keys",
+      title: "Keybinds, achievements and settings",
+      url: "/settings/#controls",
+      text: `The site has keyboard shortcuts (press ? for the list): ~ terminal, M music, N next track, S sound effects, T theme, C scanlines, R runtime readout, G then a letter to jump between pages, Shift+A for the trophy room. There are ${ACHIEVEMENTS.length} achievements across exploring, the terminal, audio, settings, the Arcade and secrets, with ranks from Bronze to Master and All-Rounder.`,
     },
     ...testimonials.map((t, i) => ({
       id: `rec-${i}`,

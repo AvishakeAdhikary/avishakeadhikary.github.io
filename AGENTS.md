@@ -63,17 +63,28 @@ award *plate* photo is used. Never commit `.playwright-mcp/`.
 ## Architecture map
 
 - `src/app/*` routes: `/` (boot → prompt hero → six "doors"), `/work`, `/projects`,
-  `/projects/[slug]`, `/skills`, `/research`, `/about`, `/gallery`, `/lab`, `/contact`, `/settings`.
+  `/projects/[slug]`, `/skills`, `/research`, `/about`, `/gallery`, `/lab`, `/arcade`,
+  `/arcade/[game]`, `/contact`, `/settings`.
   Legacy `/experience`, `/timeline`, `/contact-me` re-export the new pages.
   Static data routes: `/search-index.json` (terminal knowledge), `/covers/<slug>.svg`
   (generated project covers), `sitemap.xml`, `robots.txt`, `manifest.webmanifest`, OG image.
 - `src/components/runtime/*`: one-per-site islands: `effects` (reveal/stream/diffuse/draw
-  triggers + spotlight), `boot`, `hud`, `delights` (tab title, console note, Konami).
+  triggers + spotlight), `boot`, `hud`, `delights` (tab title, console note), `sound`
+  (delegated click sounds), `keybinds` (every shortcut, Konami, `G` chords, cursor
+  press/hold states, the `?` overlay), `toasts`, `progress-tracker` (achievements).
 - `src/components/fx/*`: `Stream` (token streaming), `DiffusionImage`, `LatentField` (hero canvas).
 - `src/components/terminal/*`: drop-down + `/lab` terminal, command engine, offline
   BM25 retrieval (`ask`) with an optional `NEXT_PUBLIC_ASK_ENDPOINT` for a real LLM proxy.
 - `src/components/crash/*`: the Contact "crash" (once per session; Esc / Reduced motion skip).
 - `src/lib/ticker.ts` (single shared rAF loop) and `src/lib/quality.ts` (device tiers).
+- `src/components/arcade/*`: the Arcade. `registry.ts` lists games; `game-loader.tsx`
+  code-splits each one; `shell.tsx` has the walkthrough deck + level picker; `ui.tsx` the
+  shared controls/palette. Games live in `games/`. ML code is in `src/lib/ml/`
+  (descent, k-means, KNN, perceptron, sampling, the hand-built interpretability model, and
+  `engine.ts`, the Debugger's trainable transformer with gradient-checked backprop).
+- Achievements: `src/content/achievements.ts` (every achievement is a test over the
+  progress record), `src/lib/progress.ts` (localStorage record, `track()`, ranks),
+  `src/lib/tiers.ts`, trophy room in `src/components/progress/`.
 
 ## Settings & music
 
@@ -83,10 +94,22 @@ award *plate* photo is used. Never commit `.playwright-mcp/`.
   `data-theme`, `data-cursor`) and decides the boot screen. New visual settings must be
   added in both places. Use `motionReduced()` for any motion gate in JS and
   `html[data-motion="reduced"]` in CSS; never query `prefers-reduced-motion` directly.
-- `/settings` page: `src/components/settings/settings-panel.tsx`; the terminal also has
-  `settings <key> on|off`.
+- `/settings` page: `src/components/settings/settings-panel.tsx`, a tabbed options menu
+  (Audio, Display, Motion, Interface, Controls, Progress, System; Q/E or arrows; URL hash per
+  tab). The terminal also has `settings <key> on|off` and `settings motion …`.
+- Keybinds: `src/lib/keybinds.ts` is the one registry (handler, Controls tab, `?` overlay and
+  the terminal's `keys` all read it). Every global shortcut goes through it and through
+  `keyBlocked()`: shortcuts must never fire while typing, on a keyboard-focused control, or
+  while the crash, a dialog, the palette or the terminal is open. Don't add raw global
+  `keydown` listeners for shortcuts.
+- Audio: `src/components/media/audio/`. `mixer.ts` owns the one AudioContext (music bus,
+  ducked under SFX, + sfx bus → master → limiter). `sfx.ts` synthesizes every sound effect in
+  code (no samples, nothing licensed); call `sfx(name)` from `play.ts`, which loads nothing
+  until the first sound and stays silent before the visitor's first interaction. Clickable
+  elements get sounds automatically; use `data-sfx="name|none"` to override.
 - Music: `src/components/media/music/`. `controller.ts` is the single entry point (header
-  toggle, settings, terminal, ⌘K). `engine.ts` is a lookahead scheduler on the AudioContext
+  toggle, settings, terminal, keybinds, ⌘K). Music is on by default (`musicOn`): it starts
+  on the first click/key of a visit (browsers forbid earlier) and "off" is remembered. `engine.ts` is a lookahead scheduler on the AudioContext
   clock with reverb/echo/tape/compressor; `styles.ts` composes lo-fi, synthwave and ambient
   (song forms, chord progressions, motif melodies); `instruments.ts` synthesizes every voice.
   The CC0 playlist lives in `src/content/gallery.ts → audioTracks` (CC0 only, with source
@@ -108,11 +131,24 @@ award *plate* photo is used. Never commit `.playwright-mcp/`.
   `prefers-reduced-motion`) or **Reduced**. Every motion gate goes through it. The crash
   must stay under 3 flashes/s.
 
+## Gamification rules
+
+- Every new interactive surface should call `track()` (lib/progress) for meaningful moments
+  and play a fitting `sfx()`. New achievements go in `content/achievements.ts` as a `test`
+  over the progress record; never claim facts about the owner in achievement copy.
+- Arcade games: each needs a walkthrough (concept first, mechanics after, skippable),
+  levels with `track({ t: "best" })`, and `cleared`/`mastered` events. Game logic and
+  difficulty were tuned by headless simulation; re-check pars/thresholds if you change data.
+- Debugger training runs in a Web Worker built from `createEngine.toString()`: keep
+  `engine.ts`'s factory free of outside references (Turbopack doesn't bundle module workers
+  in a static export). It falls back to the main thread if a worker can't start.
+
 ## Performance budget
 
 Home: under ~40 MB JS heap (currently about 10), ~1.1k DOM nodes (v1 main branch: 143 MB / 18.9k).
 Server components by default; client islands small and lazy (terminal, palette, crash
-overlay and audio engine are code-split and load on demand). At most one WebGL context.
+overlay, audio engine, sound effects, the `?` overlay and every Arcade game are code-split
+and load on demand). `verify` fails if the home page exceeds 40 MB heap or 1.5k DOM nodes. At most one WebGL context.
 No heavy animation libraries (`motion` is intentionally not installed).
 
 ## Automation
@@ -130,7 +166,9 @@ No heavy animation libraries (`motion` is intentionally not installed).
 
 ## Media
 
-Originals in `media/originals/` (not deployed). `npm run media:optimize` → WebP variants
+Originals in `media/originals/` (not deployed). iPhone `.heic`/`.heif` photos are fine: the
+script decodes them with `heic-decode` (sharp's prebuilt libheif has no HEVC) and prefers them
+over a same-named converted copy. `npm run media:optimize` → WebP variants
 (128…2400 px) + blur, svgo'd SVGs, H.264 MP4 (+ smaller WebM) ≤1280 px into
 `public/media/` and `media-manifest.json`. Reference media by original key through
 `image()` / `video()` / `svg()` in `src/lib/assets.ts`. `NEXT_PUBLIC_MEDIA_BASE_URL`
@@ -147,7 +185,9 @@ moves all media to a CDN.
 
 ## Verify before finishing
 
-`npm run check`, serve `out/`, `npm run verify`, then look at the pages yourself
+`npm run check`, serve `out/`, `npm run verify` (routes, terminal, Konami both ways,
+keybind guards, crash, settings tabs, achievements, music + SFX mix, motion modes, and a
+smoke test of every Arcade game), then look at the pages yourself
 (Playwright screenshots at 390 and 1440 px). Take screenshots **sequentially** after
 waiting, since parallel tool calls capture the first frame of a stream.
 
