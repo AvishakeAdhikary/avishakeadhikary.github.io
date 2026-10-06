@@ -2,7 +2,8 @@
 
 import { SquareTerminal, X } from "lucide-react";
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { sfx } from "@/components/media/audio/play";
 import { useSettings } from "@/lib/settings";
 import { cn } from "@/lib/utils";
 
@@ -20,6 +21,15 @@ export function TerminalDock() {
   const [open, setOpen] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const { dock } = useSettings();
+  const first = useRef(true);
+
+  useEffect(() => {
+    if (first.current) {
+      first.current = false;
+      return;
+    }
+    sfx(open ? "open" : "close");
+  }, [open]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -51,6 +61,7 @@ export function TerminalDock() {
           setOpen((o) => !o);
         }}
         onPointerEnter={() => setLoaded(true)}
+        data-sfx="none"
         aria-expanded={open}
         aria-controls="dropdown-terminal"
         className="group fixed bottom-11 left-4 z-[60] hidden items-center gap-2 rounded-md border border-border-strong bg-background/85 px-3 py-2 font-hud text-xs text-muted-foreground backdrop-blur transition-colors hover:border-signal hover:text-foreground sm:flex"
@@ -74,7 +85,7 @@ export function TerminalDock() {
       >
         <div className="flex items-center justify-between border-b border-border px-4 py-2">
           <span className="hud">guest@avishake · terminal</span>
-          <button type="button" onClick={() => setOpen(false)} aria-label="Close terminal" className="text-subtle-foreground hover:text-foreground">
+          <button type="button" onClick={() => setOpen(false)} aria-label="Close terminal" data-sfx="none" className="text-subtle-foreground hover:text-foreground">
             <X className="size-4" />
           </button>
         </div>

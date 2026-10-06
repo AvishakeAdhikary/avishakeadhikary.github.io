@@ -2,7 +2,8 @@
 
 import { Search } from "lucide-react";
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { sfx } from "@/components/media/audio/play";
 
 export interface CommandEntry {
   group: "Navigate" | "Projects" | "Links" | "Actions";
@@ -19,6 +20,15 @@ const CommandPalette = dynamic(() => import("./command-palette").then((m) => m.C
 export function CommandMenu({ entries, email }: { entries: CommandEntry[]; email: string }) {
   const [open, setOpen] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const first = useRef(true);
+
+  useEffect(() => {
+    if (first.current) {
+      first.current = false;
+      return;
+    }
+    sfx(open ? "open" : "close");
+  }, [open]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -41,6 +51,7 @@ export function CommandMenu({ entries, email }: { entries: CommandEntry[]; email
           setOpen(true);
         }}
         onPointerEnter={() => setLoaded(true)}
+        data-sfx="none"
         className="group flex h-9 cursor-pointer items-center gap-2 rounded-md border border-border px-3 text-sm text-muted-foreground transition-colors hover:border-border-strong hover:text-foreground"
         aria-label="Open command menu"
       >

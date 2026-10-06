@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { sfx } from "@/components/media/audio/play";
 import { profile } from "@/content/profile";
 
 type Phase = "glitch" | "off" | "panic";
@@ -25,6 +26,7 @@ export function CrashOverlay({ email, onRecover }: { email: string; onRecover: (
   useEffect(() => {
     const html = document.documentElement;
     html.classList.add("crashing");
+    sfx("glitch");
     const t1 = setTimeout(() => setPhase("off"), 1100);
     const t2 = setTimeout(() => {
       html.classList.remove("crashing");

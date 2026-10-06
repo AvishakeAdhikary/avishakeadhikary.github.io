@@ -24,8 +24,8 @@ function impulse(ctx: AudioContext, seconds = 2.8, decay = 3.2) {
  * Composed, generative soundtrack. A lookahead scheduler places every note
  * on the AudioContext clock (sample-accurate, frame-rate independent),
  * walking through a song form of sections and a chord progression.
- * Mixing: instrument bus → tape tone → compressor → volume → analyser,
- * with reverb and tempo-synced echo sends.
+ * Mixing: instrument bus → tape tone → compressor → volume → analyser →
+ * the shared mixer's music bus, with reverb and tempo-synced echo sends.
  */
 export class MusicEngine {
   readonly ctx: AudioContext;
@@ -45,9 +45,7 @@ export class MusicEngine {
   private rng = seeded(Date.now() & 0xffff);
   private volume = 0.6;
 
-  constructor() {
-    const Ctx = window.AudioContext ?? (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-    const ctx = new Ctx({ latencyHint: "playback" });
+  constructor(ctx: AudioContext, out: AudioNode) {
     this.ctx = ctx;
 
     this.master = ctx.createGain();
@@ -82,7 +80,7 @@ export class MusicEngine {
     echoIn.connect(this.echo).connect(echoTone).connect(fb).connect(this.echo);
     echoTone.connect(this.tone);
 
-    this.bus.connect(this.tone).connect(comp).connect(this.master).connect(this.analyser).connect(ctx.destination);
+    this.bus.connect(this.tone).connect(comp).connect(this.master).connect(this.analyser).connect(out);
 
     this.crackleGain = ctx.createGain();
     this.crackleGain.gain.value = 0;
@@ -195,15 +193,7 @@ export class MusicEngine {
     this.master.gain.setTargetAtTime(volume, this.ctx.currentTime, 0.08);
   }
 
-  suspend() {
-    return this.ctx.state === "running" ? this.ctx.suspend() : Promise.resolve();
-  }
-
-  resume() {
-    return this.ctx.state === "suspended" ? this.ctx.resume() : Promise.resolve();
-  }
-
-  /** Fade out, stop the scheduler and release the AudioContext (frees memory). */
+  /** Fade out, stop the scheduler and unplug from the mixer (the shared context stays). */
   async stop() {
     const now = this.ctx.currentTime;
     this.master.gain.cancelScheduledValues(now);
@@ -212,6 +202,7 @@ export class MusicEngine {
     await new Promise((r) => setTimeout(r, 750));
     clearInterval(this.timer);
     this.crackle?.stop();
-    await this.ctx.close();
+    this.analyser.disconnect();
+    this.master.disconnect();
   }
 }

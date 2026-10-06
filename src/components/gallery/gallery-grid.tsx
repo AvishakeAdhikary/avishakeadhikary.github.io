@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { DiffusionImage } from "@/components/fx/diffusion-image";
+import { sfx } from "@/components/media/audio/play";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 
 export interface GalleryPhoto {
@@ -26,6 +27,7 @@ export function GalleryGrid({ photos }: { photos: GalleryPhoto[] }) {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "ArrowRight") step(1);
       if (e.key === "ArrowLeft") step(-1);
+      if (e.key === "ArrowRight" || e.key === "ArrowLeft") sfx("tap");
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);

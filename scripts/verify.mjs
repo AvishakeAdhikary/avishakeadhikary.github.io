@@ -29,6 +29,16 @@ const fail = (msg) => {
   console.log(`  ✗ ${msg}`);
 };
 
+/** Music is on by default (starts on the first click/key); keep route checks silent. */
+const quiet = (ctx) =>
+  ctx.addInitScript(() => {
+    try {
+      if (!localStorage.getItem("avishake-settings")) localStorage.setItem("avishake-settings", JSON.stringify({ musicOn: false }));
+    } catch {
+      /* ignore */
+    }
+  });
+
 async function scrollThrough(page) {
   await page.evaluate(async () => {
     const h = document.documentElement.scrollHeight;
@@ -45,6 +55,7 @@ for (const name of engines) {
   const browser = await ENGINES[name].launch();
   for (const vp of VIEWPORTS) {
     const ctx = await browser.newContext({ viewport: vp });
+    await quiet(ctx);
     // Pre-mark the session so the boot screen and crash don't interfere with route checks.
     await ctx.addInitScript(() => {
       try {
@@ -105,6 +116,7 @@ for (const name of engines) {
 
   // Crash → recover flow on a fresh session.
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+  await quiet(ctx);
   await ctx.addInitScript(() => sessionStorage.setItem("booted", "1"));
   const page = await ctx.newPage();
   await page.goto(BASE + "/about/");
@@ -119,6 +131,7 @@ for (const name of engines) {
   // Settings: persist across reload, applied before paint.
   {
     const sctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    await quiet(sctx);
     await sctx.addInitScript(() => sessionStorage.setItem("booted", "1"));
     const sp = await sctx.newPage();
     await sp.goto(BASE + "/settings/");
@@ -189,6 +202,58 @@ for (const name of engines) {
     else console.log("  music CC0 playlist ✓");
     await mp.getByRole("button", { name: "Pause", exact: true }).click();
     await mctx.close();
+
+    // Music on by default: the first click of a visit starts it, and sound
+    // effects play over it through the mixer (music keeps playing, ducked).
+    const actx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    await actx.addInitScript(() => {
+      sessionStorage.setItem("booted", "1");
+      window.__analysers = [];
+      const create = AudioContext.prototype.createAnalyser;
+      AudioContext.prototype.createAnalyser = function () {
+        const a = create.call(this);
+        window.__analysers.push(a);
+        return a;
+      };
+      // Tap whatever feeds the speakers: that is the final mix.
+      const connect = AudioNode.prototype.connect;
+      AudioNode.prototype.connect = function (dest, ...rest) {
+        if (dest instanceof AudioDestinationNode && !window.__out) {
+          window.__out = create.call(this.context);
+          connect.call(this, window.__out);
+        }
+        return connect.call(this, dest, ...rest);
+      };
+    });
+    const ap = await actx.newPage();
+    await ap.goto(BASE + "/about/");
+    await ap.waitForTimeout(800);
+    await ap.mouse.click(700, 500);
+    await ap.locator('header button[aria-pressed="true"][data-music-control]').waitFor({ timeout: 8000 });
+    await ap.waitForTimeout(2500);
+    const peak = (expr) =>
+      ap.evaluate((e) => {
+        const a = e === "out" ? window.__out : window.__analysers.at(-1);
+        if (!a) return 0;
+        const d = new Uint8Array(a.frequencyBinCount);
+        let max = 0;
+        for (let i = 0; i < 30; i++) {
+          a.getByteFrequencyData(d);
+          max = Math.max(max, d.reduce((s, v) => s + v, 0));
+        }
+        return max;
+      }, expr);
+    await ap.locator('button[aria-label="Open command menu"]').click();
+    await ap.keyboard.press("Escape");
+    const [musicE, outE] = [await peak("music"), await peak("out")];
+    if (!musicE || !outE) fail(`${name}: music + sfx mix silent (music ${musicE}, out ${outE})`);
+    else console.log(`  music on first click + sfx mix ✓ (music ${musicE}, out ${outE})`);
+    const stored = await ap.evaluate(() => JSON.parse(localStorage.getItem("avishake-settings") || "{}").musicOn);
+    await ap.locator("header button[data-music-control]").click();
+    const off = await ap.evaluate(() => JSON.parse(localStorage.getItem("avishake-settings") || "{}").musicOn);
+    if (stored === false || off !== false) fail(`${name}: music on/off not remembered (${stored} → ${off})`);
+    else console.log("  music off is remembered ✓");
+    await actx.close();
   }
 
   // Motion: Full is the default even when the OS asks for reduced motion

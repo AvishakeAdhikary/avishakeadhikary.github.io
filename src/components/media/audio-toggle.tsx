@@ -18,6 +18,8 @@ export function AudioToggle() {
     <button
       type="button"
       onClick={() => void music.toggle()}
+      data-music-control
+      data-sfx="none"
       disabled={busy}
       aria-pressed={playing}
       aria-label={label}

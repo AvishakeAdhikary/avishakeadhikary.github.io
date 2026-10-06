@@ -12,7 +12,11 @@ export type Motion = "full" | "system" | "reduced";
 
 export interface Settings {
   musicSource: MusicSource;
-  volume: number; // 0..100
+  /** Music plays (from the first click/key of a visit) until the visitor turns it off. */
+  musicOn: boolean;
+  volume: number; // music volume 0..100
+  sfx: boolean;
+  sfxVolume: number; // 0..100
   pauseHidden: boolean;
   /** full = always animate (default), system = follow the OS preference, reduced = calm. */
   motion: Motion;
@@ -29,7 +33,10 @@ export interface Settings {
 
 export const DEFAULTS: Settings = {
   musicSource: "lofi",
+  musicOn: true,
   volume: 60,
+  sfx: true,
+  sfxVolume: 45,
   pauseHidden: true,
   motion: "full",
   crt: true,

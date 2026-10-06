@@ -106,6 +106,8 @@ export function SettingsPanel() {
               <button
                 type="button"
                 onClick={() => void music.toggle()}
+                data-music-control
+                data-sfx="none"
                 disabled={m.busy}
                 className="inline-flex h-12 items-center gap-2 rounded-md bg-signal px-5 font-mono text-sm font-semibold text-white disabled:opacity-60"
               >
@@ -130,7 +132,7 @@ export function SettingsPanel() {
             </div>
             <p className="mt-4 text-sm text-muted-foreground">
               The three styles are composed live in your browser (no audio files, never the same twice). The playlist streams real public-domain tracks. Music
-              never starts on its own.
+              starts with your first click or key press; pause it and it stays off until you turn it back on.
             </p>
           </div>
           <Row label="Style" hint="Switch any time; it crossfades if music is playing.">
@@ -145,6 +147,24 @@ export function SettingsPanel() {
               value={s.volume}
               aria-label="Music volume"
               onChange={(e) => updateSettings({ volume: Number(e.target.value) })}
+              className="w-48 accent-[var(--signal)]"
+            />
+          </Row>
+          <Row label="Music on arrival" hint="Start the music with your first click or key press on each visit.">
+            <Switch label="Music on arrival" checked={s.musicOn} onChange={set("musicOn")} />
+          </Row>
+          <Row label="Sound effects" hint="Synthesized clicks, toggles and chimes. They mix over the music, which dips briefly to make room.">
+            <Switch label="Sound effects" checked={s.sfx} onChange={set("sfx")} />
+          </Row>
+          <Row label="Effects volume" hint={`${s.sfxVolume}%`}>
+            <input
+              type="range"
+              min={0}
+              max={100}
+              step={1}
+              value={s.sfxVolume}
+              aria-label="Sound effects volume"
+              onChange={(e) => updateSettings({ sfxVolume: Number(e.target.value) })}
               className="w-48 accent-[var(--signal)]"
             />
           </Row>
