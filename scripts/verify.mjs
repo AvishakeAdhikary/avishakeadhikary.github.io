@@ -9,12 +9,12 @@
  * For every route × viewport: HTTP 200, no console errors, no element left
  * hidden after scrolling (the v1 "invisible page" bug), and in Chromium the
  * JS heap and DOM size. Also exercises the terminal, the crash → recover
- * flow, reduced motion and the Konami theme.
+ * flow, the motion setting (Full / System / Reduced) and the Konami theme.
  */
 import { chromium, firefox, webkit } from "playwright";
 
 const BASE = (process.env.VERIFY_URL ?? "http://localhost:3000").replace(/\/$/, "");
-const ROUTES = ["/", "/work/", "/projects/", "/projects/zoyemed/", "/projects/os-portfolio/", "/skills/", "/research/", "/about/", "/gallery/", "/lab/", "/contact/?recovered=1", "/does-not-exist/"];
+const ROUTES = ["/", "/work/", "/projects/", "/projects/zoyemed/", "/projects/os-portfolio/", "/skills/", "/research/", "/about/", "/gallery/", "/lab/", "/settings/", "/contact/?recovered=1", "/does-not-exist/"];
 const VIEWPORTS = [
   { width: 390, height: 844 },
   { width: 1440, height: 900 },
@@ -191,15 +191,41 @@ for (const name of engines) {
     await mctx.close();
   }
 
-  // Reduced motion: nothing hidden, no boot, no crash.
-  const rctx = await browser.newContext({ reducedMotion: "reduce" });
-  const rp = await rctx.newPage();
-  await rp.goto(BASE + "/");
-  const booting = await rp.evaluate(() => document.documentElement.classList.contains("booting"));
-  const hidden = await rp.evaluate(() => [...document.querySelectorAll(".tok")].filter((t) => getComputedStyle(t).opacity === "0").length);
-  if (booting || hidden) fail(`${name}: reduced motion still animates (booting=${booting}, hidden tokens=${hidden})`);
-  else console.log("  reduced motion ✓");
-  await rctx.close();
+  // Motion: Full is the default even when the OS asks for reduced motion
+  // (owner decision); System follows the OS; Reduced always calms.
+  const motionCase = async (label, osMotion, motion, expectMotion) => {
+    const mctx = await browser.newContext({ reducedMotion: osMotion });
+    if (motion) {
+      await mctx.addInitScript((m) => {
+        try {
+          if (!sessionStorage.getItem("seeded")) {
+            localStorage.setItem("avishake-settings", JSON.stringify({ motion: m }));
+            sessionStorage.setItem("seeded", "1");
+          }
+        } catch {
+          /* ignore */
+        }
+      }, motion);
+    }
+    const mp = await mctx.newPage();
+    await mp.goto(BASE + "/");
+    const r = await mp.evaluate(() => {
+      const t = document.querySelector(".animate-ticker");
+      return {
+        booting: document.documentElement.classList.contains("booting"),
+        ticker: t ? parseFloat(getComputedStyle(t).animationDuration) : 0,
+        hidden: [...document.querySelectorAll(".tok")].filter((x) => getComputedStyle(x).opacity === "0").length,
+      };
+    });
+    const ok = expectMotion ? r.booting && r.ticker > 1 : !r.booting && r.ticker < 1 && !r.hidden;
+    if (!ok) fail(`${name}: motion ${label} (booting=${r.booting}, ticker=${r.ticker}s, hidden tokens=${r.hidden})`);
+    else console.log(`  motion ${label} ✓`);
+    await mctx.close();
+  };
+  await motionCase("default + OS reduce → animates", "reduce", null, true);
+  await motionCase("system + OS reduce → calm", "reduce", "system", false);
+  await motionCase("system + OS no-preference → animates", "no-preference", "system", true);
+  await motionCase("reduced → calm", "no-preference", "reduced", false);
 
   await browser.close();
 }

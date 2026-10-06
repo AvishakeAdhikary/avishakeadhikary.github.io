@@ -72,7 +72,7 @@ award *plate* photo is used. Never commit `.playwright-mcp/`.
 - `src/components/fx/*`: `Stream` (token streaming), `DiffusionImage`, `LatentField` (hero canvas).
 - `src/components/terminal/*`: drop-down + `/lab` terminal, command engine, offline
   BM25 retrieval (`ask`) with an optional `NEXT_PUBLIC_ASK_ENDPOINT` for a real LLM proxy.
-- `src/components/crash/*`: the Contact "crash" (once per session; Esc / reduced motion skip).
+- `src/components/crash/*`: the Contact "crash" (once per session; Esc / Reduced motion skip).
 - `src/lib/ticker.ts` (single shared rAF loop) and `src/lib/quality.ts` (device tiers).
 
 ## Settings & music
@@ -81,7 +81,8 @@ award *plate* photo is used. Never commit `.playwright-mcp/`.
   `src/lib/settings-script.ts` (server-safe) is the inline head script that applies visual
   settings as `<html>` data attributes **before paint** (`data-crt`, `data-motion`,
   `data-theme`, `data-cursor`) and decides the boot screen. New visual settings must be
-  added in both places. Use `motionReduced()` (OS preference OR setting) for any motion gate.
+  added in both places. Use `motionReduced()` for any motion gate in JS and
+  `html[data-motion="reduced"]` in CSS; never query `prefers-reduced-motion` directly.
 - `/settings` page: `src/components/settings/settings-panel.tsx`; the terminal also has
   `settings <key> on|off`.
 - Music: `src/components/media/music/`. `controller.ts` is the single entry point (header
@@ -94,7 +95,7 @@ award *plate* photo is used. Never commit `.playwright-mcp/`.
 ## Animation rules (the v1 "invisible page" bug must never return)
 
 - Content is **visible by default**. An inline head script adds `html.js` before first
-  paint (skipped for reduced motion); only then do `[data-stream]`, `[data-diffuse]` and
+  paint (skipped when motion is reduced); only then do `[data-stream]`, `[data-diffuse]` and
   `[data-drawable]` start in their "before" state, each with a **4 s CSS failsafe**.
 - `<Effects>` arms elements only after scroll settles (two frames), plays what's in view,
   observes the rest, and runs a scroll sweep backstop (WebKit can skip IO entries).
@@ -102,7 +103,10 @@ award *plate* photo is used. Never commit `.playwright-mcp/`.
 - Motion is **delta-time based** on the shared ticker: no fps caps, runs at the display's
   native refresh (60 Hz laptops, 200 Hz desktops). CSS animations use only
   transform/opacity/filter. Infinite animations pause offscreen (`pause-offscreen`).
-- Respect `prefers-reduced-motion` everywhere; the crash must stay under 3 flashes/s.
+- Motion setting: **Full** (default, owner decision: animates even when the OS asks for
+  reduced motion, e.g. Windows "Animation effects" off), **System** (follows
+  `prefers-reduced-motion`) or **Reduced**. Every motion gate goes through it. The crash
+  must stay under 3 flashes/s.
 
 ## Performance budget
 

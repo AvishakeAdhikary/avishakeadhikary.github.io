@@ -138,9 +138,8 @@
     -webkit-text-size-adjust: 100%;
     text-rendering: optimizeLegibility;
   }
-  @media (prefers-reduced-motion: no-preference) {
-    html { scroll-behavior: smooth; }
-  }
+  /* Motion follows the visitor's setting (data-motion, set before paint), not the raw OS query. */
+  html:not([data-motion="reduced"]) { scroll-behavior: smooth; }
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
@@ -170,14 +169,6 @@
   ::-webkit-scrollbar { width: 8px; height: 8px; }
   ::-webkit-scrollbar-thumb { background: var(--signal-deep); border-radius: 999px; }
   ::-webkit-scrollbar-track { background: transparent; }
-
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      animation-duration: 0.001ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.001ms !important;
-    }
-  }
 }
 
 /* ── CRT atmosphere: two static fixed layers, composited once ─────────── */

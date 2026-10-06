@@ -8,12 +8,14 @@ import { SETTINGS_KEY as KEY } from "./settings-script";
  */
 export type MusicSource = "lofi" | "synthwave" | "ambient" | "playlist";
 export type Quality = "auto" | "low" | "high";
+export type Motion = "full" | "system" | "reduced";
 
 export interface Settings {
   musicSource: MusicSource;
   volume: number; // 0..100
   pauseHidden: boolean;
-  motion: "auto" | "reduced";
+  /** full = always animate (default), system = follow the OS preference, reduced = calm. */
+  motion: Motion;
   crt: boolean;
   boot: boolean;
   crash: boolean;
@@ -29,7 +31,7 @@ export const DEFAULTS: Settings = {
   musicSource: "lofi",
   volume: 60,
   pauseHidden: true,
-  motion: "auto",
+  motion: "full",
   crt: true,
   boot: true,
   crash: true,
@@ -42,6 +44,7 @@ export const DEFAULTS: Settings = {
 };
 
 const EVENT = "settings:change";
+const REDUCE = "(prefers-reduced-motion: reduce)";
 
 let cache: Settings | null = null;
 
@@ -53,6 +56,8 @@ export function readSettings(): Settings {
   } catch {
     cache = { ...DEFAULTS };
   }
+  // Legacy "auto" was labelled "Full" in the panel.
+  if ((cache.motion as string) === "auto") cache.motion = "full";
   return cache;
 }
 
@@ -61,7 +66,7 @@ export function applyToDocument(s: Settings) {
   const html = document.documentElement;
   html.dataset.crt = s.crt ? "on" : "off";
   html.dataset.cursor = s.cursor ? "on" : "off";
-  html.dataset.motion = s.motion;
+  html.dataset.motion = isReduced(s) ? "reduced" : "full";
   if (s.theme === "phosphor") html.dataset.theme = "phosphor";
   else delete html.dataset.theme;
 }
@@ -102,9 +107,17 @@ export function subscribeSettings(fn: () => void) {
     }
   };
   window.addEventListener("storage", onStorage);
+  // "System" motion follows live OS changes.
+  const mq = window.matchMedia(REDUCE);
+  const onSystem = () => {
+    applyToDocument(readSettings());
+    fn();
+  };
+  mq.addEventListener("change", onSystem);
   return () => {
     window.removeEventListener(EVENT, fn);
     window.removeEventListener("storage", onStorage);
+    mq.removeEventListener("change", onSystem);
   };
 }
 
@@ -113,8 +126,20 @@ export function useSettings(): Settings {
   return useSyncExternalStore(subscribeSettings, readSettings, () => DEFAULTS);
 }
 
-/** True when the OS asks for reduced motion OR the visitor chose it in settings. */
+/** True when the OS asks for reduced motion (ignores the visitor's choice). */
+export function systemReducesMotion(): boolean {
+  return typeof window !== "undefined" && window.matchMedia(REDUCE).matches;
+}
+
+function isReduced(s: Settings): boolean {
+  return s.motion === "reduced" || (s.motion === "system" && systemReducesMotion());
+}
+
+/**
+ * True when motion should be calm: the visitor chose Reduced, or chose
+ * System and the OS asks for it. Full (the default) always animates.
+ */
 export function motionReduced(): boolean {
   if (typeof window === "undefined") return false;
-  return readSettings().motion === "reduced" || window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  return isReduced(readSettings());
 }

@@ -189,7 +189,7 @@ export function TerminalView({ autoFocus = true, onClose, className }: { autoFoc
               "projects     projects [--tag ai|cv|agents|web|mobile|desktop|iot]",
               "talk         ask <anything>  e.g. ask what did you build at PTS?",
               "fun          contact · sudo hire-me · theme phosphor|red · music",
-              "settings     settings · settings <crt|boot|crash|hud|dock|field|cursor> on|off",
+              "settings     settings · settings <crt|boot|crash|hud|dock|field|cursor> on|off · settings motion full|system|reduced",
               "shell        history · clear · date · echo · exit",
             ].join("\n"),
           );
@@ -305,8 +305,13 @@ export function TerminalView({ autoFocus = true, onClose, className }: { autoFoc
             updateSettings({ ...DEFAULTS });
             return print("ok", "settings reset to defaults");
           }
+          if (key.toLowerCase() === "motion") {
+            if (!/^(full|system|reduced)$/.test(val ?? "")) return print("err", "usage: settings motion full|system|reduced");
+            updateSettings({ motion: val as Settings["motion"] });
+            return print("ok", `motion → ${val}`);
+          }
           const k = toggles.find((t) => t.toLowerCase() === key.toLowerCase());
-          if (!k || !/^(on|off)$/.test(val ?? "")) return print("err", `usage: settings <${toggles.join("|")}> on|off, or settings reset`);
+          if (!k || !/^(on|off)$/.test(val ?? "")) return print("err", `usage: settings <${toggles.join("|")}> on|off, settings motion full|system|reduced, or settings reset`);
           updateSettings({ [k]: val === "on" } as Partial<Settings>);
           print("ok", `${k} → ${val}${readSettings()[k] === (val === "on") ? "" : " (not saved)"}`);
           return;

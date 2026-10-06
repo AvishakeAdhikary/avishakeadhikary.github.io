@@ -1,10 +1,18 @@
 "use client";
 
 import { Pause, Play, RotateCcw } from "lucide-react";
-import type { ReactNode } from "react";
+import { useSyncExternalStore, type ReactNode } from "react";
 import { music, useMusic } from "@/components/media/music/controller";
 import { audioTracks } from "@/content/gallery";
-import { resetSettings, updateSettings, useSettings, type MusicSource, type Settings } from "@/lib/settings";
+import {
+  resetSettings,
+  subscribeSettings,
+  systemReducesMotion,
+  updateSettings,
+  useSettings,
+  type MusicSource,
+  type Settings,
+} from "@/lib/settings";
 import { cn } from "@/lib/utils";
 
 function Group({ title, sub, children }: { title: string; sub: string; children: ReactNode }) {
@@ -24,7 +32,7 @@ function Group({ title, sub, children }: { title: string; sub: string; children:
 function Row({ label, hint, children }: { label: string; hint: string; children: ReactNode }) {
   return (
     <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 px-5 py-4">
-      <div className="min-w-0 flex-1">
+      <div className="min-w-0 flex-1 basis-56">
         <p className="font-medium">{label}</p>
         <p className="mt-0.5 text-sm text-muted-foreground">{hint}</p>
       </div>
@@ -84,12 +92,13 @@ const SOURCES: { id: MusicSource; label: string; hint: string }[] = [
 /** All visitor preferences. Changes apply instantly and are saved in this browser. */
 export function SettingsPanel() {
   const s = useSettings();
+  const systemReduced = useSyncExternalStore(subscribeSettings, systemReducesMotion, () => false);
   const m = useMusic();
   const set = <K extends keyof Settings>(k: K) => (v: Settings[K]) => updateSettings({ [k]: v } as Partial<Settings>);
   const current = SOURCES.find((x) => x.id === s.musicSource);
 
   return (
-    <div className="grid gap-6 lg:grid-cols-2">
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
       <div className="space-y-6">
         <Group title="Music" sub="sound">
           <div className="px-5 py-5">
@@ -103,7 +112,7 @@ export function SettingsPanel() {
                 {m.playing ? <Pause className="size-4" /> : <Play className="size-4" />}
                 {m.playing ? "Pause" : "Play"}
               </button>
-              <div className="min-w-0 text-sm">
+              <div className="min-w-0 flex-1 text-sm">
                 <p className="text-foreground">{m.playing ? "Now playing" : "Ready"}</p>
                 <p className="truncate font-hud text-xs text-subtle-foreground">
                   {s.musicSource === "playlist" && m.track ? (
@@ -184,12 +193,16 @@ export function SettingsPanel() {
 
       <div className="space-y-6">
         <Group title="Motion & effects" sub="animation">
-          <Row label="Motion" hint="Reduced turns off streaming text, image reveals and moving backgrounds.">
+          <Row
+            label="Motion"
+            hint={`Reduced turns off streaming text, image reveals and moving backgrounds. System follows your device${systemReduced ? ", which currently asks for reduced motion" : ""}.`}
+          >
             <Segmented
               label="Motion"
               value={s.motion}
               options={[
-                { id: "auto", label: "Full" },
+                { id: "full", label: "Full" },
+                { id: "system", label: "System" },
                 { id: "reduced", label: "Reduced" },
               ]}
               onChange={set("motion")}
