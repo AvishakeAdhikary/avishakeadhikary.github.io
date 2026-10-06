@@ -49,7 +49,7 @@ export const GAME_INFO: GameInfo[] = [
     tagline: "Steer an LLM's next word with logits, temperature, top-k and top-p.",
     concept: "tokens · logits · softmax · sampling",
     level: "Advanced",
-    ready: false,
+    ready: true,
   },
   {
     id: "debugger",
@@ -57,7 +57,7 @@ export const GAME_INFO: GameInfo[] = [
     tagline: "A tiny transformer is training badly. Read the telemetry, find the bug.",
     concept: "attention · masking · normalization · gradients",
     level: "Advanced",
-    ready: false,
+    ready: true,
   },
   {
     id: "interp",
@@ -65,7 +65,7 @@ export const GAME_INFO: GameInfo[] = [
     tagline: "Open a miniature transformer and find the circuit behind its answer.",
     concept: "attention heads · residual stream · ablation · circuits",
     level: "Advanced",
-    ready: false,
+    ready: true,
   },
 ];
 

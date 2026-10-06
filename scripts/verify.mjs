@@ -14,7 +14,7 @@
 import { chromium, firefox, webkit } from "playwright";
 
 const BASE = (process.env.VERIFY_URL ?? "http://localhost:3000").replace(/\/$/, "");
-const ROUTES = ["/", "/work/", "/projects/", "/projects/zoyemed/", "/projects/os-portfolio/", "/skills/", "/research/", "/about/", "/gallery/", "/lab/", "/arcade/", "/arcade/gradient-golf/", "/arcade/kmeans/", "/arcade/knn/", "/arcade/perceptron/", "/settings/", "/contact/?recovered=1", "/does-not-exist/"];
+const ROUTES = ["/", "/work/", "/projects/", "/projects/zoyemed/", "/projects/os-portfolio/", "/skills/", "/research/", "/about/", "/gallery/", "/lab/", "/arcade/", "/arcade/gradient-golf/", "/arcade/kmeans/", "/arcade/knn/", "/arcade/perceptron/", "/arcade/tokens/", "/arcade/debugger/", "/arcade/interp/", "/settings/", "/contact/?recovered=1", "/does-not-exist/"];
 const VIEWPORTS = [
   { width: 390, height: 844 },
   { width: 1440, height: 900 },
@@ -171,6 +171,27 @@ for (const name of engines) {
       perceptron: async () => {
         await gp.getByRole("button", { name: /Lock in/ }).click();
         await gp.locator('[role="status"]', { hasText: /%|win|perfect/ }).waitFor({ timeout: 20000 });
+      },
+      tokens: async () => {
+        await gp.locator('input[type="range"]').nth(1).focus();
+        await gp.keyboard.press("ArrowRight"); // top-k = 1
+        await gp.getByRole("button", { name: "Check" }).click();
+        await gp.locator('[role="status"]', { hasText: "goal met" }).waitFor({ timeout: 8000 });
+      },
+      debugger: async () => {
+        // A real training run in a worker, then the right diagnosis and a recovery run.
+        await gp.getByText("training the patient").waitFor({ state: "detached", timeout: 120000 });
+        await gp.getByText("Causal mask missing").click();
+        await gp.getByRole("button", { name: /Apply fix/ }).click();
+        await gp.locator('[role="status"]', { hasText: "Recovered" }).waitFor({ timeout: 120000 });
+      },
+      interp: async () => {
+        await gp.getByRole("button", { name: "Ablate L0H0" }).click();
+        const hyp = gp.locator('section[aria-label="Your hypothesis"]');
+        await hyp.locator("label", { hasText: "L0H0" }).click();
+        await hyp.locator("label", { hasText: "L1H0" }).click();
+        await gp.getByRole("button", { name: "Submit" }).click();
+        await hyp.locator('[role="status"]', { hasText: "Correct" }).waitFor({ timeout: 8000 });
       },
     };
     for (const [id, play] of Object.entries(GAMES)) {

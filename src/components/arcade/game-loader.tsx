@@ -12,6 +12,9 @@ const GAMES: Partial<Record<GameId, ComponentType<{ data?: unknown }>>> = {
   kmeans: dynamic(() => import("./games/kmeans"), { ssr: false, loading }),
   knn: dynamic(() => import("./games/knn"), { ssr: false, loading }),
   perceptron: dynamic(() => import("./games/perceptron"), { ssr: false, loading }),
+  debugger: dynamic(() => import("./games/debugger"), { ssr: false, loading }),
+  tokens: dynamic(() => import("./games/tokens"), { ssr: false, loading }),
+  interp: dynamic(() => import("./games/interp"), { ssr: false, loading }),
 };
 
 export function GameLoader({ id, data }: { id: GameId; data?: unknown }) {

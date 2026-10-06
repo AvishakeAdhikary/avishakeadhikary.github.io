@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import { GameLoader } from "@/components/arcade/game-loader";
 import { GAME_INFO, gameInfo } from "@/components/arcade/registry";
 import { PageHeader } from "@/components/page-header";
+import { roles } from "@/content/experience";
+import { profile } from "@/content/profile";
 import { buildSkillSpace } from "@/lib/skill-space";
 
 export const dynamicParams = false;
@@ -24,8 +26,9 @@ export async function generateMetadata({ params }: { params: Promise<{ game: str
   };
 }
 
-/** Only the KNN game needs build-time data: the real skill embedding. */
+/** Build-time data: the real skill embedding (KNN) and my bio as a corpus (Token Prediction's sandbox). */
 function dataFor(id: string) {
+  if (id === "tokens") return { corpus: [profile.tagline, profile.summary, ...roles.map((r) => r.summary), ...roles.flatMap((r) => r.highlights)].join(" ") };
   if (id !== "knn") return undefined;
   const { nodes, centres } = buildSkillSpace();
   return {
