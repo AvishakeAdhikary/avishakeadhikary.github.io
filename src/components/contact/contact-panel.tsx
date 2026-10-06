@@ -57,7 +57,7 @@ export function ContactPanel({ email }: { email: string }) {
           />
         </label>
         <div className="mt-5 flex flex-wrap gap-3">
-          <button type="submit" data-track="contact" className="inline-flex h-12 items-center gap-2 rounded-md bg-signal px-6 font-mono text-sm font-semibold text-white">
+          <button type="submit" data-track="contact" className="inline-flex h-12 items-center gap-2 rounded-md bg-signal-solid px-6 font-mono text-sm font-semibold text-on-signal">
             <Send className="size-4" /> Send
           </button>
           <button

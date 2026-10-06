@@ -51,7 +51,7 @@ export const KEYBINDS: Keybind[] = [
 
 const TEXT_ENTRY = /^(INPUT|TEXTAREA|SELECT)$/;
 const CONTROL = "button,a[href],summary,[role=button],[role=switch],[role=radio],[role=tab],[role=slider],[role=menuitem],[role=option]";
-const OVERLAY = '[role=alertdialog],[role=dialog][data-state=open],[aria-modal=true],#dropdown-terminal:not([inert]),[data-keys-local]:focus-within';
+const OVERLAY = 'dialog[open],[role=alertdialog],[role=dialog][data-state=open],[aria-modal=true],#dropdown-terminal:not([inert]),[data-keys-local]:focus-within';
 
 /**
  * True when a page-level shortcut must NOT fire: the visitor is typing

@@ -1,6 +1,6 @@
 import { ArrowLeft, ArrowRight, ArrowUpRight, GitFork, Scale, Star } from "lucide-react";
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/link";
 import { notFound } from "next/navigation";
 import { ViewTransition } from "react";
 import { Stream } from "@/components/fx/stream";
@@ -87,7 +87,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
                   rel="noopener"
                   className={
                     l.primary
-                      ? "inline-flex h-11 items-center gap-2 rounded-md bg-signal px-5 font-mono text-sm font-semibold text-white"
+                      ? "inline-flex h-11 items-center gap-2 rounded-md bg-signal-solid px-5 font-mono text-sm font-semibold text-on-signal"
                       : "inline-flex h-11 items-center gap-2 rounded-md border border-border-strong px-5 font-mono text-sm hover:border-signal"
                   }
                 >
@@ -122,30 +122,42 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
             </div>
             {p.stats ? (
               <>
-                <div className="flex gap-4 text-muted-foreground">
-                  <span className="inline-flex items-center gap-1">
-                    <Star className="size-3.5" /> {p.stats.stars}
-                  </span>
-                  <span className="inline-flex items-center gap-1">
-                    <GitFork className="size-3.5" /> {p.stats.forks}
-                  </span>
-                  {p.stats.license ? (
+                <div>
+                  <dt className="sr-only">GitHub</dt>
+                  <dd className="flex gap-4 text-muted-foreground">
                     <span className="inline-flex items-center gap-1">
-                      <Scale className="size-3.5" /> {p.stats.license}
+                      <Star className="size-3.5" aria-hidden /> {p.stats.stars}
+                      <span className="sr-only">stars</span>
                     </span>
-                  ) : null}
+                    <span className="inline-flex items-center gap-1">
+                      <GitFork className="size-3.5" aria-hidden /> {p.stats.forks}
+                      <span className="sr-only">forks</span>
+                    </span>
+                    {p.stats.license ? (
+                      <span className="inline-flex items-center gap-1">
+                        <Scale className="size-3.5" aria-hidden /> {p.stats.license}
+                        <span className="sr-only">license</span>
+                      </span>
+                    ) : null}
+                  </dd>
                 </div>
                 {p.stats.languages.length ? (
                   <div>
-                    <div className="flex h-1.5 overflow-hidden rounded-full bg-white/5">
+                    <dt className="sr-only">Languages</dt>
+                    <dd>
+                    <div className="flex h-1.5 overflow-hidden rounded-full bg-white/5" aria-hidden>
                       {p.stats.languages.map((l, i) => (
                         <span key={l.name} style={{ width: `${l.share * 100}%`, opacity: 1 - i * 0.15 }} className="bg-signal" />
                       ))}
                     </div>
                     <p className="mt-2 text-subtle-foreground">{p.stats.languages.map((l) => `${l.name} ${Math.round(l.share * 100)}%`).join(" · ")}</p>
+                    </dd>
                   </div>
                 ) : null}
-                <p className="text-subtle-foreground">last push {formatDate(p.stats.pushedAt)}</p>
+                <div>
+                  <dt className="sr-only">Last push</dt>
+                  <dd className="text-subtle-foreground">last push {formatDate(p.stats.pushedAt)}</dd>
+                </div>
               </>
             ) : null}
             <div>
@@ -191,9 +203,9 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
               <h2 className="hud mt-12">evaluation</h2>
               <dl className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
                 {p.metrics.map((m) => (
-                  <div key={m.label} className="panel p-4">
-                    <dd className="font-mono text-2xl font-bold">{m.value}</dd>
+                  <div key={m.label} className="panel flex flex-col-reverse p-4">
                     <dt className="mt-1 text-xs text-subtle-foreground">{m.label}</dt>
+                    <dd className="font-mono text-2xl font-bold">{m.value}</dd>
                   </div>
                 ))}
               </dl>

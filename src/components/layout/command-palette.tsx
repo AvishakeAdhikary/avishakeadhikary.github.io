@@ -4,15 +4,16 @@ import { ArrowUpRight, AtSign, Compass, FolderGit2, Music } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
-  CommandDialog,
+  Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
   CommandList,
-  CommandSeparator,
   CommandShortcut,
 } from "@/components/ui/command";
+import { Modal } from "@/components/ui/modal";
+import { NAV } from "@/lib/nav";
 import type { CommandEntry } from "./command-menu";
 
 const GROUP_ICON = { Navigate: Compass, Projects: FolderGit2, Links: ArrowUpRight, Actions: AtSign } as const;
@@ -46,32 +47,32 @@ export function CommandPalette({
     onOpenChange(false);
     if (!e.href) return;
     if (/^https?:|^mailto:|\.pdf$/.test(e.href)) window.open(e.href, "_blank", "noopener");
-    else router.push(e.href);
+    else router.push(e.href, NAV);
   };
 
   return (
-    <CommandDialog open={open} onOpenChange={onOpenChange} title="Command menu" description="Jump anywhere on the site">
-      <CommandInput placeholder="Search projects, sections, links…" />
-      <CommandList className="max-h-[60vh]">
+    <Modal open={open} onClose={() => onOpenChange(false)} label="Command menu" closeButton={false} className="overflow-hidden [--modal-w:40rem]">
+      <Command className="bg-transparent **:data-[slot=command-input-wrapper]:h-12 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group]]:px-2 [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5">
+      <CommandInput autoFocus placeholder="Search projects, sections, links…" aria-label="Search the site" />
+      {/* Groups are divided by a border, not <CommandSeparator>: a listbox may only own groups and options. */}
+      <CommandList className="max-h-[60vh] [&_[cmdk-group]:not([hidden])~[cmdk-group]:not([hidden])]:border-t [&_[cmdk-group]:not([hidden])~[cmdk-group]:not([hidden])]:border-border">
         <CommandEmpty>No results.</CommandEmpty>
-        {groups.map(({ g, items }, i) => {
+        {groups.map(({ g, items }) => {
           const Icon = GROUP_ICON[g];
           return items.length ? (
-            <div key={g}>
-              {i > 0 ? <CommandSeparator /> : null}
-              <CommandGroup heading={g}>
-                {items.map((e) => (
-                  <CommandItem key={`${g}-${e.label}`} value={`${e.label} ${e.keywords ?? ""}`} onSelect={() => void run(e)}>
-                    {e.action === "toggle-audio" ? <Music /> : <Icon />}
-                    <span className="truncate">{e.action === "copy-email" && copied ? "Copied to clipboard" : e.label}</span>
-                    {e.hint ? <CommandShortcut className="font-mono">{e.hint}</CommandShortcut> : null}
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            </div>
+            <CommandGroup key={g} heading={g}>
+              {items.map((e) => (
+                <CommandItem key={`${g}-${e.label}`} value={`${e.label} ${e.keywords ?? ""}`} onSelect={() => void run(e)}>
+                  {e.action === "toggle-audio" ? <Music /> : <Icon />}
+                  <span className="truncate">{e.action === "copy-email" && copied ? "Copied to clipboard" : e.label}</span>
+                  {e.hint ? <CommandShortcut className="font-mono">{e.hint}</CommandShortcut> : null}
+                </CommandItem>
+              ))}
+            </CommandGroup>
           ) : null;
         })}
       </CommandList>
-    </CommandDialog>
+      </Command>
+    </Modal>
   );
 }

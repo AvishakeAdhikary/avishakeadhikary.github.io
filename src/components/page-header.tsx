@@ -11,7 +11,8 @@ export function PageHeader({ title, sub, intro, children }: { title: string; sub
           <span className="text-signal">~/</span>
           {title.toLowerCase()} <span className="normal-case">{"// "}{sub}</span>
         </p>
-        <h1 className="mt-5 text-6xl leading-none font-extrabold sm:text-8xl">
+        {/* Fluid size: long single words ("Interpretability") must fit a phone without clipping. */}
+        <h1 className="mt-5 text-[clamp(2.25rem,9vw,6rem)] leading-none font-extrabold [overflow-wrap:anywhere]">
           <Stream as="span" text={title} unit="char" speed={65} />
           <span className="text-signal glow">.</span>
         </h1>

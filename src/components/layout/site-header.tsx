@@ -1,5 +1,5 @@
 import { FileDown, Settings2 } from "lucide-react";
-import Link from "next/link";
+import Link from "@/components/link";
 import { AudioToggle } from "@/components/media/audio-toggle";
 import { GAME_INFO } from "@/components/arcade/registry";
 import { profile } from "@/content/profile";
@@ -63,7 +63,7 @@ export function SiteHeader() {
             href={profile.resume}
             target="_blank"
             rel="noopener"
-            className="hidden h-9 items-center gap-1.5 rounded-md border border-signal/60 bg-signal/10 px-3.5 font-mono text-[0.8rem] text-foreground transition-colors hover:bg-signal hover:text-white sm:flex"
+            className="hidden h-9 items-center gap-1.5 rounded-md border border-signal/60 bg-signal/10 px-3.5 font-mono text-[0.8rem] text-foreground transition-colors hover:bg-signal-solid hover:text-on-signal sm:flex"
           >
             <FileDown className="size-4" />
             résumé

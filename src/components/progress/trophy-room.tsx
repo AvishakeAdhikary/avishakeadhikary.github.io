@@ -60,8 +60,8 @@ export function TrophyRoom({ compact = false }: { compact?: boolean }) {
               return (
                 <li
                   key={r}
-                  className={cn("rounded border px-1.5 py-0.5 font-hud text-[0.6rem] uppercase", !reached && "opacity-40")}
-                  style={{ color: rankColor(r), borderColor: `color-mix(in oklch, ${rankColor(r)} 40%, transparent)` }}
+                  className={cn("rounded border px-1.5 py-0.5 font-hud text-[0.6rem] uppercase", !reached && "border-border text-subtle-foreground")}
+                  style={reached ? { color: rankColor(r), borderColor: `color-mix(in oklch, ${rankColor(r)} 40%, transparent)` } : undefined}
                 >
                   {RANK_LABEL[r]}
                 </li>
@@ -105,7 +105,7 @@ export function TrophyRoom({ compact = false }: { compact?: boolean }) {
               return (
                 <li
                   key={a.id}
-                  className={cn("relative flex gap-3 overflow-hidden rounded-md border bg-background-elevated/60 p-3", !at && "opacity-60")}
+                  className={cn("relative flex gap-3 overflow-hidden rounded-md border bg-background-elevated/60 p-3", !at && "border-dashed")}
                   style={{ borderColor: at ? `color-mix(in oklch, ${tc} 45%, transparent)` : undefined }}
                 >
                   <span
@@ -117,8 +117,8 @@ export function TrophyRoom({ compact = false }: { compact?: boolean }) {
                   </span>
                   <div className="min-w-0 flex-1">
                     <p className="flex items-baseline justify-between gap-2">
-                      <span className="truncate font-mono text-sm font-semibold">{hidden ? "Secret achievement" : a.title}</span>
-                      <span className="shrink-0 font-hud text-[0.6rem] uppercase" style={{ color: tc }}>
+                      <span className={cn("truncate font-mono text-sm font-semibold", !at && "text-muted-foreground")}>{hidden ? "Secret achievement" : a.title}</span>
+                      <span className={cn("shrink-0 font-hud text-[0.6rem] uppercase", !at && "text-subtle-foreground")} style={at ? { color: tc } : undefined}>
                         {RANK_LABEL[a.tier]} · {TIER_POINTS[a.tier]}
                       </span>
                     </p>

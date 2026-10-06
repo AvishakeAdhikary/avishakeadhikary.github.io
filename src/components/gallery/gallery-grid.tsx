@@ -6,7 +6,7 @@ import { useCallback, useEffect, useState } from "react";
 import { DiffusionImage } from "@/components/fx/diffusion-image";
 import { sfx } from "@/components/media/audio/play";
 import { track } from "@/lib/progress";
-import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
+import { Modal } from "@/components/ui/modal";
 
 export interface GalleryPhoto {
   src: string;
@@ -50,7 +50,7 @@ export function GalleryGrid({ photos }: { photos: GalleryPhoto[] }) {
               className="group relative block w-full cursor-lock overflow-hidden rounded-md border border-border"
               aria-label={`Open photo: ${p.caption}`}
             >
-              <DiffusionImage img={p} alt={p.alt} sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" imgClassName="h-auto transition-transform duration-700 group-hover:scale-[1.03]" />
+              <DiffusionImage img={p} alt={p.alt} priority={i < 3} sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" imgClassName="h-auto transition-transform duration-700 group-hover:scale-[1.03]" />
               <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-4 pt-10 text-left text-sm text-white opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
                 {p.caption}
               </span>
@@ -59,18 +59,16 @@ export function GalleryGrid({ photos }: { photos: GalleryPhoto[] }) {
         ))}
       </ul>
 
-      <Dialog open={open} onOpenChange={(o) => !o && setIndex(null)}>
-        <DialogContent showCloseButton={false} className="max-w-[min(96vw,80rem)] border-none bg-transparent p-0 shadow-none sm:max-w-[min(96vw,80rem)]">
+      <Modal open={open} onClose={() => setIndex(null)} variant="bare" closeButton={false} label={current ? `Photo: ${current.caption}` : "Photo viewer"}>
           {current ? (
             <figure className="relative">
-              <DialogTitle className="sr-only">{current.caption}</DialogTitle>
-              <DialogDescription className="sr-only">{current.alt}</DialogDescription>
               <Image
                 src={current.src}
                 alt={current.alt}
                 width={current.width}
                 height={current.height}
                 sizes="96vw"
+                loading="eager"
                 className="mx-auto max-h-[82vh] w-auto rounded-xl object-contain"
               />
               <figcaption className="mt-3 flex items-center justify-between gap-4 font-mono text-xs text-white/80">
@@ -98,8 +96,7 @@ export function GalleryGrid({ photos }: { photos: GalleryPhoto[] }) {
               </div>
             </figure>
           ) : null}
-        </DialogContent>
-      </Dialog>
+      </Modal>
     </>
   );
 }

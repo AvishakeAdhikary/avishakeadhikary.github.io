@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/link";
 import { Suggestions } from "@/components/not-found/suggestions";
 
 export default function NotFound() {
@@ -15,7 +15,7 @@ export default function NotFound() {
         </p>
         <Suggestions />
         <div className="mt-10 flex flex-wrap gap-3">
-          <Link href="/" className="inline-flex h-12 items-center rounded-md bg-signal px-6 font-mono text-sm font-semibold text-white">
+          <Link href="/" className="inline-flex h-12 items-center rounded-md bg-signal-solid px-6 font-mono text-sm font-semibold text-on-signal">
             Back home
           </Link>
           <Link href="/projects/" className="inline-flex h-12 items-center rounded-md border border-border-strong px-6 font-mono text-sm hover:border-signal">

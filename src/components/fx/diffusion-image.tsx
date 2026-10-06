@@ -25,6 +25,7 @@ export function DiffusionImage({
   sizes: string;
   className?: string;
   imgClassName?: string;
+  /** Above the fold (often the LCP): load eagerly at high priority. */
   priority?: boolean;
   caption?: boolean;
   seed?: string;
@@ -37,7 +38,10 @@ export function DiffusionImage({
         width={img.width}
         height={img.height}
         sizes={sizes}
-        priority={priority}
+        loading={priority ? "eager" : undefined}
+        fetchPriority={priority ? "high" : undefined}
+        // Vector covers have no width variants for the loader to pick from.
+        unoptimized={img.src.endsWith(".svg")}
         className={cn("size-full object-cover", imgClassName)}
       />
       {caption ? (

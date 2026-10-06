@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/link";
 import { Stream } from "@/components/fx/stream";
 import { Door } from "@/components/home/door";
 import { Globe, type GlobePoint } from "@/components/home/globe";
@@ -95,7 +95,7 @@ export default function Home() {
           <p className="mx-auto mt-6 max-w-lg text-lg text-muted-foreground">Fair warning: the contact page is a little… unstable.</p>
           <Link
             href="/contact/"
-            className="mt-9 inline-flex h-14 items-center rounded-md bg-signal px-8 font-mono text-base font-semibold text-white shadow-[0_0_40px_-6px_var(--signal-glow)] transition-transform hover:-translate-y-0.5"
+            className="mt-9 inline-flex h-14 items-center rounded-md bg-signal-solid px-8 font-mono text-base font-semibold text-on-signal shadow-[0_0_40px_-6px_var(--signal-glow)] transition-transform hover:-translate-y-0.5"
           >
             Contact me
           </Link>

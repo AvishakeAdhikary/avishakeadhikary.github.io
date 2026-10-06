@@ -20,9 +20,8 @@ const ICON: Record<Rank, typeof Trophy> = {
 export function Toasts() {
   const toasts = useToasts();
   return (
+    // Each toast is its own role="status" live region; the stack is just layout.
     <div
-      aria-live="polite"
-      aria-label="Notifications"
       className="pointer-events-none fixed top-16 right-3 left-3 z-[75] flex flex-col items-end gap-2 sm:left-auto sm:w-[22rem]"
     >
       {toasts.map((t) => (

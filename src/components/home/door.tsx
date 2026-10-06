@@ -1,5 +1,5 @@
 import { ArrowRight } from "lucide-react";
-import Link from "next/link";
+import Link from "@/components/link";
 import type { ReactNode } from "react";
 import { Stream } from "@/components/fx/stream";
 import { cn } from "@/lib/utils";
@@ -54,7 +54,7 @@ export function Door({
           <div data-reveal style={{ ["--i" as string]: 3 }} className="mt-8">
             <Link
               href={href}
-              className="group inline-flex h-12 items-center gap-3 rounded-md border border-signal/70 px-6 font-mono text-sm transition-colors hover:bg-signal hover:text-white"
+              className="group inline-flex h-12 items-center gap-3 rounded-md border border-signal/70 px-6 font-mono text-sm transition-colors hover:bg-signal-solid hover:text-on-signal"
             >
               {cta}
               <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />

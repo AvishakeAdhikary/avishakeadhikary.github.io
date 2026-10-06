@@ -1,23 +1,28 @@
 "use client";
 
 import { Menu } from "lucide-react";
-import Link from "next/link";
+import Link from "@/components/link";
 import { useState } from "react";
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Modal } from "@/components/ui/modal";
 import { NAV_ITEMS } from "./nav-items";
 
 export function MobileMenu({ resume }: { resume: string }) {
   const [open, setOpen] = useState(false);
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger
-        className="flex size-9 cursor-lock items-center justify-center rounded-md border border-border text-muted-foreground hover:text-foreground md:hidden"
+    <>
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
         aria-label="Open navigation"
+        aria-expanded={open}
+        className="flex size-9 cursor-lock items-center justify-center rounded-md border border-border text-muted-foreground hover:text-foreground md:hidden"
       >
         <Menu className="size-4" />
-      </SheetTrigger>
-      <SheetContent side="right" className="w-[80vw] max-w-xs border-border bg-background p-6">
-        <SheetTitle className="hud mb-6">Navigate</SheetTitle>
+      </button>
+      <Modal open={open} onClose={() => setOpen(false)} variant="sheet" labelledBy="mobile-nav-title" className="p-6">
+        <h2 id="mobile-nav-title" className="hud mb-6">
+          Navigate
+        </h2>
         <nav className="flex flex-col gap-1">
           {NAV_ITEMS.map((item, i) => (
             <Link
@@ -30,14 +35,17 @@ export function MobileMenu({ resume }: { resume: string }) {
               {item.label}
             </Link>
           ))}
-          <Link href="/settings/" onClick={() => setOpen(false)} className="mt-4 px-2 font-mono text-sm text-muted-foreground">
+          <Link href="/arcade/" onClick={() => setOpen(false)} className="mt-4 px-2 font-mono text-sm text-muted-foreground">
+            Arcade
+          </Link>
+          <Link href="/settings/" onClick={() => setOpen(false)} className="px-2 font-mono text-sm text-muted-foreground">
             Settings
           </Link>
           <a href={resume} target="_blank" rel="noopener" className="px-2 font-mono text-sm text-brand-400">
             Download résumé ↗
           </a>
         </nav>
-      </SheetContent>
-    </Sheet>
+      </Modal>
+    </>
   );
 }

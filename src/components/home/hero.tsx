@@ -1,5 +1,5 @@
 import { ArrowDown, ArrowRight } from "lucide-react";
-import Link from "next/link";
+import Link from "@/components/link";
 import { DiffusionImage } from "@/components/fx/diffusion-image";
 import { LatentField } from "@/components/fx/latent-field";
 import { Stream } from "@/components/fx/stream";
@@ -66,7 +66,7 @@ export function Hero() {
           <div data-reveal style={{ ["--i" as string]: 4 }} className="mt-9 flex flex-wrap items-center gap-3">
             <Link
               href="/work/"
-              className="group inline-flex h-12 items-center gap-2 rounded-md bg-signal px-6 font-mono text-sm font-semibold text-white shadow-[0_0_32px_-6px_var(--signal-glow)] transition-transform hover:-translate-y-0.5"
+              className="group inline-flex h-12 items-center gap-2 rounded-md bg-signal-solid px-6 font-mono text-sm font-semibold text-on-signal shadow-[0_0_32px_-6px_var(--signal-glow)] transition-transform hover:-translate-y-0.5"
             >
               See my work <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
@@ -108,9 +108,9 @@ export function Hero() {
 
       <dl className="mx-auto mt-14 grid w-full max-w-7xl grid-cols-2 gap-y-6 px-4 sm:px-6 md:grid-cols-4">
         {statItems.map((s, i) => (
-          <div key={s.k} data-reveal style={{ ["--i" as string]: i }} className="border-l border-border pl-4 first:border-signal">
-            <dd className="font-mono text-3xl font-bold tabular-nums sm:text-4xl">{s.v}</dd>
+          <div key={s.k} data-reveal style={{ ["--i" as string]: i }} className="flex flex-col-reverse border-l border-border pl-4 first:border-signal">
             <dt className="mt-1 text-sm text-subtle-foreground">{s.k}</dt>
+            <dd className="font-mono text-3xl font-bold tabular-nums sm:text-4xl">{s.v}</dd>
           </div>
         ))}
       </dl>

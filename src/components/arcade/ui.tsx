@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, type ButtonHTMLAttributes, type ReactNode } from "react";
+import { Range } from "@/components/ui/range";
 import { useSettings } from "@/lib/settings";
 import { cn } from "@/lib/utils";
 
@@ -12,7 +13,7 @@ export function Btn({ variant = "ghost", className, ...props }: ButtonHTMLAttrib
       {...props}
       className={cn(
         "inline-flex h-10 items-center justify-center gap-2 rounded-md px-4 font-mono text-xs font-semibold tracking-wide transition-colors disabled:pointer-events-none disabled:opacity-45",
-        variant === "primary" && "bg-signal text-white hover:brightness-110",
+        variant === "primary" && "bg-signal-solid text-on-signal hover:brightness-110",
         variant === "ghost" && "border border-border-strong text-foreground hover:border-signal",
         variant === "quiet" && "text-muted-foreground hover:text-foreground",
         className,
@@ -46,16 +47,7 @@ export function Slider({
         <span>{label}</span>
         <span className="text-signal-pale tabular-nums">{format(value)}</span>
       </span>
-      <input
-        type="range"
-        min={min}
-        max={max}
-        step={step}
-        value={value}
-        disabled={disabled}
-        onChange={(e) => onChange(Number(e.target.value))}
-        className="mt-1 w-full accent-[var(--signal)]"
-      />
+      <Range min={min} max={max} step={step} value={value} disabled={disabled} onChange={(e) => onChange(Number(e.target.value))} className="mt-1" />
     </label>
   );
 }
@@ -74,7 +66,7 @@ export function Seg<T extends string>({ label, value, options, onChange }: { lab
           onClick={() => onChange(o.id)}
           className={cn(
             "rounded px-3 py-1.5 font-mono text-xs transition-colors disabled:opacity-35",
-            value === o.id ? "bg-signal text-white" : "text-muted-foreground hover:bg-white/[0.05] hover:text-foreground",
+            value === o.id ? "bg-signal-solid text-on-signal" : "text-muted-foreground hover:bg-white/[0.05] hover:text-foreground",
           )}
         >
           {o.label}

@@ -2,6 +2,7 @@
 
 import { Dice5 } from "lucide-react";
 import { useMemo, useState } from "react";
+import { Range } from "@/components/ui/range";
 
 type Chain = Map<string, Map<string, number>>;
 
@@ -73,19 +74,19 @@ export function Sampler({ corpus }: { corpus: string }) {
           <span className="flex justify-between text-muted-foreground">
             temperature <span className="text-foreground tabular-nums">{temperature.toFixed(2)}</span>
           </span>
-          <input type="range" min={0.1} max={2} step={0.05} value={temperature} onChange={(e) => setTemperature(+e.target.value)} className="mt-2 w-full accent-[var(--signal)]" />
+          <Range min={0.1} max={2} step={0.05} value={temperature} onChange={(e) => setTemperature(+e.target.value)} className="mt-2" />
         </label>
         <label className="block font-hud text-xs">
           <span className="flex justify-between text-muted-foreground">
             top-p <span className="text-foreground tabular-nums">{topP.toFixed(2)}</span>
           </span>
-          <input type="range" min={0.1} max={1} step={0.05} value={topP} onChange={(e) => setTopP(+e.target.value)} className="mt-2 w-full accent-[var(--signal)]" />
+          <Range min={0.1} max={1} step={0.05} value={topP} onChange={(e) => setTopP(+e.target.value)} className="mt-2" />
         </label>
       </div>
       <button
         type="button"
         onClick={generate}
-        className="mt-5 inline-flex h-10 items-center gap-2 rounded-md bg-signal px-4 font-mono text-xs font-semibold text-white transition-transform hover:-translate-y-0.5"
+        className="mt-5 inline-flex h-10 items-center gap-2 rounded-md bg-signal-solid px-4 font-mono text-xs font-semibold text-on-signal transition-transform hover:-translate-y-0.5"
       >
         <Dice5 className="size-4" /> Generate
       </button>

@@ -21,7 +21,8 @@
   --popover-foreground: var(--foreground);
   --muted: oklch(0.22 0.008 20);
   --muted-foreground: oklch(0.72 0.012 20);
-  --subtle-foreground: oklch(0.56 0.014 20);
+  /* L 0.62: ≥ 4.5:1 (WCAG AA) on the background and on raised panels. */
+  --subtle-foreground: oklch(0.62 0.014 20);
   --border: oklch(1 0 0 / 0.09);
   --border-strong: oklch(1 0 0 / 0.18);
   --input: oklch(1 0 0 / 0.12);
@@ -33,6 +34,9 @@
   --signal-deep: oklch(0.444 0.177 26.9);
   --signal-glow: oklch(0.637 0.237 25.3 / 0.38);
   --signal-faint: oklch(0.637 0.237 25.3 / 0.1);
+  /* Filled surfaces (buttons, selected chips): AA contrast with --on-signal text. */
+  --signal-solid: oklch(0.555 0.215 25.5);
+  --on-signal: oklch(0.99 0 0);
 
   --primary: var(--signal);
   --primary-foreground: oklch(0.985 0 0);
@@ -53,12 +57,16 @@
   --cur-lock: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26'><path d='M2 8V2h6M18 2h6v6M24 18v6h-6M8 24H2v-6' fill='none' stroke='%23f87171' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/><path d='M13 8v3M13 15v3M8 13h3M15 13h3' stroke='%23f87171' stroke-width='1.4' stroke-linecap='round'/><circle cx='13' cy='13' r='1.3' fill='%23f87171'/></svg>") 13 13, pointer;
   --cur-press: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 22 22'><path d='M11 5v3.5M11 13.5V17M5 11h3.5M13.5 11H17' stroke='%23f87171' stroke-width='1.8' stroke-linecap='round'/><circle cx='11' cy='11' r='2.2' fill='%23f87171'/></svg>") 11 11, auto;
   --cur-hold: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26'><circle cx='13' cy='13' r='10' fill='none' stroke='%23f87171' stroke-width='1.4' stroke-dasharray='3 2.2' opacity='.85'/><path d='M13 6v3.5M13 16.5V20M6 13h3.5M16.5 13H20' stroke='%23f87171' stroke-width='1.6' stroke-linecap='round'/><circle cx='13' cy='13' r='2' fill='%23f87171'/></svg>") 13 13, auto;
+  --cur-slide: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26'><path d='M3 13l4-4v8zM23 13l-4-4v8z' fill='%23f87171'/><path d='M13 6v14' stroke='%23f87171' stroke-width='1.6' stroke-linecap='round'/><circle cx='13' cy='13' r='1.6' fill='%23f87171'/></svg>") 13 13, ew-resize;
+  --cur-slide-press: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26'><path d='M5 13l4-4v8zM21 13l-4-4v8z' fill='%23f87171'/><path d='M13 8v10' stroke='%23f87171' stroke-width='2' stroke-linecap='round'/><circle cx='13' cy='13' r='2.4' fill='%23f87171'/></svg>") 13 13, ew-resize;
 }
 :root[data-theme="phosphor"] {
   --cur: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 22 22'><path d='M11 2v6M11 14v6M2 11h6M14 11h6' stroke='%235cf08a' stroke-width='1.6' stroke-linecap='round'/><circle cx='11' cy='11' r='1.4' fill='%235cf08a'/></svg>") 11 11, auto;
   --cur-lock: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26'><path d='M2 8V2h6M18 2h6v6M24 18v6h-6M8 24H2v-6' fill='none' stroke='%235cf08a' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/><path d='M13 8v3M13 15v3M8 13h3M15 13h3' stroke='%235cf08a' stroke-width='1.4' stroke-linecap='round'/><circle cx='13' cy='13' r='1.3' fill='%235cf08a'/></svg>") 13 13, pointer;
   --cur-press: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 22 22'><path d='M11 5v3.5M11 13.5V17M5 11h3.5M13.5 11H17' stroke='%235cf08a' stroke-width='1.8' stroke-linecap='round'/><circle cx='11' cy='11' r='2.2' fill='%235cf08a'/></svg>") 11 11, auto;
   --cur-hold: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26'><circle cx='13' cy='13' r='10' fill='none' stroke='%235cf08a' stroke-width='1.4' stroke-dasharray='3 2.2' opacity='.85'/><path d='M13 6v3.5M13 16.5V20M6 13h3.5M16.5 13H20' stroke='%235cf08a' stroke-width='1.6' stroke-linecap='round'/><circle cx='13' cy='13' r='2' fill='%235cf08a'/></svg>") 13 13, auto;
+  --cur-slide: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26'><path d='M3 13l4-4v8zM23 13l-4-4v8z' fill='%235cf08a'/><path d='M13 6v14' stroke='%235cf08a' stroke-width='1.6' stroke-linecap='round'/><circle cx='13' cy='13' r='1.6' fill='%235cf08a'/></svg>") 13 13, ew-resize;
+  --cur-slide-press: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26'><path d='M5 13l4-4v8zM21 13l-4-4v8z' fill='%235cf08a'/><path d='M13 8v10' stroke='%235cf08a' stroke-width='2' stroke-linecap='round'/><circle cx='13' cy='13' r='2.4' fill='%235cf08a'/></svg>") 13 13, ew-resize;
 }
 
 /* Achievement tiers / ranks. */
@@ -80,6 +88,8 @@
   --signal-deep: oklch(0.55 0.15 145);
   --signal-glow: oklch(0.82 0.21 145 / 0.4);
   --signal-faint: oklch(0.82 0.21 145 / 0.1);
+  --signal-solid: oklch(0.8 0.19 145);
+  --on-signal: oklch(0.17 0.03 150);
   --ring: oklch(0.82 0.21 145 / 0.7);
   --background: oklch(0.12 0.012 150);
   --primary-foreground: oklch(0.15 0.02 150);
@@ -119,6 +129,8 @@
   --color-signal-pale: var(--signal-pale);
   --color-signal-deep: var(--signal-deep);
   --color-signal-faint: var(--signal-faint);
+  --color-signal-solid: var(--signal-solid);
+  --color-on-signal: var(--on-signal);
   /* Aliases kept for shadcn primitives and v1 components. */
   --color-brand-300: var(--signal-pale);
   --color-brand-400: var(--signal-soft);
@@ -174,7 +186,10 @@
     cursor: var(--cur);
   }
   a, button, [role="button"], [role="switch"], [role="radio"], [role="tab"], summary, label, select { cursor: var(--cur-lock); }
-  input, textarea { cursor: text; }
+  input:not([type="range"], [type="checkbox"], [type="radio"], [type="button"], [type="submit"]), textarea { cursor: text; }
+  input[type="checkbox"], input[type="radio"] { cursor: var(--cur-lock); }
+  input[type="range"] { cursor: var(--cur-slide); }
+  input[type="range"]:active { cursor: var(--cur-slide-press); }
 
   h1, h2, h3, h4 {
     @apply font-display text-balance;
@@ -183,7 +198,7 @@
 
   code, kbd, pre, samp { @apply font-mono; }
 
-  ::selection { background: var(--signal); color: white; }
+  ::selection { background: var(--signal-solid); color: var(--on-signal); }
 
   :focus-visible {
     outline: 2px solid var(--ring);
@@ -203,8 +218,10 @@
   inset: 0;
   z-index: 70;
   pointer-events: none;
+  /* Scanlines as one 3px tile, repeated: the same pattern as a repeating
+     gradient at a fraction of the raster cost on CPU-rendered engines. */
   background:
-    repeating-linear-gradient(to bottom, transparent 0 2px, oklch(0 0 0 / 0.16) 2px 3px),
+    linear-gradient(to bottom, transparent 2px, oklch(0 0 0 / 0.16) 2px) 0 0 / 100% 3px,
     radial-gradient(ellipse 120% 90% at 50% 50%, transparent 55%, oklch(0 0 0 / 0.55) 100%);
 }
 @media (max-width: 640px) {
@@ -491,6 +508,142 @@ html:has(.snap-home) { scroll-snap-type: y proximity; }
   100% { transform: translate3d(100cqw, 0, 0); opacity: 0; }
 }
 
+/* ── Modals (components/ui/modal.tsx: native <dialog>) ─────────────────── */
+.modal {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  max-width: none;
+  max-height: none;
+  overflow: visible;
+}
+.modal::backdrop {
+  background: oklch(0 0 0 / 0.62);
+  backdrop-filter: blur(2px);
+}
+.modal[data-variant="center"] {
+  margin: auto;
+  width: min(calc(100% - 2rem), var(--modal-w, 48rem));
+  max-height: 85dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: 1px solid var(--border-strong);
+  border-radius: 0.75rem;
+  background: var(--background);
+  box-shadow: 0 30px 80px -20px rgb(0 0 0 / 0.9);
+}
+.modal[data-variant="sheet"] {
+  inset: 0 0 0 auto;
+  margin: 0;
+  width: min(80vw, 20rem);
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow-y: auto;
+  border-left: 1px solid var(--border);
+  background: var(--background);
+}
+.modal[data-variant="bare"] {
+  margin: auto;
+  width: min(96vw, 80rem);
+}
+.modal[data-variant="center"][open],
+.modal[data-variant="bare"][open] { animation: modal-in 0.22s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.modal[data-variant="sheet"][open] { animation: sheet-in 0.25s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.modal[open]::backdrop { animation: backdrop-in 0.22s ease-out; }
+html:has(.modal[open]) { overflow: hidden; }
+@keyframes modal-in { from { opacity: 0; transform: translate3d(0, 8px, 0) scale(0.98); } }
+@keyframes sheet-in { from { transform: translate3d(100%, 0, 0); } }
+@keyframes backdrop-in { from { opacity: 0; } }
+
+/* ── Form controls: themed sliders, checkboxes and radios ──────────────── */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 1.25rem;
+  background: transparent;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(to right, var(--signal) 0 var(--fill, 0%), var(--border-strong) var(--fill, 0%) 100%);
+}
+input[type="range"]::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--border-strong);
+}
+input[type="range"]::-moz-range-progress {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--signal);
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  margin-top: -5px;
+  border: 2px solid var(--signal);
+  border-radius: 3px;
+  background: var(--background);
+  box-shadow: 0 0 10px var(--signal-glow);
+  transform: rotate(45deg);
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+input[type="range"]::-moz-range-thumb {
+  width: 11px;
+  height: 11px;
+  border: 2px solid var(--signal);
+  border-radius: 3px;
+  background: var(--background);
+  box-shadow: 0 0 10px var(--signal-glow);
+  transform: rotate(45deg);
+}
+input[type="range"]:active::-webkit-slider-thumb { background: var(--signal); transform: rotate(45deg) scale(1.15); }
+input[type="range"]:active::-moz-range-thumb { background: var(--signal); }
+input[type="range"]:focus-visible { outline: 2px solid var(--ring); outline-offset: 4px; border-radius: 4px; }
+input[type="range"]:disabled { opacity: 0.45; }
+
+input[type="checkbox"],
+input[type="radio"] {
+  -webkit-appearance: none;
+  appearance: none;
+  display: inline-grid;
+  place-content: center;
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+  border: 1.5px solid var(--border-strong);
+  border-radius: 3px;
+  background: transparent;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+input[type="radio"] { border-radius: 999px; }
+input[type="checkbox"]::before {
+  content: "";
+  width: 0.55rem;
+  height: 0.55rem;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+  background: var(--primary-foreground, white);
+  transform: scale(0);
+  transition: transform 0.12s ease;
+}
+input[type="radio"]::before {
+  content: "";
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: var(--signal);
+  transform: scale(0);
+  transition: transform 0.12s ease;
+}
+input[type="checkbox"]:checked { border-color: var(--signal); background: var(--signal); }
+input[type="radio"]:checked { border-color: var(--signal); }
+input:is([type="checkbox"], [type="radio"]):checked::before { transform: scale(1); }
+input:is([type="checkbox"], [type="radio"]):hover { border-color: var(--signal-soft); }
+input:is([type="checkbox"], [type="radio"]):focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+
 /* ── Toasts (keybind confirmations, achievements) ─────────────────────── */
 .toast-in { animation: toast-in 0.32s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
 .toast-rank { animation: toast-in 0.32s cubic-bezier(0.2, 0.7, 0.2, 1) both, toast-glow 1.6s ease-out 0.3s; }
@@ -536,6 +689,8 @@ html.cursor-press :is(a, button, [role="button"], [role="switch"], [role="radio"
 html.cursor-hold body,
 html.cursor-hold :is(a, button, [role="button"], [role="switch"], [role="radio"], [role="tab"], summary, label, .cursor-lock) { cursor: var(--cur-hold); }
 html[data-cursor="off"] body { cursor: auto; }
+html[data-cursor="off"] input[type="range"] { cursor: ew-resize; }
+html[data-cursor="off"] :is(input[type="checkbox"], input[type="radio"]) { cursor: pointer; }
 html[data-cursor="off"] :is(a, button, [role="button"], [role="switch"], [role="radio"], [role="tab"], summary, label, select, .cursor-lock) { cursor: pointer; }
 html[data-motion="reduced"] { scroll-behavior: auto; }
 html[data-motion="reduced"] *,

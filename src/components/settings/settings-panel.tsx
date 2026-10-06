@@ -17,6 +17,7 @@ import {
 } from "@/lib/settings";
 import { cn } from "@/lib/utils";
 import { TrophyRoom } from "@/components/progress/trophy-room";
+import { Range } from "@/components/ui/range";
 import { KeybindTable } from "./keybind-table";
 
 function Row({ label, hint, children }: { label: string; hint: string; children: ReactNode }) {
@@ -62,7 +63,7 @@ function Segmented<T extends string>({ label, value, options, onChange }: { labe
           onClick={() => onChange(o.id)}
           className={cn(
             "rounded px-3 py-1.5 font-mono text-xs transition-colors",
-            value === o.id ? "bg-signal text-white" : "text-muted-foreground hover:bg-white/[0.05] hover:text-foreground",
+            value === o.id ? "bg-signal-solid text-on-signal" : "text-muted-foreground hover:bg-white/[0.05] hover:text-foreground",
           )}
         >
           {o.label}
@@ -74,16 +75,7 @@ function Segmented<T extends string>({ label, value, options, onChange }: { labe
 
 function Slider({ label, value, onChange }: { label: string; value: number; onChange: (v: number) => void }) {
   return (
-    <input
-      type="range"
-      min={0}
-      max={100}
-      step={1}
-      value={value}
-      aria-label={label}
-      onChange={(e) => onChange(Number(e.target.value))}
-      className="w-48 accent-[var(--signal)]"
-    />
+    <Range min={0} max={100} step={1} value={value} aria-label={label} onChange={(e) => onChange(Number(e.target.value))} className="w-48" />
   );
 }
 
@@ -179,7 +171,7 @@ export function SettingsPanel() {
           aria-label="Settings sections"
           aria-orientation="vertical"
           onKeyDown={onTabKey}
-          className="-mx-4 flex gap-1 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0 lg:flex-col lg:overflow-visible"
+          className="grid grid-cols-2 gap-1 sm:grid-cols-4 lg:flex lg:flex-col"
         >
           {TABS.map((t, i) => {
             const on = t.id === tab;
@@ -233,7 +225,7 @@ export function SettingsPanel() {
                     data-music-control
                     data-sfx="none"
                     disabled={m.busy}
-                    className="inline-flex h-12 items-center gap-2 rounded-md bg-signal px-5 font-mono text-sm font-semibold text-white disabled:opacity-60"
+                    className="inline-flex h-12 items-center gap-2 rounded-md bg-signal-solid px-5 font-mono text-sm font-semibold text-on-signal disabled:opacity-60"
                   >
                     {m.playing ? <Pause className="size-4" /> : <Play className="size-4" />}
                     {m.playing ? "Pause" : "Play"}

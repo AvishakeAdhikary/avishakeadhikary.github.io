@@ -22,9 +22,9 @@ export function KeybindTable({ compact = false }: { compact?: boolean }) {
           </p>
           <ul className="divide-y divide-border rounded-md border border-border">
             {KEYBINDS.filter((k) => k.group === g.id).map((k) => (
-              <li key={k.id} className="flex items-center justify-between gap-4 px-3 py-2 text-sm">
-                <span className="text-muted-foreground">{k.label}</span>
-                <span className="flex shrink-0 flex-wrap justify-end gap-1">
+              <li key={k.id} className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1.5 px-3 py-2 text-sm">
+                <span className="min-w-0 flex-1 basis-40 text-muted-foreground">{k.label}</span>
+                <span className={cn("flex min-w-0 flex-wrap justify-end", k.keys.length > 4 ? "gap-0.5" : "gap-1")}>
                   {k.keys.map((key, i) => (
                     <Fragment key={i}>
                       {g.id === "Go to" && i === 1 ? <span className="self-center font-hud text-[0.6rem] text-subtle-foreground">then</span> : null}

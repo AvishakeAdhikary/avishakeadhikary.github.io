@@ -81,12 +81,13 @@ export function ModelCardsPreview() {
     { r0: "3deg", x1: "-20px", y1: "34px", r1: "-4deg", x2: "0px", y2: "0px", r2: "-2deg" },
     { r0: "-4deg", x1: "0px", y1: "0px", r1: "-2deg", x2: "26px", y2: "18px", r2: "3deg" },
   ];
+  // Cards slide up to 26px and tilt 4°: on phones they're inset so the whole shuffle stays visible.
   return (
     <div data-observe className="relative mx-auto h-80 max-w-md overflow-x-clip sm:overflow-visible">
       {picks.map((p, i) => (
         <article
           key={p.slug}
-          className="pause-offscreen panel absolute inset-x-0 top-6 bg-background-elevated p-5 shadow-[0_24px_60px_-20px_rgb(0_0_0/0.9)]"
+          className="pause-offscreen panel absolute inset-x-9 top-6 bg-background-elevated sm:inset-x-0 p-5 shadow-[0_24px_60px_-20px_rgb(0_0_0/0.9)]"
           style={{
             ...Object.fromEntries(Object.entries(poses[i]).map(([k, v]) => [`--${k}`, v])),
             animation: `shuffle 9s cubic-bezier(0.5,0,0.2,1) ${-i * 3}s infinite`,

@@ -33,6 +33,7 @@ export function SiteTicker() {
   return (
     <div
       data-observe
+      data-clip-ok
       className="fixed inset-x-0 bottom-0 z-40 h-7 overflow-hidden border-t border-border bg-background/90 font-hud text-[0.66rem] tracking-wide text-subtle-foreground backdrop-blur"
       aria-label="Status ticker"
     >
