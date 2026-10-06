@@ -106,10 +106,14 @@ for (const name of engines) {
       else console.log("  terminal ask ✓");
       await input.press("Escape");
 
-      for (const k of ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"]) await page.keyboard.press(k);
-      const theme = await page.evaluate(() => document.documentElement.dataset.theme);
-      if (theme !== "phosphor") fail(`${name}: konami theme not applied`);
-      else console.log("  konami ✓");
+      const konami = async () => {
+        for (const k of ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"]) await page.keyboard.press(k);
+        return page.evaluate(() => document.documentElement.dataset.theme ?? "red");
+      };
+      const there = await konami();
+      const back = await konami();
+      if (there !== "phosphor" || back !== "red") fail(`${name}: konami should toggle both ways (${there} → ${back})`);
+      else console.log("  konami both ways ✓");
     }
     await ctx.close();
   }
@@ -128,6 +132,59 @@ for (const name of engines) {
   console.log("  crash → recover ✓");
   await ctx.close();
 
+  // Keybinds: work on the page, pause while typing and over the crash screen.
+  {
+    const kctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    await quiet(kctx);
+    await kctx.addInitScript(() => sessionStorage.setItem("booted", "1"));
+    const kp = await kctx.newPage();
+    const theme = () => kp.evaluate(() => document.documentElement.dataset.theme ?? "red");
+    await kp.goto(BASE + "/about/");
+    await kp.waitForTimeout(800);
+    await kp.keyboard.press("t");
+    const toggled = await theme();
+    const toast = await kp.locator('[role="status"]', { hasText: "theme" }).count();
+    await kp.keyboard.press("t");
+    await kp.keyboard.press("?");
+    const overlay = await kp
+      .getByRole("dialog", { name: /Keybinds/ })
+      .waitFor({ timeout: 6000 })
+      .then(() => 1)
+      .catch(() => 0);
+    await kp.keyboard.press("Escape");
+    await kp.waitForTimeout(400); // let the dialog finish closing
+    await kp.keyboard.press("g");
+    await kp.keyboard.press("p");
+    await kp.waitForURL(/\/projects\/$/, { timeout: 8000 }).catch(() => undefined);
+    const went = new URL(kp.url()).pathname;
+    // Typing in the contact form never fires shortcuts.
+    await kp.goto(BASE + "/contact/?recovered=1");
+    await kp.locator("form input").first().click();
+    await kp.keyboard.type("tct");
+    const typingTheme = await theme();
+    const typingCrt = await kp.evaluate(() => document.documentElement.dataset.crt);
+    // Over the crash screen, keys belong to the crash (any key recovers).
+    await kp.goto(BASE + "/about/");
+    await kp.locator('header a[href="/contact/"]').click();
+    await kp.locator('[role="alertdialog"]').waitFor({ timeout: 8000 });
+    await kp.keyboard.press("t"); // glitch phase: must not toggle the theme either
+    await kp.locator('[role="alertdialog"] >> text=Relax, nothing broke.').waitFor({ timeout: 8000 });
+    await kp.keyboard.press("t");
+    await kp.waitForURL(/\/contact\//, { timeout: 8000 });
+    const crashTheme = await theme();
+    const problems = [
+      toggled !== "phosphor" && "T did not toggle the theme",
+      !toast && "no toast confirmed the keybind",
+      !overlay && "? did not open the keybind overlay",
+      went !== "/projects/" && `G P went to ${went}`,
+      (typingTheme !== "red" || typingCrt !== "on") && "shortcuts fired while typing in the contact form",
+      crashTheme !== "red" && "T fired over the crash screen",
+    ].filter(Boolean);
+    if (problems.length) fail(`${name}: keybinds: ${problems.join("; ")}`);
+    else console.log("  keybinds ✓ (T, ?, G P; blocked while typing and over the crash)");
+    await kctx.close();
+  }
+
   // Settings: persist across reload, applied before paint.
   {
     const sctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
@@ -135,9 +192,11 @@ for (const name of engines) {
     await sctx.addInitScript(() => sessionStorage.setItem("booted", "1"));
     const sp = await sctx.newPage();
     await sp.goto(BASE + "/settings/");
+    await sp.getByRole("tab", { name: /Display/ }).click();
     await sp.getByRole("switch", { name: "Scanlines" }).click();
-    await sp.getByRole("switch", { name: "Contact page crash" }).click();
     await sp.getByRole("radio", { name: "Phosphor" }).click();
+    await sp.getByRole("tab", { name: /Motion/ }).click();
+    await sp.getByRole("switch", { name: "Contact page crash" }).click();
     await sp.reload();
     const applied = await sp.evaluate(() => ({
       crt: document.documentElement.dataset.crt,
@@ -244,7 +303,10 @@ for (const name of engines) {
         return max;
       }, expr);
     await ap.locator('button[aria-label="Open command menu"]').click();
+    const palette = ap.locator('[data-slot="dialog-content"]');
+    await palette.waitFor({ timeout: 8000 });
     await ap.keyboard.press("Escape");
+    await palette.waitFor({ state: "detached", timeout: 8000 });
     const [musicE, outE] = [await peak("music"), await peak("out")];
     if (!musicE || !outE) fail(`${name}: music + sfx mix silent (music ${musicE}, out ${outE})`);
     else console.log(`  music on first click + sfx mix ✓ (music ${musicE}, out ${outE})`);

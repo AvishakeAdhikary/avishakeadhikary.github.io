@@ -179,6 +179,7 @@ export function VideoPlayer({
       tabIndex={0}
       role="region"
       aria-label={`${title} video player`}
+      data-keys-local
       onKeyDown={onKey}
       onPointerMove={wake}
       className={cn(
@@ -225,7 +226,7 @@ export function VideoPlayer({
           type="button"
           onClick={toggle}
           aria-label={`Play ${title}`}
-          className="absolute inset-0 m-auto flex size-20 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-black/40 text-white backdrop-blur-md transition-transform hover:scale-105"
+          className="absolute inset-0 m-auto flex size-20 cursor-lock items-center justify-center rounded-full border border-white/20 bg-black/40 text-white backdrop-blur-md transition-transform hover:scale-105"
         >
           <span aria-hidden className="absolute inset-0 animate-pulse-ring rounded-full border border-brand-500/60" />
           <Play className="ml-1 size-8 fill-current" />
@@ -247,7 +248,7 @@ export function VideoPlayer({
           aria-valuemax={Math.round(dur)}
           aria-valuenow={Math.round(time)}
           aria-valuetext={`${fmt(time)} of ${fmt(dur)}`}
-          className="relative flex h-8 cursor-pointer items-end gap-[2px]"
+          className="relative flex h-8 cursor-lock items-end gap-[2px]"
           onPointerDown={(e) => {
             e.currentTarget.setPointerCapture(e.pointerId);
             seek(scrubFrom(e) * dur);
@@ -305,7 +306,7 @@ export function VideoPlayer({
               const next = SPEEDS[(SPEEDS.indexOf(speed) + 1) % SPEEDS.length];
               if (video.current) video.current.playbackRate = next;
             }}
-            className="h-8 cursor-pointer rounded-md px-2 font-mono text-[0.7rem] text-white/80 hover:bg-white/10 hover:text-white"
+            className="h-8 cursor-lock rounded-md px-2 font-mono text-[0.7rem] text-white/80 hover:bg-white/10 hover:text-white"
             aria-label={`Playback speed ${speed}x`}
           >
             {speed}×
@@ -347,7 +348,7 @@ function CtlButton({
       aria-label={label}
       title={label}
       className={cn(
-        "flex size-8 cursor-pointer items-center justify-center rounded-md text-white/85 transition-colors hover:bg-white/10 hover:text-white",
+        "flex size-8 cursor-lock items-center justify-center rounded-md text-white/85 transition-colors hover:bg-white/10 hover:text-white",
         active && "text-brand-400",
         className,
       )}

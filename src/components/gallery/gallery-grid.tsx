@@ -43,7 +43,7 @@ export function GalleryGrid({ photos }: { photos: GalleryPhoto[] }) {
             <button
               type="button"
               onClick={() => setIndex(i)}
-              className="group relative block w-full cursor-zoom-in overflow-hidden rounded-md border border-border"
+              className="group relative block w-full cursor-lock overflow-hidden rounded-md border border-border"
               aria-label={`Open photo: ${p.caption}`}
             >
               <DiffusionImage img={p} alt={p.alt} sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" imgClassName="h-auto transition-transform duration-700 group-hover:scale-[1.03]" />
@@ -86,7 +86,7 @@ export function GalleryGrid({ photos }: { photos: GalleryPhoto[] }) {
                     type="button"
                     onClick={onClick}
                     aria-label={label}
-                    className="flex size-10 cursor-pointer items-center justify-center rounded-full bg-black/60 text-white backdrop-blur hover:bg-black/80"
+                    className="flex size-10 cursor-lock items-center justify-center rounded-full bg-black/60 text-white backdrop-blur hover:bg-black/80"
                   >
                     <Icon className="size-5" />
                   </button>

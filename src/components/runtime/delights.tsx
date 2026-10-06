@@ -1,11 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { readSettings, updateSettings } from "@/lib/settings";
 
-const KONAMI = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
-
-/** Small surprises: tab title when you leave, a console note, and the Konami "jailbreak" theme. */
+/** Small surprises: tab title when you leave and a console note. (Konami lives in keybinds.tsx.) */
 export function Delights({ email }: { email: string }) {
   useEffect(() => {
     let original = document.title;
@@ -21,25 +18,12 @@ export function Delights({ email }: { email: string }) {
     console.log(
       "%c avishake.run %c\n\nYou opened the console, so you're my kind of person.\nThis site is a static Next.js export: one shared rAF loop, CSS-first motion, ~20 MB heap.\nHiring? → " +
         email +
-        "\nTry: press ~ for the terminal, or ↑↑↓↓←→←→BA.",
+        "\nTry: press ~ for the terminal, ? for every keybind, or ↑↑↓↓←→←→BA.",
       "background:#e11d48;color:#fff;font:700 14px monospace;padding:4px 8px;border-radius:3px",
       "color:inherit;font:12px monospace",
     );
 
-    let pos = 0;
-    const onKey = (e: KeyboardEvent) => {
-      const want = KONAMI[pos];
-      pos = e.key === want || e.key.toLowerCase() === want ? pos + 1 : e.key === KONAMI[0] ? 1 : 0;
-      if (pos === KONAMI.length) {
-        pos = 0;
-        updateSettings({ theme: readSettings().theme === "phosphor" ? "red" : "phosphor" });
-      }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("visibilitychange", onVis);
-      window.removeEventListener("keydown", onKey);
-    };
+    return () => document.removeEventListener("visibilitychange", onVis);
   }, [email]);
 
   return null;

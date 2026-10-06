@@ -13,9 +13,6 @@ const TerminalView = dynamic(() => import("./terminal-view").then((m) => m.Termi
   loading: () => <p className="px-4 py-3 font-hud text-xs text-subtle-foreground">booting shell…</p>,
 });
 
-const isTyping = (t: EventTarget | null) =>
-  t instanceof HTMLElement && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName));
-
 /** Quake-style drop-down terminal, available on every page. */
 export function TerminalDock() {
   const [open, setOpen] = useState(false);
@@ -29,24 +26,26 @@ export function TerminalDock() {
       return;
     }
     sfx(open ? "open" : "close");
+    // Closing leaves focus inside the now-inert terminal; hand it back to the
+    // page so keybinds (and Tab order) work again.
+    const term = document.getElementById("dropdown-terminal");
+    if (!open && term?.contains(document.activeElement)) (document.activeElement as HTMLElement).blur();
   }, [open]);
 
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if ((e.key === "`" || e.key === "~") && !isTyping(e.target)) {
-        e.preventDefault();
-        setLoaded(true);
-        setOpen((o) => !o);
-      }
+    // Keys are handled by the global keybinds island, which dispatches these.
+    const onToggle = () => {
+      setLoaded(true);
+      setOpen((o) => !o);
     };
     const onOpen = () => {
       setLoaded(true);
       setOpen(true);
     };
-    window.addEventListener("keydown", onKey);
+    window.addEventListener("terminal:toggle", onToggle);
     window.addEventListener("terminal:open", onOpen);
     return () => {
-      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("terminal:toggle", onToggle);
       window.removeEventListener("terminal:open", onOpen);
     };
   }, []);

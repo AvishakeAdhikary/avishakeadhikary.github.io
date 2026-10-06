@@ -26,6 +26,8 @@ export interface Settings {
   field: boolean;
   hud: boolean;
   dock: boolean;
+  /** Achievement / rank pop-ups (keybind confirmations always show). */
+  toasts: boolean;
   theme: "red" | "phosphor";
   cursor: boolean;
   quality: Quality;
@@ -45,6 +47,7 @@ export const DEFAULTS: Settings = {
   field: true,
   hud: true,
   dock: true,
+  toasts: true,
   theme: "red",
   cursor: true,
   quality: "auto",

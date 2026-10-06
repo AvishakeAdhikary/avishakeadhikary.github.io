@@ -5,7 +5,9 @@ import { Boot } from "@/components/runtime/boot";
 import { Delights } from "@/components/runtime/delights";
 import { Effects } from "@/components/runtime/effects";
 import { Hud } from "@/components/runtime/hud";
+import { Keybinds } from "@/components/runtime/keybinds";
 import { Sound } from "@/components/runtime/sound";
+import { Toasts } from "@/components/runtime/toasts";
 import { SiteTicker } from "@/components/layout/site-ticker";
 import { TerminalDock } from "@/components/terminal/terminal-dock";
 import { SiteFooter } from "@/components/layout/site-footer";
@@ -141,6 +143,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <Delights email={profile.email} />
         <Effects />
         <Sound />
+        <Keybinds />
+        <Toasts />
         <div className="crt-layer" aria-hidden />
       </body>
     </html>

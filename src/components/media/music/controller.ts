@@ -170,6 +170,19 @@ export const music = {
     updateSettings({ musicOn: on });
     return on ? music.play() : music.stop();
   },
+  /** Next style (lo-fi → synthwave → ambient → playlist), or the next track while the playlist plays. */
+  next(): MusicSource | string {
+    const s = readSettings();
+    if (state.playing && state.source === "playlist" && audioTracks.length) {
+      trackIndex = (trackIndex + 1) % audioTracks.length;
+      void startPlaylist();
+      return audioTracks[trackIndex].title;
+    }
+    const order: MusicSource[] = audioTracks.length ? ["lofi", "synthwave", "ambient", "playlist"] : ["lofi", "synthwave", "ambient"];
+    const next = order[(order.indexOf(s.musicSource) + 1) % order.length];
+    updateSettings({ musicSource: next });
+    return next;
+  },
   /** Live level 0..1 for visualizers (synth only). */
   level() {
     if (!engine) return 0;

@@ -11,7 +11,7 @@ export function MobileMenu({ resume }: { resume: string }) {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger
-        className="flex size-9 cursor-pointer items-center justify-center rounded-md border border-border text-muted-foreground hover:text-foreground md:hidden"
+        className="flex size-9 cursor-lock items-center justify-center rounded-md border border-border text-muted-foreground hover:text-foreground md:hidden"
         aria-label="Open navigation"
       >
         <Menu className="size-4" />

@@ -81,7 +81,7 @@ export function SkillMap({ nodes, centres }: { nodes: SkillNode[]; centres: Cent
                 onPointerEnter={() => setFocus(n.id)}
                 onFocus={() => setFocus(n.id)}
                 onClick={() => setFocus(n.id)}
-                className="cursor-pointer outline-none"
+                className="cursor-lock outline-none"
                 style={{ opacity: dim ? 0.18 : 1, transition: "opacity 0.25s" }}
               >
                 <circle cx={n.x} cy={n.y} r="11" fill="transparent" />

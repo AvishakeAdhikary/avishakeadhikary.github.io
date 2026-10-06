@@ -29,7 +29,7 @@ function Feedback({ t }: { t: Testimonial }) {
       <blockquote className="text-[0.95rem] leading-relaxed text-foreground/90">
         {long ? (
           <details className="group/q">
-            <summary className="cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+            <summary className="cursor-lock list-none [&::-webkit-details-marker]:hidden">
               &ldquo;{t.quote.slice(0, 240).replace(/\s+\S*$/, "")}…&rdquo;{" "}
               <span className="font-hud text-[0.7rem] text-signal group-open/q:hidden">read all</span>
             </summary>
@@ -88,7 +88,7 @@ function RoleCheckpoint({ role, n }: { role: Role; n: number }) {
       </ul>
       {rest.length ? (
         <details className="group/d mt-3">
-          <summary className="flex w-fit cursor-pointer list-none items-center gap-1 font-hud text-xs text-signal [&::-webkit-details-marker]:hidden">
+          <summary className="flex w-fit cursor-lock list-none items-center gap-1 font-hud text-xs text-signal [&::-webkit-details-marker]:hidden">
             <ChevronDown className="size-3.5 transition-transform group-open/d:rotate-180" />
             <span className="group-open/d:hidden">{rest.length} more details</span>
             <span className="hidden group-open/d:inline">fewer details</span>

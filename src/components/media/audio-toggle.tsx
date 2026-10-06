@@ -24,7 +24,7 @@ export function AudioToggle() {
       aria-pressed={playing}
       aria-label={label}
       title={detail}
-      className="group flex h-9 cursor-pointer items-center gap-2 rounded-md border border-border px-3 text-muted-foreground transition-colors hover:border-border-strong hover:text-foreground disabled:opacity-60"
+      className="group flex h-9 cursor-lock items-center gap-2 rounded-md border border-border px-3 text-muted-foreground transition-colors hover:border-border-strong hover:text-foreground disabled:opacity-60"
     >
       <span className="flex h-3.5 items-end gap-[2px]" aria-hidden>
         {[0.9, 0.5, 1, 0.65].map((h, i) => (

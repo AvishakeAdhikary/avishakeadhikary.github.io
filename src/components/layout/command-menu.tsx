@@ -31,15 +31,13 @@ export function CommandMenu({ entries, email }: { entries: CommandEntry[]; email
   }, [open]);
 
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if ((e.key === "k" || e.key === "K") && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        setLoaded(true);
-        setOpen((o) => !o);
-      }
+    // ⌘K / Ctrl+K is handled by the global keybinds island.
+    const onToggle = () => {
+      setLoaded(true);
+      setOpen((o) => !o);
     };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    window.addEventListener("palette:toggle", onToggle);
+    return () => window.removeEventListener("palette:toggle", onToggle);
   }, []);
 
   return (
@@ -52,7 +50,7 @@ export function CommandMenu({ entries, email }: { entries: CommandEntry[]; email
         }}
         onPointerEnter={() => setLoaded(true)}
         data-sfx="none"
-        className="group flex h-9 cursor-pointer items-center gap-2 rounded-md border border-border px-3 text-sm text-muted-foreground transition-colors hover:border-border-strong hover:text-foreground"
+        className="group flex h-9 cursor-lock items-center gap-2 rounded-md border border-border px-3 text-sm text-muted-foreground transition-colors hover:border-border-strong hover:text-foreground"
         aria-label="Open command menu"
       >
         <Search className="size-3.5" />

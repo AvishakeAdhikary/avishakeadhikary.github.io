@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { Fragment, useCallback, useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { sfx } from "@/components/media/audio/play";
+import { KEYBINDS } from "@/lib/keybinds";
 import type { SearchIndex } from "@/lib/search-index";
 import { DEFAULTS, readSettings, updateSettings, type Settings } from "@/lib/settings";
 import { subscribe } from "@/lib/ticker";
@@ -49,6 +50,7 @@ const COMMANDS = [
   "theme",
   "settings",
   "sudo",
+  "keys",
   "history",
   "clear",
   "date",
@@ -195,7 +197,7 @@ export function TerminalView({ autoFocus = true, onClose, className }: { autoFoc
               "talk         ask <anything>  e.g. ask what did you build at PTS?",
               "fun          contact · sudo hire-me · theme phosphor|red · music",
               "settings     settings · settings <crt|boot|crash|hud|dock|field|cursor> on|off · settings motion full|system|reduced",
-              "shell        history · clear · date · echo · exit",
+              "shell        keys · history · clear · date · echo · exit",
             ].join("\n"),
           );
           return;
@@ -324,6 +326,14 @@ export function TerminalView({ autoFocus = true, onClose, className }: { autoFoc
         case "music":
           window.dispatchEvent(new Event("ambient:toggle"));
           print("ok", "toggled the music (pick lo-fi, synthwave, ambient or the CC0 playlist in /settings)");
+          return;
+        case "keys":
+          print(
+            "out",
+            KEYBINDS.filter((k) => k.group !== "In context")
+              .map((k) => `${k.keys.join(k.group === "Go to" ? " then " : "+").padEnd(13)}${k.group === "Go to" ? `go to ${k.label}` : k.label}`)
+              .join("\n") + "\n\nfull list: press ? (outside the terminal) or [settings → controls](/settings/#controls)",
+          );
           return;
         case "history":
           print("out", history.map((h, i) => `${String(i + 1).padStart(3)}  ${h}`).join("\n") || "(empty)");
