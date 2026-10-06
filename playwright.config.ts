@@ -17,6 +17,9 @@ const wantsLive = process.argv.some((a) => a === "--project=live" || a === "live
 // Web Audio renders through a fake sink at real-time rate instead of the OS device, so
 // parallel browsers never contend for (or error on) the machine's sound card.
 const CHROMIUM_ARGS = { args: ["--disable-audio-output"] };
+// Headless Firefox on a GPU-less Linux runner turns WebGL off, which a desktop Firefox
+// never does; keep it on (software GL) so the globe pages run as visitors see them.
+const FIREFOX_PREFS = { firefoxUserPrefs: { "webgl.force-enabled": true } };
 const SITE_SPECS = /(routes|overlays|interactions|audio|achievements|arcade|a11y)\.spec\.ts/;
 
 export default defineConfig({
@@ -34,7 +37,7 @@ export default defineConfig({
   },
   projects: [
     { name: "chromium", use: { ...devices["Desktop Chrome"], launchOptions: CHROMIUM_ARGS }, testMatch: SITE_SPECS },
-    { name: "firefox", use: { ...devices["Desktop Firefox"] }, testMatch: SITE_SPECS, testIgnore: /a11y\.spec/ },
+    { name: "firefox", use: { ...devices["Desktop Firefox"], launchOptions: FIREFOX_PREFS }, testMatch: SITE_SPECS, testIgnore: /a11y\.spec/ },
     { name: "webkit", use: { ...devices["Desktop Safari"] }, testMatch: SITE_SPECS, testIgnore: /a11y\.spec/ },
     {
       name: "dev",

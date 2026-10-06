@@ -101,9 +101,9 @@ jobs:
           name: site
           path: out
       - run: npx playwright install --with-deps ${{ matrix.browser }}
-      - name: Virtual sound card (CI machines have none; the audio tests listen to real output)
+      - name: Virtual sound card and software GL (CI machines have neither)
         run: |
-          sudo apt-get install -y --no-install-recommends pulseaudio
+          sudo apt-get install -y --no-install-recommends pulseaudio libgl1-mesa-dri libegl1 libgles2
           pulseaudio -D --exit-idle-time=-1
           pactl load-module module-null-sink sink_name=ci
           pactl set-default-sink ci
