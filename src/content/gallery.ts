@@ -8,6 +8,7 @@ export const gallery: GalleryItem[] = [
   { image: "gallery/AvishakeAmityMCAGrad.jpg", alt: "Graduation day", caption: "Graduation day" },
   { image: "gallery/AvishakeAmityBCAGrad.jpg", alt: "BCA graduation", caption: "BCA graduation · 2021" },
   { image: "gallery/AvishakeCover.jpg", alt: "Avishake portrait", caption: "Off-duty" },
+  { image: "gallery/AvishakeAmityMerc.HEIC", alt: "Avishake driving a Mercedes", caption: "Behind the wheel · Amity" },
   { image: "gallery/AmityFriends.jpg", alt: "Friends at Amity", caption: "Friends at Amity" },
   { image: "gallery/AvishakeAmityBCAMahalaya.jpg", alt: "Mahalaya celebration at Amity", caption: "Mahalaya at Amity" },
   { image: "gallery/AvishakeAmityBCAJuniorFreshers.jpg", alt: "Junior freshers event", caption: "Hosting the junior freshers" },

@@ -55,6 +55,8 @@ const COMMANDS = [
   "exit",
 ] as const;
 
+const BANNER = "avishake.run terminal · type `help` to see what I can do, or `ask` me anything about my work.";
+
 const ASK_ENDPOINT = process.env.NEXT_PUBLIC_ASK_ENDPOINT;
 
 let indexPromise: Promise<SearchIndex> | null = null;
@@ -115,7 +117,8 @@ const NEOFETCH_ART = String.raw`
 
 export function TerminalView({ autoFocus = true, onClose, className }: { autoFocus?: boolean; onClose?: () => void; className?: string }) {
   const router = useRouter();
-  const [lines, setLines] = useState<Line[]>([]);
+  // Seeded in state (not an effect) so StrictMode's double effect run in dev can't print it twice.
+  const [lines, setLines] = useState<Line[]>(() => [{ id: 0, kind: "dim", text: BANNER }]);
   const [input, setInput] = useState("");
   const [history, setHistory] = useState<string[]>([]);
   const [cursor, setCursor] = useState(-1);
@@ -129,9 +132,8 @@ export function TerminalView({ autoFocus = true, onClose, className }: { autoFoc
   }, []);
 
   useEffect(() => {
-    print("dim", "avishake.run terminal · type `help` to see what I can do, or `ask` me anything about my work.");
     void loadIndex();
-  }, [print]);
+  }, []);
 
   useEffect(() => {
     scroller.current?.scrollTo({ top: scroller.current.scrollHeight });

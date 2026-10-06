@@ -3,6 +3,7 @@
  * Media pipeline: originals in, web-optimized variants out.
  *
  *   media/originals/images/**  ->  public/media/img/**   (WebP at IMAGE_WIDTHS + blur placeholder)
+ *                                  (.heic/.heif are decoded with heic-decode: sharp's prebuilt libheif has no HEVC)
  *   media/originals/images/**.svg -> public/media/svg/** (svgo)
  *   media/originals/videos/**  ->  public/media/video/** (H.264 MP4 + VP9 WebM, <=1280px, 30fps, poster)
  *   media/originals/audio/**   ->  public/media/audio/** (AAC 96 kbps .m4a, plays everywhere)
@@ -24,6 +25,7 @@ import path from "node:path";
 import sharp from "sharp";
 import { optimize as svgo } from "svgo";
 import ffmpegPath from "ffmpeg-static";
+import decodeHeic from "heic-decode";
 
 const run = promisify(execFile);
 const ROOT = path.resolve(import.meta.dirname, "..");
@@ -41,7 +43,8 @@ const SOURCE_ROOTS = [
   { images: "public/images", videos: "public/videos" }, // legacy location
 ];
 
-const RASTER = new Set([".jpg", ".jpeg", ".png", ".gif", ".webp", ".tif", ".tiff"]);
+const HEIF = new Set([".heic", ".heif"]);
+const RASTER = new Set([".jpg", ".jpeg", ".png", ".gif", ".webp", ".tif", ".tiff", ...HEIF]);
 const VIDEO = new Set([".mp4", ".mov", ".webm", ".mkv"]);
 const AUDIO = new Set([".mp3", ".ogg", ".wav", ".flac", ".m4a"]);
 
@@ -112,7 +115,8 @@ async function processRaster({ rel, file }) {
   await fs.mkdir(dir, { recursive: true });
 
   const animated = ext.toLowerCase() === ".gif";
-  const input = sharp(file, { animated, limitInputPixels: false }).rotate();
+  const source = HEIF.has(ext.toLowerCase()) ? await heifToRaw(file) : { input: file };
+  const input = sharp(source.input, { animated, limitInputPixels: false, raw: source.raw }).rotate();
   const meta = await input.metadata();
   const width = meta.autoOrient?.width ?? meta.width;
   const height = animated ? meta.pageHeight ?? meta.height : meta.autoOrient?.height ?? meta.height;
@@ -124,7 +128,7 @@ async function processRaster({ rel, file }) {
       .webp({ quality: WEBP_QUALITY, effort: 5, smartSubsample: true })
       .toFile(path.join(dir, `${name}-${w}.webp`));
   }
-  const blur = await sharp(file, { limitInputPixels: false })
+  const blur = await sharp(source.input, { limitInputPixels: false, raw: source.raw })
     .rotate()
     .resize(16)
     .webp({ quality: 40 })
@@ -136,6 +140,12 @@ async function processRaster({ rel, file }) {
     height,
     blurDataURL: `data:image/webp;base64,${blur.toString("base64")}`,
   };
+}
+
+/** HEIC/HEIF (iPhone photos) -> raw RGBA that sharp can read. libheif applies the rotation. */
+async function heifToRaw(file) {
+  const { width, height, data } = await decodeHeic({ buffer: await fs.readFile(file) });
+  return { input: Buffer.from(data.buffer, data.byteOffset, data.byteLength), raw: { width, height, channels: 4 } };
 }
 
 async function processSvg({ rel, file }) {
@@ -222,6 +232,19 @@ async function main() {
   }
   for (const item of await collect("audio")) {
     if (AUDIO.has(path.extname(item.rel).toLowerCase())) jobs.push(["audio", item, processAudio]);
+  }
+
+  // Two originals that slug to the same output (e.g. photo.HEIC + photo.png)
+  // would overwrite each other: keep the camera original (HEIC) and skip the copy.
+  const outKey = (rel) => slug(rel.slice(0, -path.extname(rel).length));
+  const heifKeys = new Set(
+    jobs.filter(([b, it]) => b === "images" && HEIF.has(path.extname(it.rel).toLowerCase())).map(([, it]) => outKey(it.rel)),
+  );
+  for (let i = jobs.length - 1; i >= 0; i--) {
+    const [bucket, item] = jobs[i];
+    if (bucket !== "images" || HEIF.has(path.extname(item.rel).toLowerCase()) || !heifKeys.has(outKey(item.rel))) continue;
+    console.warn(`skip (duplicate of a HEIC original): images/${item.rel}`);
+    jobs.splice(i, 1);
   }
 
   for (const [bucket, item, fn] of jobs) {

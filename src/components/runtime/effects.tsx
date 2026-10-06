@@ -24,11 +24,30 @@ export function Effects() {
     if (reduced) return;
 
     const waiting = new Set<HTMLElement>();
-    const play = (el: HTMLElement) => {
-      waiting.delete(el);
+    const start = (el: HTMLElement) => {
       delete el.dataset.pending;
       delete el.dataset.armed;
       if (!el.hasAttribute("data-reveal")) el.dataset.play = "";
+    };
+    const play = (el: HTMLElement) => {
+      waiting.delete(el);
+      // A diffusion image denoises its pixels, not an empty box: wait for
+      // the image (capped, so a slow network never leaves it hidden).
+      const img = el.hasAttribute("data-diffuse") ? el.querySelector("img") : null;
+      if (img && !img.complete) {
+        let done = false;
+        const go = () => {
+          if (done) return;
+          done = true;
+          clearTimeout(cap);
+          start(el);
+        };
+        const cap = setTimeout(go, 1200);
+        img.addEventListener("load", go, { once: true });
+        img.addEventListener("error", go, { once: true });
+        return;
+      }
+      start(el);
     };
 
     const io = new IntersectionObserver(
@@ -51,7 +70,7 @@ export function Effects() {
         if (el.dataset.play !== undefined) continue;
         const top = el.getBoundingClientRect().top;
         if (top < fold) {
-          if (!el.hasAttribute("data-reveal")) el.dataset.play = "";
+          if (!el.hasAttribute("data-reveal")) play(el);
           continue;
         }
         if (el.hasAttribute("data-reveal")) el.dataset.pending = "";

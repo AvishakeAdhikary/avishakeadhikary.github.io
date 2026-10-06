@@ -271,8 +271,10 @@
 .tok-hot:hover, .tok-hot:focus-visible { border-bottom-color: var(--signal); }
 
 /* ── Diffusion images (<DiffusionImage>) ─────────────────────────────────
- * The photo "denoises" in 12 discrete steps: noise layer fades, blur and
- * desaturation release, a step counter ticks. Pure CSS.
+ * The photo "denoises" into view: blur and desaturation release on one
+ * smooth curve (continuous, so it never reads as dropped frames), while
+ * the noise layer and the step counter tick in discrete sampler steps.
+ * Short on purpose: about half a second. Pure CSS.
  */
 @property --step {
   syntax: "<integer>";
@@ -295,16 +297,16 @@
   opacity: 0;
   mix-blend-mode: hard-light;
 }
-.diffuse[data-play] > img { animation: denoise-img 1.5s steps(12, jump-end) both; }
-.diffuse[data-play]::after { animation: denoise-noise 1.5s steps(12, jump-end) both; }
-.diffuse[data-play] { animation: step-count 1.5s steps(12, jump-end) both; }
-.diffuse[data-armed] > img { filter: blur(22px) saturate(0) contrast(1.6); }
+.diffuse[data-play] > img { animation: denoise-img 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.diffuse[data-play]::after { animation: denoise-noise 0.5s steps(10, jump-end) both; }
+.diffuse[data-play] { animation: step-count 0.5s steps(12, jump-end) both; }
+.diffuse[data-armed] > img { filter: blur(12px) saturate(0) contrast(1.4); }
 .diffuse[data-armed]::after { opacity: 1; }
 @media (hover: hover) {
   .diffuse:hover::after { animation: resample 0.7s steps(6, jump-end); }
 }
 @keyframes denoise-img {
-  from { filter: blur(22px) saturate(0) contrast(1.6); transform: scale(1.04); }
+  from { filter: blur(12px) saturate(0) contrast(1.4); transform: scale(1.03); }
   to { filter: none; transform: none; }
 }
 @keyframes denoise-noise {
@@ -470,7 +472,7 @@ html.js [data-stream]:not([data-play]) .tok {
   animation: failsafe-show 0.01s 4s forwards;
 }
 html.js [data-diffuse]:not([data-play]) > img {
-  filter: blur(22px) saturate(0) contrast(1.6);
+  filter: blur(12px) saturate(0) contrast(1.4);
   animation: failsafe-clear 0.01s 4s forwards;
 }
 html.js [data-diffuse]:not([data-play])::after {
