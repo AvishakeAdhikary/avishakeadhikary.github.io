@@ -3,6 +3,8 @@
  * built from Web Audio nodes scheduled at an exact AudioContext time and
  * cleans itself up after it finishes (no long-lived nodes per note).
  */
+import { biquad } from "../audio/mixer";
+
 
 export const midiToHz = (m: number) => 440 * 2 ** ((m - 69) / 12);
 
@@ -69,7 +71,7 @@ export function kick(k: Kit, t: number, vel = 1, punch = 1) {
 
 export function snare(k: Kit, t: number, vel = 1, tone = 1800, verb = 0.18) {
   const n = noiseSource(k, t, 0.25);
-  const bp = k.ctx.createBiquadFilter();
+  const bp = biquad(k.ctx);
   bp.type = "bandpass";
   bp.frequency.value = tone;
   bp.Q.value = 0.8;
@@ -94,7 +96,7 @@ export function clap(k: Kit, t: number, vel = 1) {
   for (let i = 0; i < 3; i++) {
     const s = t + i * 0.011;
     const n = noiseSource(k, s, i === 2 ? 0.22 : 0.03);
-    const bp = k.ctx.createBiquadFilter();
+    const bp = biquad(k.ctx);
     bp.type = "bandpass";
     bp.frequency.value = 1300;
     bp.Q.value = 1.2;
@@ -107,7 +109,7 @@ export function clap(k: Kit, t: number, vel = 1) {
 
 export function hat(k: Kit, t: number, vel = 1, open = false) {
   const n = noiseSource(k, t, open ? 0.35 : 0.08);
-  const hp = k.ctx.createBiquadFilter();
+  const hp = biquad(k.ctx);
   hp.type = "highpass";
   hp.frequency.value = 7200;
   const g = k.ctx.createGain();
@@ -118,7 +120,7 @@ export function hat(k: Kit, t: number, vel = 1, open = false) {
 
 export function shaker(k: Kit, t: number, vel = 1) {
   const n = noiseSource(k, t, 0.12);
-  const bp = k.ctx.createBiquadFilter();
+  const bp = biquad(k.ctx);
   bp.type = "bandpass";
   bp.frequency.value = 5200;
   bp.Q.value = 2;
@@ -134,7 +136,7 @@ export function bass(k: Kit, t: number, midi: number, dur: number, vel = 1, kind
   const o = k.ctx.createOscillator();
   o.type = kind === "saw" ? "sawtooth" : kind === "round" ? "triangle" : "sine";
   o.frequency.value = midiToHz(midi);
-  const lp = k.ctx.createBiquadFilter();
+  const lp = biquad(k.ctx);
   lp.type = "lowpass";
   lp.Q.value = kind === "saw" ? 6 : 0.7;
   lp.frequency.setValueAtTime(kind === "saw" ? 1600 : 900, t);
@@ -177,7 +179,7 @@ export function keys(k: Kit, t: number, midi: number, dur: number, vel = 1, verb
 }
 
 export function pad(k: Kit, t: number, midis: number[], dur: number, vel = 1, bright = 900, verb = 0.6) {
-  const lp = k.ctx.createBiquadFilter();
+  const lp = biquad(k.ctx);
   lp.type = "lowpass";
   lp.Q.value = 0.5;
   lp.frequency.setValueAtTime(bright * 0.5, t);
@@ -209,7 +211,7 @@ export function pluck(k: Kit, t: number, midi: number, vel = 1, glass = false, v
   o.type = glass ? "sine" : "square";
   o.frequency.value = midiToHz(midi);
   const g = k.ctx.createGain();
-  const lp = k.ctx.createBiquadFilter();
+  const lp = biquad(k.ctx);
   lp.type = "lowpass";
   lp.frequency.setValueAtTime(glass ? 6000 : 3800, t);
   lp.frequency.exponentialRampToValueAtTime(glass ? 1800 : 500, t + 0.25);
@@ -240,7 +242,7 @@ export function lead(k: Kit, t: number, midi: number, dur: number, vel = 1) {
   vg.gain.setValueAtTime(0, t);
   vg.gain.linearRampToValueAtTime(6, t + 0.25);
   vib.connect(vg).connect(o.detune);
-  const lp = k.ctx.createBiquadFilter();
+  const lp = biquad(k.ctx);
   lp.type = "lowpass";
   lp.frequency.value = 2600;
   lp.Q.value = 2;

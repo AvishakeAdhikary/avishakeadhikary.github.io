@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { sfx } from "@/components/media/audio/play";
 import { profile } from "@/content/profile";
 
@@ -39,7 +39,9 @@ export function CrashOverlay({ email, onRecover }: { email: string; onRecover: (
     };
   }, []);
 
-  useEffect(() => {
+  // Layout effect: the listener for a phase is live before that phase is painted, so a key
+  // pressed the moment the panic screen appears is never lost.
+  useLayoutEffect(() => {
     if (phase === "panic") recoverRef.current?.focus({ preventScroll: true });
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape" || (phase === "panic" && !e.metaKey && !e.ctrlKey && e.key !== "Tab" && e.key !== "Shift")) {

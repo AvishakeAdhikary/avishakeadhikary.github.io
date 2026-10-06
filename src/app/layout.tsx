@@ -131,7 +131,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         />
         <Boot />
         <SiteHeader />
-        <ViewTransition default="route">
+        {/* Crossfades navigations only (lib/nav), never Suspense reveals inside the page. */}
+        <ViewTransition default={{ nav: "route", default: "none" }}>
           <main id="main" className="min-h-[70dvh]">
             {children}
           </main>

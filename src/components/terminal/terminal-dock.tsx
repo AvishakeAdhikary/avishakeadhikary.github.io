@@ -2,6 +2,8 @@
 
 import { SquareTerminal, X } from "lucide-react";
 import dynamic from "next/dynamic";
+import { ErrorBoundary } from "@/components/error-boundary";
+import { loadChunk } from "@/lib/lazy";
 import { useEffect, useRef, useState } from "react";
 import { sfx } from "@/components/media/audio/play";
 import { track } from "@/lib/progress";
@@ -9,7 +11,7 @@ import { useSettings } from "@/lib/settings";
 import { cn } from "@/lib/utils";
 
 // The whole terminal (engine + retrieval) downloads only on first open.
-const TerminalView = dynamic(() => import("./terminal-view").then((m) => m.TerminalView), {
+const TerminalView = dynamic(() => loadChunk(() => import("./terminal-view")).then((m) => m.TerminalView), {
   ssr: false,
   loading: () => <p className="px-4 py-3 font-hud text-xs text-subtle-foreground">booting shell…</p>,
 });
@@ -90,7 +92,11 @@ export function TerminalDock() {
             <X className="size-4" />
           </button>
         </div>
-        <div className="h-[calc(100%-2.3rem)]">{loaded ? <TerminalView autoFocus={open} onClose={() => setOpen(false)} /> : null}</div>
+        <div className="h-[calc(100%-2.3rem)]">{loaded ? (
+            <ErrorBoundary name="terminal" fallback={<p className="px-4 py-3 font-hud text-xs text-signal-soft">the shell failed to start · reload the page to try again</p>}>
+              <TerminalView autoFocus={open} onClose={() => setOpen(false)} />
+            </ErrorBoundary>
+          ) : null}</div>
       </div>
     </>
   );

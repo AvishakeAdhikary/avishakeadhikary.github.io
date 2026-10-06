@@ -1,6 +1,6 @@
 import { ArrowRight, Clock, Languages, MapPin, Music } from "lucide-react";
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/link";
 import { DiffusionImage } from "@/components/fx/diffusion-image";
 import { Globe } from "@/components/home/globe";
 import { PageHeader } from "@/components/page-header";

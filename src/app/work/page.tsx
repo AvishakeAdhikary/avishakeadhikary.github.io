@@ -1,6 +1,6 @@
 import { Award, ChevronDown, Languages, MessageSquareQuote } from "lucide-react";
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/link";
 import type { CSSProperties } from "react";
 import { DiffusionImage } from "@/components/fx/diffusion-image";
 import { Sparkline } from "@/components/home/sparkline";

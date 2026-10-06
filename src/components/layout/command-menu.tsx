@@ -3,7 +3,9 @@
 import { Search } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
+import { ErrorBoundary } from "@/components/error-boundary";
 import { sfx } from "@/components/media/audio/play";
+import { loadChunk } from "@/lib/lazy";
 import { track } from "@/lib/progress";
 
 export interface CommandEntry {
@@ -16,7 +18,7 @@ export interface CommandEntry {
 }
 
 // cmdk + dialog are only downloaded the first time the palette opens.
-const CommandPalette = dynamic(() => import("./command-palette").then((m) => m.CommandPalette), { ssr: false });
+const CommandPalette = dynamic(() => loadChunk(() => import("./command-palette")).then((m) => m.CommandPalette), { ssr: false });
 
 export function CommandMenu({ entries, email }: { entries: CommandEntry[]; email: string }) {
   const [open, setOpen] = useState(false);
@@ -59,7 +61,11 @@ export function CommandMenu({ entries, email }: { entries: CommandEntry[]; email
         <span className="hidden xl:inline">Search</span>
         <kbd className="hidden rounded border border-border bg-white/[0.04] px-1.5 font-mono text-[0.65rem] sm:inline">⌘K</kbd>
       </button>
-      {loaded ? <CommandPalette open={open} onOpenChange={setOpen} entries={entries} email={email} /> : null}
+      {loaded ? (
+        <ErrorBoundary name="palette">
+          <CommandPalette open={open} onOpenChange={setOpen} entries={entries} email={email} />
+        </ErrorBoundary>
+      ) : null}
     </>
   );
 }

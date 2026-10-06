@@ -3,13 +3,16 @@
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { ErrorBoundary } from "@/components/error-boundary";
 import { sfx } from "@/components/media/audio/play";
 import { music } from "@/components/media/music/controller";
 import { GO_TO, keyBlocked } from "@/lib/keybinds";
+import { loadChunk } from "@/lib/lazy";
+import { NAV } from "@/lib/nav";
 import { readSettings, updateSettings } from "@/lib/settings";
 import { pushToast } from "@/lib/toast";
 
-const KeybindOverlay = dynamic(() => import("./keybind-overlay").then((m) => m.KeybindOverlay), { ssr: false });
+const KeybindOverlay = dynamic(() => loadChunk(() => import("./keybind-overlay")).then((m) => m.KeybindOverlay), { ssr: false });
 
 const KONAMI = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
 const STYLE_LABEL: Record<string, string> = { lofi: "lo-fi", synthwave: "synthwave", ambient: "ambient", playlist: "CC0 playlist" };
@@ -81,7 +84,7 @@ export function Keybinds() {
         if (dest) {
           e.preventDefault();
           used("go");
-          router.push(dest.href);
+          router.push(dest.href, NAV);
           return;
         }
       }
@@ -96,7 +99,7 @@ export function Keybinds() {
         e.preventDefault();
         const room = document.getElementById("trophies");
         if (room) room.scrollIntoView({ behavior: "smooth", block: "start" });
-        else router.push("/arcade/#trophies");
+        else router.push("/arcade/#trophies", NAV);
         return used("trophies");
       }
       if (e.shiftKey) return;
@@ -175,5 +178,9 @@ export function Keybinds() {
     };
   }, [router]);
 
-  return helpLoaded ? <KeybindOverlay open={help} onOpenChange={setHelp} /> : null;
+  return helpLoaded ? (
+    <ErrorBoundary name="keybinds">
+      <KeybindOverlay open={help} onOpenChange={setHelp} />
+    </ErrorBoundary>
+  ) : null;
 }

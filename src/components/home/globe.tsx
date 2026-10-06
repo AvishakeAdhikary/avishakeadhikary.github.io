@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { getTier, renderDpr } from "@/lib/quality";
+import { getTier, gpuHint, renderDpr } from "@/lib/quality";
 import { motionReduced } from "@/lib/settings";
 import { subscribe } from "@/lib/ticker";
 
@@ -16,8 +16,9 @@ const RED: [number, number, number] = [0.94, 0.27, 0.27];
 /**
  * cobe (~5 KB WebGL) globe centred on Kolkata. Created only when near the
  * viewport, renders only while visible and the tab is active, DPR capped at
- * 2, drag to spin. Falls back to a static CSS globe without WebGL, on
- * low-power devices or with reduced motion.
+ * 2, drag to spin. Falls back to a static CSS globe without WebGL, with
+ * software-only WebGL (no GPU: an animated globe would burn the CPU and the
+ * browser has to read the canvas back every frame), or on low-power devices.
  */
 export function Globe({ home, points }: { home: GlobePoint; points: GlobePoint[] }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -35,14 +36,8 @@ export function Globe({ home, points }: { home: GlobePoint; points: GlobePoint[]
       !!nav.connection?.saveData ||
       ((nav.hardwareConcurrency ?? 8) <= 2 && (nav.deviceMemory ?? 8) <= 2);
     const reduced = motionReduced();
-    const gl = (() => {
-      try {
-        return !!document.createElement("canvas").getContext("webgl");
-      } catch {
-        return false;
-      }
-    })();
-    if (!gl || lowPower) {
+    const gpu = gpuHint();
+    if (gpu === "none" || gpu === "software" || lowPower) {
       // eslint-disable-next-line react-hooks/set-state-in-effect -- capability probe can only run on the client
       setFallback(true);
       return;

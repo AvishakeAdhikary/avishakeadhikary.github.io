@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowRight, Check, Crown, GraduationCap } from "lucide-react";
-import Link from "next/link";
+import Link from "@/components/link";
 import { useProgress } from "@/lib/progress";
 import { cn } from "@/lib/utils";
 import { GAME_INFO } from "./registry";

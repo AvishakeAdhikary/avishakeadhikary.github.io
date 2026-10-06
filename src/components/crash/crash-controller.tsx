@@ -3,10 +3,13 @@
 import dynamic from "next/dynamic";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import { NAV } from "@/lib/nav";
 import { track } from "@/lib/progress";
+import { ErrorBoundary } from "@/components/error-boundary";
+import { loadChunk } from "@/lib/lazy";
 import { motionReduced, readSettings } from "@/lib/settings";
 
-const CrashOverlay = dynamic(() => import("./crash-overlay").then((m) => m.CrashOverlay), { ssr: false });
+const CrashOverlay = dynamic(() => loadChunk(() => import("./crash-overlay")).then((m) => m.CrashOverlay), { ssr: false });
 
 const SEEN = "crash-seen";
 const CONTACT = /^\/contact(-me)?\/?$/;
@@ -32,7 +35,7 @@ export function CrashController({ email }: { email: string }) {
 
   const start = useCallback(() => {
     if (motionReduced() || !readSettings().crash || seen()) {
-      router.push("/contact/");
+      router.push("/contact/", NAV);
       return;
     }
     try {
@@ -73,13 +76,21 @@ export function CrashController({ email }: { email: string }) {
   }, [pathname, start]);
 
   if (!active) return null;
+  const recover = () => {
+    setActive(false);
+    if (!CONTACT.test(location.pathname)) router.push("/contact/?recovered=1", NAV);
+  };
   return (
-    <CrashOverlay
-      email={email}
-      onRecover={() => {
-        setActive(false);
-        if (!CONTACT.test(location.pathname)) router.push("/contact/?recovered=1");
-      }}
-    />
+    <ErrorBoundary name="crash" fallback={<Recover onRecover={recover} />}>
+      <CrashOverlay email={email} onRecover={recover} />
+    </ErrorBoundary>
   );
+}
+
+/** If the crash screen itself fails, skip straight to where the visitor was going. */
+function Recover({ onRecover }: { onRecover: () => void }) {
+  useEffect(() => {
+    onRecover();
+  }, [onRecover]);
+  return null;
 }

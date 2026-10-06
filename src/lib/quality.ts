@@ -13,20 +13,53 @@ type Nav = Navigator & { deviceMemory?: number; connection?: { saveData?: boolea
 let cached: Tier | null = null;
 const listeners = new Set<(t: Tier) => void>();
 
-function gpuHint(): "discrete" | "integrated" | "software" | "unknown" {
+export type GpuHint = "discrete" | "integrated" | "software" | "none" | "unknown";
+let gpu: GpuHint | null = null;
+
+/**
+ * What the GPU can do, probed once per session (cached in sessionStorage).
+ *  - `failIfMajorPerformanceCaveat` returns no context when WebGL would be
+ *    software-rendered: that alone tells us "software", no string sniffing.
+ *  - The renderer name comes from gl.RENDERER first (Firefox already reports
+ *    it there); only engines that mask it (Chromium, Safari) are asked via
+ *    WEBGL_debug_renderer_info, which Firefox deprecates.
+ *  - No loseContext(): the probe context is simply dropped (Firefox logs a
+ *    warning for every context lost on purpose).
+ */
+export function gpuHint(): GpuHint {
+  if (gpu) return gpu;
+  if (typeof window === "undefined") return "unknown";
   try {
-    const gl = document.createElement("canvas").getContext("webgl");
-    if (!gl) return "software";
-    const ext = gl.getExtension("WEBGL_debug_renderer_info");
-    const r = String(ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER)).toLowerCase();
-    gl.getExtension("WEBGL_lose_context")?.loseContext();
-    if (/swiftshader|llvmpipe|software|basic render/.test(r)) return "software";
-    if (/rtx|gtx|radeon rx|rx \d{4}|arc a|quadro|geforce|apple m\d (pro|max|ultra)/.test(r)) return "discrete";
-    if (/intel|uhd|iris|adreno|mali|apple/.test(r)) return "integrated";
-    return "unknown";
+    const cached = sessionStorage.getItem("gpu-hint") as GpuHint | null;
+    if (cached) return (gpu = cached);
   } catch {
-    return "unknown";
+    /* storage blocked */
   }
+  gpu = (() => {
+    try {
+      if (!document.createElement("canvas").getContext("webgl")) return "none";
+      const gl = document.createElement("canvas").getContext("webgl", { failIfMajorPerformanceCaveat: true });
+      if (!gl) return "software";
+      let r = String(gl.getParameter(gl.RENDERER));
+      if (/^(webkit|mozilla) webgl$/i.test(r)) {
+        const ext = gl.getExtension("WEBGL_debug_renderer_info");
+        if (ext) r = String(gl.getParameter(ext.UNMASKED_RENDERER_WEBGL));
+      }
+      r = r.toLowerCase();
+      if (/swiftshader|llvmpipe|software|basic render/.test(r)) return "software";
+      if (/rtx|gtx|radeon rx|rx \d{4}|arc a|quadro|geforce|apple m\d (pro|max|ultra)/.test(r)) return "discrete";
+      if (/intel|uhd|iris|adreno|mali|apple/.test(r)) return "integrated";
+      return "unknown";
+    } catch {
+      return "unknown";
+    }
+  })();
+  try {
+    sessionStorage.setItem("gpu-hint", gpu);
+  } catch {
+    /* ignore */
+  }
+  return gpu;
 }
 
 export function getTier(): Tier {
@@ -39,7 +72,7 @@ export function getTier(): Tier {
   const cores = nav.hardwareConcurrency ?? 4;
   const mem = nav.deviceMemory ?? 8;
   const gpu = gpuHint();
-  if (nav.connection?.saveData || gpu === "software" || (cores <= 4 && mem <= 4)) cached = "low";
+  if (nav.connection?.saveData || gpu === "software" || gpu === "none" || (cores <= 4 && mem <= 4)) cached = "low";
   else if (gpu === "discrete" || (cores >= 12 && mem >= 8)) cached = "high";
   else cached = "mid";
   return cached;

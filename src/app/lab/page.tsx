@@ -1,6 +1,6 @@
 import { ArrowRight, Gamepad2 } from "lucide-react";
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/link";
 import { InlineTerminal } from "@/components/lab/inline-terminal";
 import { Sampler } from "@/components/lab/sampler";
 import { PageHeader } from "@/components/page-header";

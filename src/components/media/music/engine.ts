@@ -1,3 +1,4 @@
+import { biquad } from "../audio/mixer";
 import { crackleBuffer, type Kit } from "./instruments";
 import { makePhrase, STYLES, type MelodyNote, type StyleId } from "./styles";
 
@@ -57,7 +58,7 @@ export class MusicEngine {
     comp.release.value = 0.25;
     this.analyser = ctx.createAnalyser();
     this.analyser.fftSize = 128;
-    this.tone = ctx.createBiquadFilter();
+    this.tone = biquad(ctx);
     this.tone.type = "lowpass";
     this.tone.Q.value = 0.4;
     this.bus = ctx.createGain();
@@ -73,7 +74,7 @@ export class MusicEngine {
     this.echo = ctx.createDelay(3);
     const fb = ctx.createGain();
     fb.gain.value = 0.38;
-    const echoTone = ctx.createBiquadFilter();
+    const echoTone = biquad(ctx);
     echoTone.type = "lowpass";
     echoTone.frequency.value = 2600;
     const echoIn = ctx.createGain();

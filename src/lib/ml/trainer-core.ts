@@ -1,10 +1,6 @@
-/** Main-thread handle on the training loop (the worker builds its own from engine.ts). */
-import { createEngine } from "./engine";
-import { SEP } from "./tiny-transformer";
+/** The training loop shared by the Debugger's worker and its main-thread fallback (see engine.ts). */
+import { SEP } from "./engine";
 
+export { DEMO, demoTokens, LEN, LOSS_FLOOR, runTraining } from "./engine";
 export type { RunOptions, Telemetry } from "./engine";
-export { LEN, LOSS_FLOOR } from "./tiny-transformer";
-
-const E = createEngine();
-export const { DEMO, demoTokens, runTraining } = E;
 export const TOKEN_LABEL = (t: number) => (t === SEP ? "|" : String(t));

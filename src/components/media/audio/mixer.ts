@@ -25,7 +25,6 @@ let desk: Desk | null = null;
 /** Web Audio exists (some embedded/test browsers ship without it). */
 export const audioSupported = () =>
   typeof window !== "undefined" && !!(window.AudioContext ?? (window as unknown as { webkitAudioContext?: unknown }).webkitAudioContext);
-let probe: AnalyserNode | null = null;
 const duckers = new Set<(depth: number, release: number) => void>();
 
 export function getMixer(): Desk {
@@ -46,6 +45,20 @@ export function getMixer(): Desk {
   master.connect(limiter).connect(ctx.destination);
   desk = { ctx, master, music, sfx };
   return desk;
+}
+
+/**
+ * A biquad with a fixed stereo channel count. Left on "max", a filter's
+ * channel count follows its inputs, and voices switching between mono and
+ * stereo mid-stream make Firefox warn about (and risk) glitches.
+ */
+export function biquad(ctx: BaseAudioContext, type: BiquadFilterType = "lowpass"): BiquadFilterNode {
+  const f = ctx.createBiquadFilter();
+  f.type = type;
+  f.channelCount = 2;
+  f.channelCountMode = "explicit";
+  f.channelInterpretation = "speakers";
+  return f;
 }
 
 /** Dip the music under a sound effect, then swell back over `release` seconds. */
@@ -73,15 +86,4 @@ export async function resumeMixer() {
 
 export async function suspendMixer() {
   if (desk?.ctx.state === "running") await desk.ctx.suspend().catch(() => undefined);
-}
-
-/** Analyser on the final mix (created on demand; used by checks and visualizers). */
-export function masterProbe(): AnalyserNode {
-  const { ctx, master } = getMixer();
-  if (!probe) {
-    probe = ctx.createAnalyser();
-    probe.fftSize = 256;
-    master.connect(probe);
-  }
-  return probe;
 }

@@ -1,29 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { createEngine } from "@/lib/ml/engine";
 import { runTraining, type RunOptions, type Telemetry } from "@/lib/ml/trainer-core";
 
-/**
- * The worker is built from createEngine's own source (it has no outside
- * references), so no bundler worker support is needed.
- */
-function spawnWorker(): Worker {
-  const src = `const createEngine = ${createEngine.toString()};
-const E = createEngine();
-let current = -1;
-self.onmessage = (e) => {
-  if (e.data.type === "stop") { current = -1; return; }
-  const id = (current = e.data.id);
-  E.runTraining(e.data.opts, (t) => self.postMessage({ type: "tick", id, t }), () => id !== current).then(() => {
-    if (id === current) self.postMessage({ type: "done", id });
-  });
-};`;
-  const url = URL.createObjectURL(new Blob([src], { type: "text/javascript" }));
-  const w = new Worker(url);
-  URL.revokeObjectURL(url);
-  return w;
-}
+/** A real worker entry, bundled by Turbopack (its own chunks + bootstrap). */
+const spawnWorker = () => new Worker(new URL("./train.worker.ts", import.meta.url), { type: "module" });
 
 /**
  * Runs training off the main thread (falls back to cooperative main-thread

@@ -19,6 +19,24 @@ export function Effects() {
   const pathname = usePathname();
 
   useEffect(() => {
+    // The page is interactive: every runtime island's listeners are attached (same commit).
+    document.documentElement.dataset.ready = "";
+  }, []);
+
+  useEffect(() => {
+    // react-dom's startViewTransition chains `transition.finished.finally()`
+    // without a catch. When the browser aborts a crossfade because the DOM update took
+    // too long (a starved CPU), that rejection surfaces as an uncaught error even though
+    // React already finished the update. Mark exactly that rejection handled.
+    const onRejection = (e: PromiseRejectionEvent) => {
+      const r = e.reason as unknown;
+      if (r instanceof DOMException && r.name === "TimeoutError" && /view transition|Transition was aborted/i.test(r.message)) e.preventDefault();
+    };
+    window.addEventListener("unhandledrejection", onRejection);
+    return () => window.removeEventListener("unhandledrejection", onRejection);
+  }, []);
+
+  useEffect(() => {
     const reduced = motionReduced();
     const els = [...document.querySelectorAll<HTMLElement>(ANIMATED)];
     if (reduced) return;
@@ -79,7 +97,16 @@ export function Effects() {
         io.observe(el);
       }
     };
-    let raf = requestAnimationFrame(() => (raf = requestAnimationFrame(arm)));
+    // Visibility must never wait on frame rate: an engine that paints slowly
+    // (software rendering, a busy device) gets a timer instead of frame two.
+    let armed = false;
+    const armOnce = () => {
+      if (armed) return;
+      armed = true;
+      arm();
+    };
+    let raf = requestAnimationFrame(() => (raf = requestAnimationFrame(armOnce)));
+    const armTimer = window.setTimeout(armOnce, 150);
 
     // Backstop for engines (notably WebKit) whose IntersectionObserver can
     // skip elements that jump past the viewport between frames (fast flings,
@@ -105,6 +132,7 @@ export function Effects() {
 
     return () => {
       cancelAnimationFrame(raf);
+      clearTimeout(armTimer);
       clearTimeout(ticking);
       window.removeEventListener("scroll", onScroll);
       io.disconnect();

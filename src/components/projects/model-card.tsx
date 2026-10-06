@@ -1,5 +1,5 @@
 import { GitFork, Star } from "lucide-react";
-import Link from "next/link";
+import Link from "@/components/link";
 import { ViewTransition } from "react";
 import { roleById } from "@/content/experience";
 import { CATEGORY_LABEL, type ResolvedProject } from "@/lib/projects";

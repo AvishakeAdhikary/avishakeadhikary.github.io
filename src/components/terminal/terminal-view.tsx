@@ -5,6 +5,7 @@ import { Fragment, useCallback, useEffect, useRef, useState, type KeyboardEvent 
 import { sfx } from "@/components/media/audio/play";
 import { GAME_INFO } from "@/components/arcade/registry";
 import { KEYBINDS } from "@/lib/keybinds";
+import { NAV } from "@/lib/nav";
 import { track } from "@/lib/progress";
 import type { SearchIndex } from "@/lib/search-index";
 import { DEFAULTS, readSettings, updateSettings, type Settings } from "@/lib/settings";
@@ -237,7 +238,7 @@ export function TerminalView({ autoFocus = true, onClose, className }: { autoFoc
           const page = PAGES[target] ?? PAGES[closest(target, Object.keys(PAGES)) ?? ""];
           if (!page) return print("err", `cd: no such page: ${target}`);
           if (target === "contact") window.dispatchEvent(new Event("crash:start"));
-          else router.push(page);
+          else router.push(page, NAV);
           print("ok", `→ ${page}`);
           onClose?.();
           return;
@@ -247,7 +248,7 @@ export function TerminalView({ autoFocus = true, onClose, className }: { autoFoc
           const q = rest.toLowerCase().replace(/\s+/g, "-");
           const hit = slugs.find((s) => s === q) ?? slugs.find((s) => s.includes(q)) ?? closest(q, slugs);
           if (!q || !hit) return print("err", `open: no project matching "${rest}". try: ls projects`);
-          router.push(`/projects/${hit}/`);
+          router.push(`/projects/${hit}/`, NAV);
           print("ok", `→ /projects/${hit}/`);
           onClose?.();
           return;
@@ -260,13 +261,13 @@ export function TerminalView({ autoFocus = true, onClose, className }: { autoFoc
             print("out", games.map((g) => `${g.id.padEnd(14)} ${g.name} · ${g.concept}`).join("\n") + "\n\nusage: play <game>  e.g. play knn");
             return;
           }
-          router.push(`/arcade/${hit.id}/`);
+          router.push(`/arcade/${hit.id}/`, NAV);
           print("ok", `→ inserting coin: ${hit.name}`);
           onClose?.();
           return;
         }
         case "achievements":
-          router.push("/arcade/#trophies");
+          router.push("/arcade/#trophies", NAV);
           print("ok", "→ /arcade/#trophies (or press shift+a anywhere)");
           onClose?.();
           return;
@@ -327,7 +328,7 @@ export function TerminalView({ autoFocus = true, onClose, className }: { autoFoc
           const [key, val] = args;
           const toggles: (keyof Settings)[] = ["crt", "boot", "crash", "hud", "dock", "field", "cursor", "pauseHidden"];
           if (!key) {
-            router.push("/settings/");
+            router.push("/settings/", NAV);
             print("ok", "→ /settings/");
             onClose?.();
             return;

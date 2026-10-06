@@ -1,7 +1,7 @@
 "use client";
 
 import { readSettings, subscribeSettings } from "@/lib/settings";
-import { duck, getMixer } from "./mixer";
+import { biquad, duck, getMixer } from "./mixer";
 
 /**
  * Interface sounds for a CRT / terminal runtime, synthesized on the fly:
@@ -90,7 +90,7 @@ function tone(ctx: AudioContext, out: AudioNode, t: number, { type = "sine", f0,
   g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
   let node: AudioNode = o;
   if (lp) {
-    const f = ctx.createBiquadFilter();
+    const f = biquad(ctx);
     f.type = "lowpass";
     f.frequency.value = lp;
     node = node.connect(f);
@@ -112,7 +112,7 @@ interface NoiseOpts {
 function hiss(ctx: AudioContext, out: AudioNode, t: number, { dur, gain = 0.1, filter = "bandpass", f0, f1 = f0, q = 1 }: NoiseOpts) {
   const src = ctx.createBufferSource();
   src.buffer = noise(ctx);
-  const f = ctx.createBiquadFilter();
+  const f = biquad(ctx);
   f.type = filter;
   f.Q.value = q;
   f.frequency.setValueAtTime(f0, t);

@@ -1,7 +1,7 @@
 "use client";
 
 import { BadgeCheck, Briefcase } from "lucide-react";
-import Link from "next/link";
+import Link from "@/components/link";
 import { useMemo, useState } from "react";
 import type { SkillNode } from "@/lib/skill-space";
 import { SPACE } from "@/lib/skill-space";

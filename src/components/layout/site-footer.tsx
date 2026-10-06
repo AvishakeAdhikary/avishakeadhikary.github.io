@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/link";
 import { GitHubIcon, LinkedInIcon, ScholarIcon } from "@/components/icons/brand";
 import { profile } from "@/content/profile";
 import { NAV_ITEMS } from "./nav-items";
