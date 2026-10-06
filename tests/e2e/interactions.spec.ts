@@ -109,11 +109,13 @@ test("settings: tabs (click, Q/E, hash), persistence across reload, applied befo
   await page.getByRole("tab", { name: /Display/ }).click();
   await expect(page).toHaveURL(/#display$/);
   await page.getByRole("switch", { name: "Scanlines" }).click();
+  await expect(page.getByRole("switch", { name: "Scanlines" })).toHaveAttribute("aria-checked", "false");
   await page.getByRole("radio", { name: "Phosphor" }).click();
   await page.locator("body").click({ position: { x: 5, y: 300 } });
   await page.keyboard.press("e");
   await expect(page.getByRole("tab", { name: /Motion/ })).toHaveAttribute("aria-selected", "true");
   await page.getByRole("switch", { name: "Contact page crash" }).click();
+  await expect(page.getByRole("switch", { name: "Contact page crash" })).toHaveAttribute("aria-checked", "false");
   await page.reload();
   await expect(page.getByRole("tab", { name: /Motion/ })).toHaveAttribute("aria-selected", "true");
   const applied = await page.evaluate(() => ({

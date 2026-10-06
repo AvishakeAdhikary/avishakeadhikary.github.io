@@ -44,7 +44,12 @@ async function file(p) {
 
 http
   .createServer(async (req, res) => {
-    const url = decodeURIComponent(new URL(req.url ?? "/", "http://x").pathname);
+    let url;
+    try {
+      url = decodeURIComponent(new URL(req.url ?? "/", "http://x").pathname);
+    } catch {
+      return res.writeHead(400).end();
+    }
     const target = path.join(ROOT, url);
     if (!target.startsWith(ROOT)) return res.writeHead(403).end();
     let found = (await file(target)) ?? (await file(`${target}.html`));

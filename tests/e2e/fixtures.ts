@@ -49,6 +49,15 @@ export const test = base.extend<{ site: SiteOptions; problems: string[] }>({
       } catch {
         /* storage blocked: the site must still work */
       }
+      // Instant scrolling under test: Playwright scrolls a target into view and then clicks
+      // its coordinates, and the site's smooth scroll would still be moving on a slow runner.
+      const instant = () => {
+        const s = document.createElement("style");
+        s.textContent = "html { scroll-behavior: auto !important; }";
+        document.head.append(s);
+      };
+      if (document.head) instant();
+      else document.addEventListener("DOMContentLoaded", instant, { once: true });
     }, site);
     // Navigations resolve once the page is hydrated (html[data-ready]), so a test's first
     // key press or click never lands before the site's listeners exist.
