@@ -28,6 +28,9 @@ export function SiteFooter() {
           <Link href="/lab/" className="text-muted-foreground hover:text-foreground">
             Lab
           </Link>
+          <Link href="/arcade/" className="text-muted-foreground hover:text-foreground">
+            Arcade
+          </Link>
           <Link href="/gallery/" className="text-muted-foreground hover:text-foreground">
             Gallery
           </Link>

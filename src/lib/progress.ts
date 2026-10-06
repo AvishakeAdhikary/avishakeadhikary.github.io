@@ -118,7 +118,8 @@ export type TrackEvent =
   | { t: "tutorial"; game: string }
   | { t: "cleared"; game: string }
   | { t: "mastered"; game: string }
-  | { t: "best"; game: string; score: number };
+  /** A per-game/level best ("golf/bowl" → strokes). `lower` = lower scores are better. */
+  | { t: "best"; game: string; score: number; lower?: boolean };
 
 const add = (p: Progress, set: string, v: string) => {
   const cur = p.sets[set] ?? [];
@@ -169,7 +170,7 @@ export function track(ev: TrackEvent) {
       add(p, "mastered", ev.game);
       break;
     case "best":
-      if (!(ev.game in p.best) || ev.score > p.best[ev.game]) p.best = { ...p.best, [ev.game]: ev.score };
+      if (!(ev.game in p.best) || (ev.lower ? ev.score < p.best[ev.game] : ev.score > p.best[ev.game])) p.best = { ...p.best, [ev.game]: ev.score };
       break;
   }
   commit(p);

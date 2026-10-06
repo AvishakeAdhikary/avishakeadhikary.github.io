@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { Fragment, useCallback, useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { sfx } from "@/components/media/audio/play";
+import { GAME_INFO } from "@/components/arcade/registry";
 import { KEYBINDS } from "@/lib/keybinds";
 import { track } from "@/lib/progress";
 import type { SearchIndex } from "@/lib/search-index";
@@ -28,6 +29,7 @@ const PAGES: Record<string, string> = {
   about: "/about/",
   gallery: "/gallery/",
   lab: "/lab/",
+  arcade: "/arcade/",
   settings: "/settings/",
   contact: "/contact/",
 };
@@ -48,6 +50,8 @@ const COMMANDS = [
   "contact",
   "resume",
   "music",
+  "play",
+  "achievements",
   "theme",
   "settings",
   "sudo",
@@ -197,7 +201,7 @@ export function TerminalView({ autoFocus = true, onClose, className }: { autoFoc
               "about me     whoami · neofetch · exp · skills [area] · papers · cat resume.md",
               "projects     projects [--tag ai|cv|agents|web|mobile|desktop|iot]",
               "talk         ask <anything>  e.g. ask what did you build at PTS?",
-              "fun          contact · sudo hire-me · theme phosphor|red · music",
+              "fun          contact · sudo hire-me · theme phosphor|red · music · play [game] · achievements",
               "settings     settings · settings <crt|boot|crash|hud|dock|field|cursor> on|off · settings motion full|system|reduced",
               "shell        keys · history · clear · date · echo · exit",
             ].join("\n"),
@@ -248,6 +252,24 @@ export function TerminalView({ autoFocus = true, onClose, className }: { autoFoc
           onClose?.();
           return;
         }
+        case "play": {
+          const games = GAME_INFO.filter((g) => g.ready);
+          const q = rest.toLowerCase();
+          const hit = q ? games.find((g) => g.id === q || g.name.toLowerCase().includes(q)) : null;
+          if (!q || !hit) {
+            print("out", games.map((g) => `${g.id.padEnd(14)} ${g.name} · ${g.concept}`).join("\n") + "\n\nusage: play <game>  e.g. play knn");
+            return;
+          }
+          router.push(`/arcade/${hit.id}/`);
+          print("ok", `→ inserting coin: ${hit.name}`);
+          onClose?.();
+          return;
+        }
+        case "achievements":
+          router.push("/arcade/#trophies");
+          print("ok", "→ /arcade/#trophies (or press shift+a anywhere)");
+          onClose?.();
+          return;
         case "cat":
           if (/resume|cv/.test(rest)) {
             print("out", `${idx?.profile.name} · ${idx?.profile.headline}\n${(idx?.roles ?? []).map((r) => `• ${r.title}, ${r.org} (${r.range})`).join("\n")}`);

@@ -94,10 +94,9 @@ export function Keybinds() {
       }
       if (e.key === "A" && e.shiftKey) {
         e.preventDefault();
-        if (location.pathname === "/settings/") {
-          history.replaceState(history.state, "", "#progress");
-          window.dispatchEvent(new Event("settings:tab"));
-        } else router.push("/settings/#progress");
+        const room = document.getElementById("trophies");
+        if (room) room.scrollIntoView({ behavior: "smooth", block: "start" });
+        else router.push("/arcade/#trophies");
         return used("trophies");
       }
       if (e.shiftKey) return;
@@ -106,7 +105,7 @@ export function Keybinds() {
       const act: Record<string, () => void> = {
         g: () => {
           chord = window.setTimeout(() => (chord = 0), 1200);
-          info("go to… h w p k r a g l c ,");
+          info("go to… h w p k r a g l x c ,");
         },
         m: () => {
           const on = !music.get().playing;

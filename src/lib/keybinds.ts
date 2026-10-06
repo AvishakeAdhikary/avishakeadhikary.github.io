@@ -22,6 +22,7 @@ export const GO_TO: Record<string, { href: string; label: string }> = {
   a: { href: "/about/", label: "About" },
   g: { href: "/gallery/", label: "Gallery" },
   l: { href: "/lab/", label: "Lab" },
+  x: { href: "/arcade/", label: "Arcade" },
   c: { href: "/contact/", label: "Contact" },
   ",": { href: "/settings/", label: "Settings" },
 };
@@ -30,7 +31,7 @@ export const KEYBINDS: Keybind[] = [
   { id: "terminal", keys: ["~"], label: "Open or close the terminal", group: "General" },
   { id: "palette", keys: ["Ctrl", "K"], label: "Command menu (⌘K on a Mac)", group: "General" },
   { id: "help", keys: ["?"], label: "Show all keybinds", group: "General" },
-  { id: "trophies", keys: ["Shift", "A"], label: "Achievements and your rank", group: "General" },
+  { id: "trophies", keys: ["Shift", "A"], label: "Trophy room: achievements and your rank", group: "General" },
   { id: "music", keys: ["M"], label: "Music on / off", group: "Audio" },
   { id: "next", keys: ["N"], label: "Next music style or track", group: "Audio" },
   { id: "vol-down", keys: ["["], label: "Music volume down", group: "Audio" },

@@ -1,6 +1,7 @@
 import { FileDown, Settings2 } from "lucide-react";
 import Link from "next/link";
 import { AudioToggle } from "@/components/media/audio-toggle";
+import { GAME_INFO } from "@/components/arcade/registry";
 import { profile } from "@/content/profile";
 import { getProjects } from "@/lib/projects";
 import { CommandMenu, type CommandEntry } from "./command-menu";
@@ -13,6 +14,9 @@ function commandEntries(): CommandEntry[] {
     { group: "Navigate", label: "Home", href: "/" },
     ...NAV_ITEMS.map((n) => ({ group: "Navigate" as const, label: n.label, href: n.href, hint: n.sub })),
     { group: "Navigate", label: "Lab (terminal & playground)", href: "/lab/" },
+    { group: "Navigate", label: "Arcade (ML mini-games)", href: "/arcade/", keywords: "games play machine learning" },
+    { group: "Navigate", label: "Trophy room (achievements)", href: "/arcade/#trophies", keywords: "rank points progress" },
+    ...GAME_INFO.filter((g) => g.ready).map((g) => ({ group: "Navigate" as const, label: `Play: ${g.name}`, href: `/arcade/${g.id}/`, hint: "arcade", keywords: g.concept })),
     { group: "Navigate", label: "Gallery", href: "/gallery/" },
     { group: "Navigate", label: "Settings", href: "/settings/", keywords: "preferences music motion crt theme" },
     ...getProjects().map((p) => ({

@@ -14,7 +14,7 @@
 import { chromium, firefox, webkit } from "playwright";
 
 const BASE = (process.env.VERIFY_URL ?? "http://localhost:3000").replace(/\/$/, "");
-const ROUTES = ["/", "/work/", "/projects/", "/projects/zoyemed/", "/projects/os-portfolio/", "/skills/", "/research/", "/about/", "/gallery/", "/lab/", "/settings/", "/contact/?recovered=1", "/does-not-exist/"];
+const ROUTES = ["/", "/work/", "/projects/", "/projects/zoyemed/", "/projects/os-portfolio/", "/skills/", "/research/", "/about/", "/gallery/", "/lab/", "/arcade/", "/arcade/gradient-golf/", "/arcade/kmeans/", "/arcade/knn/", "/arcade/perceptron/", "/settings/", "/contact/?recovered=1", "/does-not-exist/"];
 const VIEWPORTS = [
   { width: 390, height: 844 },
   { width: 1440, height: 900 },
@@ -88,6 +88,8 @@ for (const name of engines) {
       if (realErrors.length) fail(`${name} ${vp.width}px ${route}: console errors → ${realErrors.slice(0, 2).join(" | ")}`);
       if (state.stuck || state.hiddenTok) fail(`${name} ${vp.width}px ${route}: ${state.stuck} stuck reveals, ${state.hiddenTok} hidden tokens`);
       if (state.overflow > 1) fail(`${name} ${vp.width}px ${route}: horizontal overflow ${state.overflow}px`);
+      // Performance budget for the home page (games, terminal, synth etc. must stay lazy).
+      if (route === "/" && (state.dom > 1500 || (state.heapMB && state.heapMB > 40))) fail(`${name} ${vp.width}px /: over budget (dom ${state.dom}, heap ${state.heapMB} MB)`);
       console.log(`  ${vp.width}px ${route.padEnd(26)} ok · dom ${state.dom}${state.heapMB ? ` · heap ${state.heapMB} MB` : ""}`);
     }
 
@@ -131,6 +133,60 @@ for (const name of engines) {
   await page.waitForURL(/\/contact\/\?recovered=1/, { timeout: 8000 });
   console.log("  crash → recover ✓");
   await ctx.close();
+
+  // Arcade: every ready game loads, its walkthrough can be skipped, and one
+  // real move updates the game.
+  {
+    const gctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+    await quiet(gctx);
+    await gctx.addInitScript(() => sessionStorage.setItem("booted", "1"));
+    const gp = await gctx.newPage();
+    const gerr = [];
+    gp.on("pageerror", (e) => gerr.push(String(e)));
+    gp.on("console", (m) => m.type() === "error" && gerr.push(m.text()));
+    const clickBoard = async (name, spots) => {
+      const board = gp.getByRole("img", { name });
+      await board.scrollIntoViewIfNeeded();
+      const bb = await board.boundingBox();
+      for (const [x, y] of spots) await gp.mouse.click(bb.x + bb.width * x, bb.y + bb.height * y);
+    };
+    const GAMES = {
+      "gradient-golf": async () => {
+        await gp.getByRole("button", { name: "Swing" }).click();
+        await gp.locator('[role="status"]', { hasText: /sunk|diverged|local minimum|ran out/ }).waitFor({ timeout: 20000 });
+      },
+      kmeans: async () => {
+        await clickBoard(/Your board/, [
+          [0.25, 0.3],
+          [0.72, 0.28],
+          [0.5, 0.75],
+        ]);
+        await gp.getByRole("button", { name: /Run Lloyd/ }).click();
+        await gp.locator('[role="status"]', { hasText: /beat the machine|a tie|machine wins/ }).waitFor({ timeout: 20000 });
+      },
+      knn: async () => {
+        await gp.getByRole("group", { name: "Your answer" }).getByRole("button").first().click();
+        await gp.getByText("It was").waitFor({ timeout: 8000 });
+      },
+      perceptron: async () => {
+        await gp.getByRole("button", { name: /Lock in/ }).click();
+        await gp.locator('[role="status"]', { hasText: /%|win|perfect/ }).waitFor({ timeout: 20000 });
+      },
+    };
+    for (const [id, play] of Object.entries(GAMES)) {
+      gerr.length = 0;
+      try {
+        await gp.goto(`${BASE}/arcade/${id}/`);
+        await gp.getByRole("button", { name: "Skip to the game" }).click({ timeout: 10000 });
+        await play();
+        if (gerr.length) fail(`${name}: arcade ${id}: ${gerr[0]}`);
+        else console.log(`  arcade ${id} ✓`);
+      } catch (e) {
+        fail(`${name}: arcade ${id}: ${String(e).split("\n")[0]}`);
+      }
+    }
+    await gctx.close();
+  }
 
   // Keybinds: work on the page, pause while typing and over the crash screen.
   {

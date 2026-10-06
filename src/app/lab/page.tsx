@@ -1,4 +1,6 @@
+import { ArrowRight, Gamepad2 } from "lucide-react";
 import type { Metadata } from "next";
+import Link from "next/link";
 import { InlineTerminal } from "@/components/lab/inline-terminal";
 import { Sampler } from "@/components/lab/sampler";
 import { PageHeader } from "@/components/page-header";
@@ -13,6 +15,8 @@ export const metadata: Metadata = {
 
 const EGGS = [
   { k: "~", v: "opens the terminal on any page" },
+  { k: "?", v: "shows every keybind (there are a lot)" },
+  { k: "play knn", v: "the terminal can start any Arcade game" },
   { k: "ask …", v: "the terminal answers from my real CV, citing the page it used" },
   { k: "↑ ↑ ↓ ↓ ← → ← → B A", v: "jailbreak mode (try it)" },
   { k: "sudo hire-me", v: "does exactly what you think" },
@@ -53,6 +57,23 @@ export default function LabPage() {
             </ul>
           </aside>
         </section>
+        <Link href="/arcade/" className="group spotlight panel flex flex-wrap items-center gap-5 p-6 transition-colors hover:border-signal/60">
+          <span className="grid size-14 place-items-center rounded-lg border border-signal/50 bg-signal/10 text-signal">
+            <Gamepad2 className="size-7" />
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block font-mono text-xl font-bold">
+              The Arcade<span className="text-signal">.</span>
+            </span>
+            <span className="mt-1 block text-sm text-muted-foreground">
+              Seven ML mini-games with walkthroughs: gradient descent golf, k-means, KNN on my skill map, perceptrons, token sampling, a broken transformer to debug,
+              and a circuit to find inside one.
+            </span>
+          </span>
+          <span className="inline-flex items-center gap-1.5 font-mono text-sm text-signal">
+            play <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+          </span>
+        </Link>
         <section aria-labelledby="toy">
           <h2 id="toy" className="mb-2 font-mono text-2xl font-bold">
             Sampling, explained with a toy<span className="text-signal">.</span>
