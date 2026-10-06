@@ -5,13 +5,12 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { sfx } from "@/components/media/audio/play";
 import { accuracy, clip, lineThrough, margin, predict, score, train, type Line, type Sample, type Update } from "@/lib/ml/perceptron";
 import { blobs, rng } from "@/lib/ml/random";
-import { track, useProgress } from "@/lib/progress";
+import { recordLevel, useProgress } from "@/lib/progress";
 import { subscribe } from "@/lib/ticker";
 import { GameShell, Levels, type WalkStep } from "../shell";
 import { Btn, catColor, Log, Stat, svgPoint, usePalette } from "../ui";
 
 const GAME = "perceptron" as const;
-const key = (i: number) => `${GAME}/${i}`;
 const POS = catColor(1, 6);
 const NEG = catColor(4, 6);
 
@@ -72,6 +71,9 @@ const LEVELS: Level[] = [
     ),
   },
 ];
+
+/** For the rules table test (content/achievements GAME_RULES). */
+export const LEVEL_COUNT = LEVELS.length;
 
 // Ensure the separable levels really are (the perceptron converges on them).
 const SEPARABLE_OK = LEVELS.map((l) => !l.separable || train(l.samples, 0.5, 200).converged);
@@ -333,7 +335,7 @@ export default function PerceptronDuel() {
     if (acc === 1) {
       const ym = margin(yours, L.samples);
       const mm = mAcc === 1 ? margin(m, L.samples) : -Infinity;
-      track({ t: "best", game: key(level), score: ym > mm ? 2 : 1 });
+      recordLevel(GAME, level, ym > mm ? "mastered" : "cleared");
       sfx(ym > mm ? "win" : "success");
       setVerdict(
         ym > mm
@@ -351,12 +353,8 @@ export default function PerceptronDuel() {
   const uIdx = u && run ? run.updates.indexOf(u) : -1;
   // The line *before* this update: the point was misclassified by it (y · score ≤ 0).
   const before: Line = uIdx > 0 && run ? run.updates[uIdx - 1].line : { w: [0, 0], b: 0 };
-  const cleared = LEVELS.map((_, i) => (progress.best[key(i)] ?? 0) >= 1);
-
-  useEffect(() => {
-    const sep = LEVELS.map((l, i) => (l.separable ? (progress.best[key(i)] ?? 0) >= 1 : true));
-    if (sep.every(Boolean)) track({ t: "cleared", game: GAME });
-  }, [progress.best]);
+  const levels = progress.levels[GAME] ?? [];
+  const cleared = LEVELS.map((_, i) => (levels[i] ?? 0) >= 1);
 
   const reset = (i = level) => {
     setLevel(i);
@@ -368,8 +366,7 @@ export default function PerceptronDuel() {
 
   const declare = () => {
     if (!L.separable) {
-      track({ t: "mastered", game: GAME });
-      track({ t: "best", game: key(level), score: 2 });
+      recordLevel(GAME, level, "mastered");
       sfx("win");
       setVerdict("correct: no straight line separates XOR-style data. one neuron can't; two layers can. that insight (Minsky & Papert, 1969) is why networks have hidden layers.");
     } else {

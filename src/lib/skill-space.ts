@@ -18,7 +18,14 @@ export const SPACE = { w: 1000, h: 640 };
 
 /** Deterministic PRNG so the map is identical on every build. */
 const rng = (seed: number) => () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646;
-const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+/** "C++" → "c-plus-plus", "C#" → "c-sharp": symbols matter, or C, C++ and C# collide. */
+const slug = (s: string) =>
+  s
+    .toLowerCase()
+    .replace(/\+/g, " plus ")
+    .replace(/#/g, " sharp ")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
 
 /**
  * A 2-D "embedding" of every skill, computed at build time: categories
@@ -64,6 +71,12 @@ export function buildSkillSpace() {
       });
     });
   });
+
+  const seen = new Set<string>();
+  for (const n of nodes) {
+    if (seen.has(n.id)) throw new Error(`Duplicate skill id "${n.id}": rename a skill in content/skills.ts`);
+    seen.add(n.id);
+  }
 
   for (const a of nodes) {
     const near = nodes

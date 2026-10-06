@@ -6,7 +6,7 @@ import { sfx } from "@/components/media/audio/play";
 import { CASES, DIAGNOSES, STEPS_PER_RUN, type DiagnosisId } from "@/lib/ml/debugger-cases";
 import { demoTokens, LOSS_FLOOR, TOKEN_LABEL } from "@/lib/ml/trainer-core";
 import { TASK_CFG, TinyTransformer } from "@/lib/ml/tiny-transformer";
-import { track, useProgress } from "@/lib/progress";
+import { recordLevel, useProgress } from "@/lib/progress";
 import { cn } from "@/lib/utils";
 import { GameShell, Levels, type WalkStep } from "../../shell";
 import { Btn, Log, Stat } from "../../ui";
@@ -14,7 +14,6 @@ import { AttnMaps, Dashboard, LogBars, LossChart, Panel } from "./telemetry";
 import { useTrainer } from "./use-trainer";
 
 const GAME = "debugger" as const;
-const key = (id: string) => `${GAME}/${id}`;
 
 // ── Walkthrough ──────────────────────────────────────────────────────────
 function TokenStrip() {
@@ -74,7 +73,8 @@ export default function TransformerDebugger() {
   const [wrong, setWrong] = useState(0);
   const [note, setNote] = useState<string | null>(null);
   const started = useRef(false);
-  const cleared = CASES.map((x) => (progress.best[key(x.id)] ?? 0) >= 1);
+  const levels = progress.levels[GAME] ?? [];
+  const cleared = CASES.map((_, i) => (levels[i] ?? 0) >= 1);
 
   // The walkthrough trains a healthy model live so every chart is real.
   const steps: WalkStep[] = [
@@ -185,12 +185,6 @@ export default function TransformerDebugger() {
     startCase(0);
   };
 
-  useEffect(() => {
-    const done = CASES.map((x) => progress.best[key(x.id)] ?? 0);
-    if (done.every((d) => d >= 1)) track({ t: "cleared", game: GAME });
-    if (done.every((d) => d >= 2)) track({ t: "mastered", game: GAME });
-  }, [progress.best]);
-
   const apply = () => {
     if (!pick) return;
     if (pick === c.bug) {
@@ -200,7 +194,7 @@ export default function TransformerDebugger() {
       game.run({ ...c.fixed, steps: STEPS_PER_RUN }, () => {
         setPhase("solved");
         sfx("win");
-        track({ t: "best", game: key(c.id), score: wrong === 0 ? 2 : 1 });
+        recordLevel(GAME, idx, wrong === 0 ? "mastered" : "cleared");
       });
     } else {
       setWrong((w) => w + 1);
@@ -245,7 +239,7 @@ export default function TransformerDebugger() {
                   pick === d.id ? "border-signal/60 bg-signal/10" : "border-border hover:border-border-strong",
                 )}
               >
-                <input type="radio" name="dx" className="mt-1 accent-[var(--signal)]" checked={pick === d.id} onChange={() => setPick(d.id)} />
+                <input type="radio" name="dx" className="mt-0.5" checked={pick === d.id} onChange={() => setPick(d.id)} />
                 <span>
                   <span className="font-medium">{d.label}</span>
                   <span className="block text-xs text-muted-foreground">fix: {d.fix}</span>

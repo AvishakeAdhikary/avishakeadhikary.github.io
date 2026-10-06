@@ -48,6 +48,39 @@ export const GAMES = [
 ] as const;
 export type GameId = (typeof GAMES)[number]["id"];
 
+/**
+ * How each game turns level results into "cleared" and "mastered". A level
+ * result is 1 (cleared) or 2 (cleared the hard way: under par, first try,
+ * beat the machine…). Default: every level ≥ 1 clears, every level 2 masters.
+ */
+export interface GameRule {
+  levels: number;
+  clear?: (lv: number[]) => boolean;
+  master?: (lv: number[]) => boolean;
+}
+
+export const GAME_RULES: Record<GameId, GameRule> = {
+  "gradient-golf": { levels: 4 },
+  kmeans: { levels: 4 },
+  // One "level": 1 = ten correct answers in total, 2 = a streak of ten.
+  knn: { levels: 1 },
+  // Levels 0–2 are separable; level 3 (XOR) is mastered by declaring it impossible.
+  perceptron: { levels: 4, clear: (lv) => [0, 1, 2].every((i) => (lv[i] ?? 0) >= 1), master: (lv) => (lv[3] ?? 0) >= 2 },
+  tokens: { levels: 6 },
+  debugger: { levels: 7 },
+  interp: { levels: 4 },
+};
+
+export const gameCleared = (game: GameId, lv: number[] = []) => {
+  const r = GAME_RULES[game];
+  return r.clear ? r.clear(lv) : Array.from({ length: r.levels }, (_, i) => lv[i] ?? 0).every((x) => x >= 1);
+};
+
+export const gameMastered = (game: GameId, lv: number[] = []) => {
+  const r = GAME_RULES[game];
+  return r.master ? r.master(lv) : Array.from({ length: r.levels }, (_, i) => lv[i] ?? 0).every((x) => x >= 2);
+};
+
 const has = (p: ProgressView, set: string, v: string) => (p.sets[set] ?? []).includes(v);
 const count = (p: ProgressView, set: string) => (p.sets[set] ?? []).length;
 const flag = (p: ProgressView, f: string) => !!p.flags[f];

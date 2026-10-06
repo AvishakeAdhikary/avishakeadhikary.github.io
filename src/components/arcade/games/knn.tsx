@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { sfx } from "@/components/media/audio/play";
 import { classify, neighbours, vote, type LPt } from "@/lib/ml/knn";
 import { blobs, rng } from "@/lib/ml/random";
-import { track, useProgress } from "@/lib/progress";
+import { recordLevel, track, useProgress } from "@/lib/progress";
 import { cn } from "@/lib/utils";
 import { GameShell, type WalkStep } from "../shell";
 import { Btn, catColor, Log, Slider, Stat, svgPoint, usePalette } from "../ui";
@@ -268,13 +268,6 @@ export default function KnnGame({ data }: { data?: unknown }) {
   const revealed = guess !== null;
   const correct = guess === target.label;
 
-  useEffect(() => {
-    const total = progress.best[`${GAME}/correct`] ?? 0;
-    const streak = progress.best[`${GAME}/streak`] ?? 0;
-    if (total >= 10) track({ t: "cleared", game: GAME });
-    if (streak >= 10) track({ t: "mastered", game: GAME });
-  }, [progress.best]);
-
   const answer = (l: string) => {
     if (revealed) return;
     setGuess(l);
@@ -283,8 +276,10 @@ export default function KnnGame({ data }: { data?: unknown }) {
     const s = score;
     const nextScore = { right: s.right + (ok ? 1 : 0), total: s.total + 1, streak: ok ? s.streak + 1 : 0, knnRight: s.knnRight + (model.winner === target.label ? 1 : 0) };
     setScore(nextScore);
-    if (ok) track({ t: "best", game: `${GAME}/correct`, score: (progress.best[`${GAME}/correct`] ?? 0) + 1 });
+    const total = (progress.best[`${GAME}/correct`] ?? 0) + (ok ? 1 : 0);
+    if (ok) track({ t: "best", game: `${GAME}/correct`, score: total });
     track({ t: "best", game: `${GAME}/streak`, score: nextScore.streak });
+    if (total >= 10) recordLevel(GAME, 0, nextScore.streak >= 10 ? "mastered" : "cleared");
   };
 
   const next = () => {

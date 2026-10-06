@@ -4,13 +4,12 @@ import { FlaskConical, Microscope, Send, Undo2 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { sfx } from "@/components/media/audio/play";
 import { components, decode, dla, FACTS, INDUCTION, probOf, run, SUPPRESSION, VOCAB, type CompId, type Model, type Run, type Tok } from "@/lib/ml/interp";
-import { track, useProgress } from "@/lib/progress";
+import { recordLevel, useProgress } from "@/lib/progress";
 import { cn } from "@/lib/utils";
 import { GameShell, Levels, type WalkStep } from "../shell";
 import { Btn, Log, Stat, usePalette } from "../ui";
 
 const GAME = "interp" as const;
-const key = (i: number) => `${GAME}/${i}`;
 
 type Kind = "necessary" | "fighting" | "patch";
 
@@ -64,6 +63,9 @@ const LEVELS: Level[] = [
     hint: "Activation patching localises where the difference between two inputs is carried.",
   },
 ];
+
+/** For the rules table test (content/achievements GAME_RULES). */
+export const LEVEL_COUNT = LEVELS.length;
 
 /** The ground truth, computed from real interventions on the real model. */
 function truth(L: Level): Set<string> {
@@ -335,13 +337,8 @@ export default function InterpGame() {
 
   const clean = useMemo(() => run(L.model, L.tokens), [L]);
   const live = L.kind === "patch" ? run(L.model, L.corrupted!, { patch: { from: clean, ids: patched } }) : run(L.model, L.tokens, { ablate: off });
-  const cleared = LEVELS.map((_, i) => (progress.best[key(i)] ?? 0) >= 1);
-
-  useEffect(() => {
-    const b = LEVELS.map((_, i) => progress.best[key(i)] ?? 0);
-    if (b.every((x) => x >= 1)) track({ t: "cleared", game: GAME });
-    if (b.every((x) => x >= 2)) track({ t: "mastered", game: GAME });
-  }, [progress.best]);
+  const levels = progress.levels[GAME] ?? [];
+  const cleared = LEVELS.map((_, i) => (levels[i] ?? 0) >= 1);
 
   const pick = (i: number) => {
     setLevel(i);
@@ -370,7 +367,7 @@ export default function InterpGame() {
     if (ok) {
       sfx("win");
       const efficient = moves <= 4 && wrong === 0;
-      track({ t: "best", game: key(level), score: efficient ? 2 : 1 });
+      recordLevel(GAME, level, efficient ? "mastered" : "cleared");
       setResult({
         ok,
         msg: `Correct: {${[...answerSet].join(", ")}}. ${efficient ? "Efficient science: few interventions, no wrong guesses." : "Solved. Try it again with fewer interventions to master it."}`,
@@ -499,7 +496,7 @@ export default function InterpGame() {
           <div className="flex flex-wrap gap-1.5">
             {comps.map((c) => (
               <label key={c} className={cn("flex cursor-lock items-center gap-1.5 rounded-md border px-2.5 py-1 font-mono text-xs", claim.has(c) ? "border-signal/60 bg-signal/10" : "border-border")}>
-                <input type="checkbox" className="accent-[var(--signal)]" checked={claim.has(c)} onChange={() => setClaim((s) => (s.has(c) ? new Set([...s].filter((x) => x !== c)) : new Set([...s, c])))} />
+                <input type="checkbox" checked={claim.has(c)} onChange={() => setClaim((s) => (s.has(c) ? new Set([...s].filter((x) => x !== c)) : new Set([...s, c])))} />
                 {c}
               </label>
             ))}

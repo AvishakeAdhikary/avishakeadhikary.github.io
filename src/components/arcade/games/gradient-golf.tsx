@@ -4,7 +4,7 @@ import { Flag, RotateCcw, Zap } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { sfx } from "@/components/media/audio/play";
 import { LR_GRID, par as parFor, simulate, SURFACES, type OptimizerId, type Shot, type Surface } from "@/lib/ml/descent";
-import { track, useProgress } from "@/lib/progress";
+import { recordLevel, track, useProgress } from "@/lib/progress";
 import { renderDpr } from "@/lib/quality";
 import { subscribe } from "@/lib/ticker";
 import { GameShell, Levels, type WalkStep } from "../shell";
@@ -465,7 +465,8 @@ export default function GradientGolf() {
   const pars = useMemo(() => SURFACES.map((s) => parFor(s, CLUBS[s.id])), []);
   const par = pars[level];
   const best = (i: number) => progress.best[`${GAME}/${SURFACES[i].id}`];
-  const cleared = SURFACES.map((_, i) => best(i) !== undefined);
+  const levels = progress.levels[GAME] ?? [];
+  const cleared = SURFACES.map((_, i) => (levels[i] ?? 0) >= 1);
 
   const reveal = useReplay(shot, shot && shot.path.length > 120 ? 90 : 45, () => {
     if (!shot) return;
@@ -473,15 +474,9 @@ export default function GradientGolf() {
     if (shot.outcome === "sunk") {
       sfx(shot.steps <= par ? "win" : "hit");
       track({ t: "best", game: `${GAME}/${surface.id}`, score: shot.steps, lower: true });
+      recordLevel(GAME, level, shot.steps <= par ? "mastered" : "cleared");
     } else sfx(shot.outcome === "diverged" ? "error" : "lose");
   });
-
-  // Clear / mastery from the stored bests.
-  useEffect(() => {
-    const bests = SURFACES.map((s) => progress.best[`${GAME}/${s.id}`]);
-    if (bests.every((b) => b !== undefined)) track({ t: "cleared", game: GAME });
-    if (bests.every((b, i) => b !== undefined && b <= pars[i])) track({ t: "mastered", game: GAME });
-  }, [progress.best, pars]);
 
   const pick = (i: number) => {
     setLevel(i);

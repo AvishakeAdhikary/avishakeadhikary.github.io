@@ -2,26 +2,53 @@
 
 import { useSyncExternalStore } from "react";
 import { sfx } from "@/components/media/audio/play";
-import { ACHIEVEMENTS, CATEGORIES, type Achievement, type Category, type ProgressView } from "@/content/achievements";
+import { ACHIEVEMENTS, CATEGORIES, GAMES, gameCleared, gameMastered, type Achievement, type Category, type GameId, type ProgressView } from "@/content/achievements";
 import { readSettings } from "./settings";
 import { RANK_LABEL, TIER_POINTS, type Rank } from "./tiers";
 import { pushToast } from "./toast";
 
 /**
  * The visitor's progress, in localStorage (never sent anywhere).
- * Components report what happened with track(); achievements are
- * re-evaluated from the record after every event, unlocks raise a toast
- * with a tier sound, and crossing a rank threshold raises a rank-up toast.
+ * Components report what happened with track() / recordLevel();
+ * achievements are re-evaluated from the record after every event, unlocks
+ * raise a toast with a tier sound, and crossing a rank threshold raises a
+ * rank-up toast.
+ *
+ * Every write is idempotent: if an event changes nothing, nothing is saved
+ * and nobody is notified. (Notifying on no-op writes let a component that
+ * reports from an effect re-render itself forever.)
  */
 const KEY = "avishake-progress";
 
 interface Progress extends ProgressView {
   v: 1;
   unlocked: Record<string, number>;
+  /** Display bests ("gradient-golf/bowl" → strokes, "knn/streak" → 7). */
   best: Record<string, number>;
+  /** Per-game level results: 0 none, 1 cleared, 2 cleared the hard way. */
+  levels: Record<string, number[]>;
 }
 
-const empty = (): Progress => ({ v: 1, unlocked: {}, sets: {}, counters: {}, days: [], flags: {}, best: {} });
+const empty = (): Progress => ({ v: 1, unlocked: {}, sets: {}, counters: {}, days: [], flags: {}, best: {}, levels: {} });
+
+const GOLF_HOLES = ["bowl", "ravine", "banana", "twin"];
+
+/** Records written before `levels` existed kept 1/2 results in `best` under "<game>/<n>". */
+function migrate(p: Progress): Progress {
+  if (Object.keys(p.levels).length) return p;
+  const levels: Record<string, number[]> = {};
+  for (const [k, v] of Object.entries(p.best)) {
+    const m = k.match(/^([a-z-]+)\/(\d+)$/);
+    if (m && GAMES.some((g) => g.id === m[1]) && (v === 1 || v === 2)) (levels[m[1]] ??= [])[Number(m[2])] = v;
+  }
+  // Golf kept strokes per hole name; KNN kept running totals.
+  GOLF_HOLES.forEach((hole, i) => {
+    if (p.best[`gradient-golf/${hole}`] !== undefined) (levels["gradient-golf"] ??= [])[i] = 1;
+  });
+  if ((p.best["knn/correct"] ?? 0) >= 10) levels.knn = [(p.best["knn/streak"] ?? 0) >= 10 ? 2 : 1];
+  for (const g of GAMES) if (levels[g.id]) levels[g.id] = Array.from({ length: levels[g.id].length }, (_, i) => levels[g.id][i] ?? 0);
+  return { ...p, levels };
+}
 
 let cache: Progress | null = null;
 const listeners = new Set<() => void>();
@@ -31,7 +58,7 @@ function load(): Progress {
   if (typeof window === "undefined") return empty();
   try {
     const raw = JSON.parse(localStorage.getItem(KEY) ?? "null") as Progress | null;
-    cache = raw?.v === 1 ? { ...empty(), ...raw } : empty();
+    cache = raw?.v === 1 ? migrate({ ...empty(), ...raw }) : empty();
   } catch {
     cache = empty();
   }
@@ -39,6 +66,7 @@ function load(): Progress {
 }
 
 function save(p: Progress) {
+  if (cache && JSON.stringify(cache) === JSON.stringify(p)) return;
   cache = p;
   try {
     localStorage.setItem(KEY, JSON.stringify(p));
@@ -176,6 +204,23 @@ export function track(ev: TrackEvent) {
   commit(p);
 }
 
+/**
+ * Record a level result (1 = cleared, 2 = cleared the hard way) and derive
+ * the game's cleared/mastered state from GAME_RULES. Never downgrades.
+ * Call from event handlers, not from effects.
+ */
+export function recordLevel(game: GameId, level: number, outcome: "cleared" | "mastered") {
+  if (typeof window === "undefined") return;
+  const p: Progress = structuredClone(load());
+  const lv = [...(p.levels[game] ?? [])];
+  while (lv.length <= level) lv.push(0);
+  lv[level] = Math.max(lv[level], outcome === "mastered" ? 2 : 1);
+  p.levels = { ...p.levels, [game]: lv };
+  if (gameCleared(game, lv)) add(p, "cleared", game);
+  if (gameMastered(game, lv)) add(p, "mastered", game);
+  commit(p);
+}
+
 /** Record today's date (for the "returning user" secret). */
 export function markDay() {
   const day = new Date().toISOString().slice(0, 10);
@@ -185,6 +230,8 @@ export function markDay() {
 }
 
 function commit(p: Progress) {
+  const prev = load();
+  if (JSON.stringify(prev) === JSON.stringify(p)) return;
   const before = standing(p);
   const fresh: Achievement[] = [];
   for (const a of ACHIEVEMENTS) {
@@ -231,11 +278,12 @@ export function resetProgress() {
   } catch {
     /* ignore */
   }
-  save(empty());
+  cache = empty();
+  listeners.forEach((l) => l());
 }
 
 // ── React ──────────────────────────────────────────────────────────────────
-function subscribe(fn: () => void) {
+export function subscribeProgress(fn: () => void) {
   listeners.add(fn);
   const onStorage = (e: StorageEvent) => {
     if (e.key === KEY) {
@@ -252,7 +300,9 @@ function subscribe(fn: () => void) {
 const SERVER = empty();
 
 export function useProgress(): Progress {
-  return useSyncExternalStore(subscribe, load, () => SERVER);
+  return useSyncExternalStore(subscribeProgress, load, () => SERVER);
 }
+
+export const readProgress = (): Readonly<Progress> => load();
 
 export const isFirstVisit = () => !Object.keys(load().unlocked).length && !(load().sets.pages ?? []).length;

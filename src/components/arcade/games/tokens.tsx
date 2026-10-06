@@ -4,13 +4,12 @@ import { CheckCircle2, Dices, RotateCcw, Sparkles } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { sfx } from "@/components/media/audio/play";
 import { bigramModel, entropyBits, processLogits, sampleRow, softmax, tokenId, tokenize, type Cand, type Knobs, type Row } from "@/lib/ml/sampling";
-import { track, useProgress } from "@/lib/progress";
+import { recordLevel, useProgress } from "@/lib/progress";
 import { cn } from "@/lib/utils";
 import { GameShell, Levels, type WalkStep } from "../shell";
 import { Btn, Log, Slider, Stat } from "../ui";
 
 const GAME = "tokens" as const;
-const key = (i: number) => `${GAME}/${i}`;
 const DEFAULT: Knobs = { temperature: 1, topK: 0, topP: 1 };
 /** The dice (only ever rolled from event handlers). */
 const roll = () => Math.random();
@@ -188,7 +187,7 @@ const MARKOV: Record<string, [string, number][]> = {
 const markov = (w: string): Cand[] => (MARKOV[w] ?? [[".", 0]]).map(([tok, logit]) => ({ tok, logit }));
 
 /** One generation from the Markov model; "clean" = no loop, no wild pick, at least 4 words. */
-function generateOnce(k: Knobs) {
+export function generateOnce(k: Knobs) {
   let w = "The";
   const out: { word: string; p: number }[] = [];
   for (let i = 0; i < 12 && w !== "."; i++) {
@@ -274,6 +273,11 @@ const LEVELS: Level[] = [
     start: { temperature: 0.1 },
   },
 ];
+
+/** For the rules table test (content/achievements GAME_RULES). */
+export const LEVEL_COUNT = LEVELS.length;
+/** Exposed for the challenge-feasibility unit tests. */
+export const TOKEN_LEVELS = LEVELS;
 
 // ── Walkthrough demos ────────────────────────────────────────────────────
 function TokenizerDemo() {
@@ -456,13 +460,8 @@ export default function TokenPrediction({ data }: { data?: unknown }) {
   const cands = L.mode === "prompt" ? RIVER_PROMPTS[prompt].cands : L.cands;
   const context = L.mode === "prompt" ? RIVER_PROMPTS[prompt].text : L.context;
   const rows = processLogits(cands, knobs);
-  const cleared = LEVELS.map((_, i) => (progress.best[key(i)] ?? 0) >= 1);
-
-  useEffect(() => {
-    const b = LEVELS.map((_, i) => progress.best[key(i)] ?? 0);
-    if (b.every((x) => x >= 1)) track({ t: "cleared", game: GAME });
-    if (b.every((x) => x >= 2)) track({ t: "mastered", game: GAME });
-  }, [progress.best]);
+  const levels = progress.levels[GAME] ?? [];
+  const cleared = LEVELS.map((_, i) => (levels[i] ?? 0) >= 1);
 
   const pickLevel = (i: number) => {
     setLevel(i);
@@ -481,7 +480,7 @@ export default function TokenPrediction({ data }: { data?: unknown }) {
     setAttempts((a) => a + 1);
     if (ok) {
       sfx("win");
-      track({ t: "best", game: key(level), score: first ? 2 : 1 });
+      recordLevel(GAME, level, first ? "mastered" : "cleared");
     } else sfx("miss");
   };
 

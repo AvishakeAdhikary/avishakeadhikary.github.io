@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { sfx } from "@/components/media/audio/play";
 import { assign, forgy, inertia, kmeansPP, lloyd, update } from "@/lib/ml/kmeans";
 import { blobs, dist2, rng, type Pt } from "@/lib/ml/random";
-import { track, useProgress } from "@/lib/progress";
+import { recordLevel, useProgress } from "@/lib/progress";
 import { subscribe } from "@/lib/ticker";
 import { GameShell, Levels, type WalkStep } from "../shell";
 import { Btn, catColor, Log, Stat, svgPoint, usePalette } from "../ui";
@@ -66,7 +66,8 @@ const LEVELS: Level[] = [
   },
 ];
 
-const scoreKey = (i: number) => `${GAME}/${i}`;
+/** For the rules table test (content/achievements GAME_RULES). */
+export const LEVEL_COUNT = LEVELS.length;
 
 const best = (pts: Pt[], k: number) => {
   let b = Infinity;
@@ -360,7 +361,14 @@ export default function KMeansRush() {
 
   const onEnd = () => {
     finished.current++;
-    if (finished.current === 2) setPhase("done");
+    if (finished.current !== 2 || !mine || !theirs) return;
+    setPhase("done");
+    const mineI = inertia(pts, mine.at(-1)!);
+    const theirsI = inertia(pts, theirs.at(-1)!);
+    const result = mineI < theirsI * 0.995 ? "win" : mineI <= theirsI * 1.005 ? "tie" : "lose";
+    const ok = mineI <= optimum * 1.02;
+    sfx(result === "win" ? "win" : result === "tie" && ok ? "success" : "lose");
+    if (ok) recordLevel(GAME, level, result === "win" ? "mastered" : "cleared");
   };
   const myCents = useHistory(mine, 3, onEnd);
   const theirCents = useHistory(theirs, 3, onEnd);
@@ -369,22 +377,8 @@ export default function KMeansRush() {
   const myFinal = mine ? inertia(pts, mine.at(-1)!) : null;
   const theirFinal = theirs ? inertia(pts, theirs.at(-1)!) : null;
   const outcome = phase === "done" && myFinal !== null && theirFinal !== null ? (myFinal < theirFinal * 0.995 ? "win" : myFinal <= theirFinal * 1.005 ? "tie" : "lose") : null;
-  const cleared = LEVELS.map((_, i) => (progress.best[scoreKey(i)] ?? 0) >= 1);
-
-  useEffect(() => {
-    if (!outcome || myFinal === null) return;
-    const ok = myFinal <= optimum * 1.02;
-    sfx(outcome === "win" ? "win" : outcome === "tie" && ok ? "success" : "lose");
-    if (ok) track({ t: "best", game: scoreKey(level), score: outcome === "win" ? 2 : 1 });
-    // Only once per finished duel.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [outcome]);
-
-  useEffect(() => {
-    const b = LEVELS.map((_, i) => progress.best[scoreKey(i)] ?? 0);
-    if (b.every((x) => x >= 1)) track({ t: "cleared", game: GAME });
-    if (b.every((x) => x >= 2)) track({ t: "mastered", game: GAME });
-  }, [progress.best]);
+  const levels = progress.levels[GAME] ?? [];
+  const cleared = LEVELS.map((_, i) => (levels[i] ?? 0) >= 1);
 
   const reset = (i = level) => {
     setLevel(i);
