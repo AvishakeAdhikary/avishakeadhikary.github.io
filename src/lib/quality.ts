@@ -18,8 +18,12 @@ let gpu: GpuHint | null = null;
 
 /**
  * What the GPU can do, probed once per session (cached in sessionStorage).
- *  - `failIfMajorPerformanceCaveat` returns no context when WebGL would be
- *    software-rendered: that alone tells us "software", no string sniffing.
+ * Only code that is about to render WebGL calls this (the home globe): on a
+ * machine without WebGL, Firefox logs a warning for any failed context, so
+ * other pages never probe.
+ *  - A plain context is requested (no failIfMajorPerformanceCaveat: Firefox
+ *    warns when it refuses a software context). Software rendering is read
+ *    from the renderer name instead.
  *  - The renderer name comes from gl.RENDERER first (Firefox already reports
  *    it there); only engines that mask it (Chromium, Safari) are asked via
  *    WEBGL_debug_renderer_info, which Firefox deprecates.
@@ -29,24 +33,19 @@ let gpu: GpuHint | null = null;
 export function gpuHint(): GpuHint {
   if (gpu) return gpu;
   if (typeof window === "undefined") return "unknown";
-  try {
-    const cached = sessionStorage.getItem("gpu-hint") as GpuHint | null;
-    if (cached) return (gpu = cached);
-  } catch {
-    /* storage blocked */
-  }
+  const known = cachedGpuHint();
+  if (known) return (gpu = known);
   gpu = (() => {
     try {
-      if (!document.createElement("canvas").getContext("webgl")) return "none";
-      const gl = document.createElement("canvas").getContext("webgl", { failIfMajorPerformanceCaveat: true });
-      if (!gl) return "software";
+      const gl = document.createElement("canvas").getContext("webgl");
+      if (!gl) return "none";
       let r = String(gl.getParameter(gl.RENDERER));
       if (/^(webkit|mozilla) webgl$/i.test(r)) {
         const ext = gl.getExtension("WEBGL_debug_renderer_info");
         if (ext) r = String(gl.getParameter(ext.UNMASKED_RENDERER_WEBGL));
       }
       r = r.toLowerCase();
-      if (/swiftshader|llvmpipe|software|basic render/.test(r)) return "software";
+      if (/swiftshader|llvmpipe|softpipe|swrast|software|basic render|warp/.test(r)) return "software";
       if (/rtx|gtx|radeon rx|rx \d{4}|arc a|quadro|geforce|apple m\d (pro|max|ultra)/.test(r)) return "discrete";
       if (/intel|uhd|iris|adreno|mali|apple/.test(r)) return "integrated";
       return "unknown";
@@ -62,6 +61,16 @@ export function gpuHint(): GpuHint {
   return gpu;
 }
 
+/** The probe's answer if this session already ran it (never probes). */
+function cachedGpuHint(): GpuHint | null {
+  if (gpu) return gpu;
+  try {
+    return sessionStorage.getItem("gpu-hint") as GpuHint | null;
+  } catch {
+    return null;
+  }
+}
+
 export function getTier(): Tier {
   if (typeof window === "undefined") return "mid";
   // Visitor override from /settings wins over detection.
@@ -71,7 +80,8 @@ export function getTier(): Tier {
   const nav = navigator as Nav;
   const cores = nav.hardwareConcurrency ?? 4;
   const mem = nav.deviceMemory ?? 8;
-  const gpu = gpuHint();
+  // Uses the GPU probe only if something that renders WebGL already ran it.
+  const gpu = cachedGpuHint();
   if (nav.connection?.saveData || gpu === "software" || gpu === "none" || (cores <= 4 && mem <= 4)) cached = "low";
   else if (gpu === "discrete" || (cores >= 12 && mem >= 8)) cached = "high";
   else cached = "mid";
