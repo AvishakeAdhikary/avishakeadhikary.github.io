@@ -120,6 +120,7 @@ export function CrashOverlay({ email, onRecover }: { email: string; onRecover: (
               </button>
               <button
                 type="button"
+                data-track="contact"
                 onClick={async () => {
                   await navigator.clipboard?.writeText(email).catch(() => undefined);
                   setCopied(true);

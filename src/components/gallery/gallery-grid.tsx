@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { DiffusionImage } from "@/components/fx/diffusion-image";
 import { sfx } from "@/components/media/audio/play";
+import { track } from "@/lib/progress";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 
 export interface GalleryPhoto {
@@ -34,6 +35,9 @@ export function GalleryGrid({ photos }: { photos: GalleryPhoto[] }) {
   }, [open, step]);
 
   const current = index !== null ? photos[index] : null;
+  useEffect(() => {
+    if (current) track({ t: "photo", src: current.src, total: photos.length });
+  }, [current, photos.length]);
 
   return (
     <>

@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import { track } from "@/lib/progress";
 import { motionReduced, readSettings } from "@/lib/settings";
 
 const CrashOverlay = dynamic(() => import("./crash-overlay").then((m) => m.CrashOverlay), { ssr: false });
@@ -40,6 +41,7 @@ export function CrashController({ email }: { email: string }) {
       /* ignore */
     }
     setActive(true);
+    track({ t: "flag", flag: "crash" });
   }, [router]);
 
   useEffect(() => {

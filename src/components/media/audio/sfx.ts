@@ -255,7 +255,7 @@ export function play(name: SfxName) {
 
   const { ctx, sfx } = getMixer();
   wire();
-  if (ctx.state === "suspended") void ctx.resume();
+  if (ctx.state === "suspended") void ctx.resume().catch(() => undefined);
 
   // Voice stealing: fade the oldest out when too many are ringing.
   const t = ctx.currentTime + 0.005;

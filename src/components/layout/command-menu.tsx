@@ -4,6 +4,7 @@ import { Search } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import { sfx } from "@/components/media/audio/play";
+import { track } from "@/lib/progress";
 
 export interface CommandEntry {
   group: "Navigate" | "Projects" | "Links" | "Actions";
@@ -28,6 +29,7 @@ export function CommandMenu({ entries, email }: { entries: CommandEntry[]; email
       return;
     }
     sfx(open ? "open" : "close");
+    if (open) track({ t: "flag", flag: "palette" });
   }, [open]);
 
   useEffect(() => {

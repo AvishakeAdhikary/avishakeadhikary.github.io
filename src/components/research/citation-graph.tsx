@@ -74,7 +74,7 @@ export function CitationGraph() {
           </text>
         </g>
         {papers.map((p) => (
-          <g key={p.i} className={`pn-${p.i} cursor-default`}>
+          <g key={p.i} data-track="paper" className={`pn-${p.i} cursor-default`}>
             <rect x={p.x - 9} y={p.y - 9} width="18" height="18" fill="var(--background)" stroke="var(--signal-soft)" strokeWidth="2" />
             <text x={p.x} y={p.y + 4} textAnchor="middle" className="fill-[var(--signal-pale)] font-hud text-[10px]">
               {p.i + 1}

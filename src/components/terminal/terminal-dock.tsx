@@ -4,6 +4,7 @@ import { SquareTerminal, X } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import { sfx } from "@/components/media/audio/play";
+import { track } from "@/lib/progress";
 import { useSettings } from "@/lib/settings";
 import { cn } from "@/lib/utils";
 
@@ -26,6 +27,7 @@ export function TerminalDock() {
       return;
     }
     sfx(open ? "open" : "close");
+    if (open) track({ t: "flag", flag: "terminal" });
     // Closing leaves focus inside the now-inert terminal; hand it back to the
     // page so keybinds (and Tab order) work again.
     const term = document.getElementById("dropdown-terminal");

@@ -4,9 +4,10 @@ import { useSyncExternalStore } from "react";
 import { audioTracks } from "@/content/gallery";
 import type { AudioTrack } from "@/content/types";
 import { mediaUrl } from "@/lib/media";
+import { track } from "@/lib/progress";
 import { readSettings, subscribeSettings, updateSettings, type MusicSource } from "@/lib/settings";
 import { subscribe as onFrame } from "@/lib/ticker";
-import { getMixer, onDuck, resumeMixer, suspendMixer } from "../audio/mixer";
+import { audioSupported, getMixer, onDuck, resumeMixer, suspendMixer } from "../audio/mixer";
 import type { MusicEngine } from "./engine";
 
 export interface MusicState {
@@ -137,7 +138,7 @@ export const music = {
     emit({ busy: true });
     // Create/resume the shared context synchronously, inside the gesture
     // (Safari only unlocks audio there, not after the engine import).
-    void getMixer().ctx.resume();
+    if (audioSupported()) void getMixer().ctx.resume().catch(() => undefined);
     try {
       const src = effectiveSource(readSettings().musicSource);
       if (src === "playlist") await startPlaylist();
@@ -148,6 +149,7 @@ export const music = {
         await engine.start(src, volume());
       }
       emit({ playing: true, source: src });
+      track({ t: "source", source: src });
     } catch {
       emit({ playing: false });
     } finally {

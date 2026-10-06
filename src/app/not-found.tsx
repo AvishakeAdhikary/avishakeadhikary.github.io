@@ -3,7 +3,7 @@ import { Suggestions } from "@/components/not-found/suggestions";
 
 export default function NotFound() {
   return (
-    <section className="relative isolate flex min-h-[80dvh] items-center px-4 pt-24">
+    <section data-not-found className="relative isolate flex min-h-[80dvh] items-center px-4 pt-24">
       <div aria-hidden className="bg-grid absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_60%_60%_at_50%_40%,#000,transparent)]" />
       <div className="mx-auto w-full max-w-3xl">
         <p className="font-hud text-sm text-signal">error 404 · route not found</p>

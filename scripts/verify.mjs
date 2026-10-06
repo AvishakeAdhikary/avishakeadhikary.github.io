@@ -185,6 +185,34 @@ for (const name of engines) {
     await kctx.close();
   }
 
+  // Achievements: unlocking raises a toast, survives reload, shows in the
+  // trophy room, and reset clears it.
+  {
+    const actx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    await quiet(actx);
+    await actx.addInitScript(() => sessionStorage.setItem("booted", "1"));
+    const ap = await actx.newPage();
+    await ap.goto(BASE + "/about/");
+    const toast = await ap
+      .locator('[role="status"]', { hasText: "Hello, human" })
+      .waitFor({ timeout: 6000 })
+      .then(() => true)
+      .catch(() => false);
+    await ap.goto(BASE + "/settings/#progress");
+    const card = ap.locator('section[aria-label="Explore achievements"] li', { hasText: "Hello, human" });
+    await card.waitFor({ timeout: 6000 });
+    const unlocked = (await card.innerText()).includes("unlocked");
+    const rank = await ap.getByText(/^(Bronze|Unranked)$/).first().innerText().catch(() => "");
+    const reset = ap.getByRole("button", { name: /Reset progress/ });
+    await reset.click();
+    await ap.getByRole("button", { name: /Click again/ }).click();
+    const cleared = await ap.evaluate(() => !Object.keys(JSON.parse(localStorage.getItem("avishake-progress") || "{}").unlocked ?? {}).length);
+    const problems = [!toast && "no unlock toast", !unlocked && "not shown unlocked after reload", !rank && "no rank card", !cleared && "reset did not clear"].filter(Boolean);
+    if (problems.length) fail(`${name}: achievements: ${problems.join("; ")}`);
+    else console.log(`  achievements ✓ (toast, persisted, trophy room, reset; rank ${rank})`);
+    await actx.close();
+  }
+
   // Settings: persist across reload, applied before paint.
   {
     const sctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });

@@ -21,6 +21,10 @@ interface Desk {
 }
 
 let desk: Desk | null = null;
+
+/** Web Audio exists (some embedded/test browsers ship without it). */
+export const audioSupported = () =>
+  typeof window !== "undefined" && !!(window.AudioContext ?? (window as unknown as { webkitAudioContext?: unknown }).webkitAudioContext);
 let probe: AnalyserNode | null = null;
 const duckers = new Set<(depth: number, release: number) => void>();
 
@@ -64,11 +68,11 @@ export function onDuck(fn: (depth: number, release: number) => void) {
 }
 
 export async function resumeMixer() {
-  if (desk?.ctx.state === "suspended") await desk.ctx.resume();
+  if (desk?.ctx.state === "suspended") await desk.ctx.resume().catch(() => undefined);
 }
 
 export async function suspendMixer() {
-  if (desk?.ctx.state === "running") await desk.ctx.suspend();
+  if (desk?.ctx.state === "running") await desk.ctx.suspend().catch(() => undefined);
 }
 
 /** Analyser on the final mix (created on demand; used by checks and visualizers). */

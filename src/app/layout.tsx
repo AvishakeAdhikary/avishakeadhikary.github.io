@@ -6,6 +6,7 @@ import { Delights } from "@/components/runtime/delights";
 import { Effects } from "@/components/runtime/effects";
 import { Hud } from "@/components/runtime/hud";
 import { Keybinds } from "@/components/runtime/keybinds";
+import { ProgressTracker } from "@/components/runtime/progress-tracker";
 import { Sound } from "@/components/runtime/sound";
 import { Toasts } from "@/components/runtime/toasts";
 import { SiteTicker } from "@/components/layout/site-ticker";
@@ -145,6 +146,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <Sound />
         <Keybinds />
         <Toasts />
+        <ProgressTracker />
         <div className="crt-layer" aria-hidden />
       </body>
     </html>

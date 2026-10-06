@@ -16,6 +16,7 @@ import {
   type Settings,
 } from "@/lib/settings";
 import { cn } from "@/lib/utils";
+import { TrophyRoom } from "@/components/progress/trophy-room";
 import { KeybindTable } from "./keybind-table";
 
 function Row({ label, hint, children }: { label: string; hint: string; children: ReactNode }) {
@@ -99,6 +100,7 @@ const TABS = [
   { id: "motion", label: "Motion", sub: "animation" },
   { id: "interface", label: "Interface", sub: "chrome" },
   { id: "controls", label: "Controls", sub: "keybinds" },
+  { id: "progress", label: "Progress", sub: "achievements" },
   { id: "system", label: "System", sub: "storage" },
 ] as const;
 type TabId = (typeof TABS)[number]["id"];
@@ -375,6 +377,12 @@ export function SettingsPanel() {
           {tab === "controls" ? (
             <div className="px-5 py-5">
               <KeybindTable />
+            </div>
+          ) : null}
+
+          {tab === "progress" ? (
+            <div className="px-5 py-5">
+              <TrophyRoom compact />
             </div>
           ) : null}
 

@@ -94,7 +94,10 @@ export function Keybinds() {
       }
       if (e.key === "A" && e.shiftKey) {
         e.preventDefault();
-        router.push("/settings/#progress");
+        if (location.pathname === "/settings/") {
+          history.replaceState(history.state, "", "#progress");
+          window.dispatchEvent(new Event("settings:tab"));
+        } else router.push("/settings/#progress");
         return used("trophies");
       }
       if (e.shiftKey) return;

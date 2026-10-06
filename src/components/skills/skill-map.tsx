@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import type { SkillNode } from "@/lib/skill-space";
 import { SPACE } from "@/lib/skill-space";
+import { track } from "@/lib/progress";
 import { cn } from "@/lib/utils";
 
 interface Centre {
@@ -36,7 +37,10 @@ export function SkillMap({ nodes, centres }: { nodes: SkillNode[]; centres: Cent
               key={c.id}
               type="button"
               aria-pressed={head === c.id}
-              onClick={() => setHead((h) => (h === c.id ? null : c.id))}
+              onClick={() => {
+                track({ t: "flag", flag: "skill-head" });
+                setHead((h) => (h === c.id ? null : c.id));
+              }}
               className={cn(
                 "rounded border px-2 py-1 font-hud text-[0.66rem] transition-colors",
                 head === c.id ? "border-signal bg-signal/15 text-foreground" : "border-border text-muted-foreground hover:text-foreground",

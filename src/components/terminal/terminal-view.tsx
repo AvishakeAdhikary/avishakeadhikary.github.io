@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { Fragment, useCallback, useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { sfx } from "@/components/media/audio/play";
 import { KEYBINDS } from "@/lib/keybinds";
+import { track } from "@/lib/progress";
 import type { SearchIndex } from "@/lib/search-index";
 import { DEFAULTS, readSettings, updateSettings, type Settings } from "@/lib/settings";
 import { subscribe } from "@/lib/ticker";
@@ -186,6 +187,7 @@ export function TerminalView({ autoFocus = true, onClose, className }: { autoFoc
       const rest = args.join(" ");
       const idx = await loadIndex().catch(() => null);
 
+      if ((COMMANDS as readonly string[]).includes(cmd)) track({ t: "command", cmd });
       switch (cmd) {
         case "help":
           print(
