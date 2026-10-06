@@ -9,7 +9,7 @@
     effect in CSS per the performance rules.
   - **playwright**: verify UI changes in a real browser. Build, serve `out/` (`npm start`),
     then snapshot/screenshot pages and read console errors.
-- Verify loop for any UI change: `npm run lint && npm run typecheck && npm run build`,
-  then a Playwright pass at mobile and desktop widths.
+- Verify loop for any UI change: `npm run check`, `npm run test:e2e` and `npm run test:dev`,
+  then a Playwright MCP pass at mobile and desktop widths.
 - Content facts come from the owner's CV, LinkedIn and Google Scholar. Ask before
   adding a claim you can't trace to one of those.

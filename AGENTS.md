@@ -24,7 +24,7 @@ Two rules keep it from being gimmicky:
 
 Next.js 16 App Router, **static export** (`output: "export"`) to GitHub Pages. React 19,
 TypeScript 6, Tailwind CSS 4 (CSS-first tokens in `src/app/globals.css`), shadcn/ui
-primitives (`src/components/ui`), lucide + simple-icons (server-rendered inline SVG),
+primitives (`src/components/ui`; modals are one native-`<dialog>` `Modal`), lucide + simple-icons (server-rendered inline SVG),
 cobe (globe), self-hosted fonts via `next/font/local` + `@fontsource-variable`
 (JetBrains Mono = display/UI, Inter = body, Geist Mono = HUD/terminal).
 
@@ -34,10 +34,14 @@ cobe (globe), self-hosted fonts via `next/font/local` + `@fontsource-variable`
 |---|---|
 | `npm run dev` | Dev server (Turbopack) |
 | `npm run build` | Static export to `out/` (+ Windows segment-file workaround, no-op elsewhere) |
-| `npm start` | Serve `out/` locally (port 3000) |
+| `npm start` | Serve `out/` like GitHub Pages (port 3000; real 404s; reads per request, so it survives rebuilds) |
 | `npm run lint` / `npm run typecheck` | ESLint (zero warnings) / `tsc --noEmit` |
-| `npm run check` | lint → typecheck → build |
-| `npm run verify` | Playwright checks against a served `out/` (Chromium, Firefox, WebKit). `VERIFY_URL` overrides the default `http://localhost:3000` |
+| `npm run check` | lint → typecheck → unit tests → build |
+| `npm run test:unit` | Vitest: content integrity, progress store, keybinds/settings, every ML algorithm and game rule |
+| `npm run test:e2e` (= `verify`) | Playwright on the built `out/` in Chromium, Firefox and WebKit (starts its own server on 3124) |
+| `npm run test:dev` | The same pages under `next dev` (React's dev-only warnings: keys, update loops, hydration) |
+| `npm run test:live` | Smoke test of the deployed site |
+| `npm test` | unit + e2e |
 | `npm run sync` | Refresh GitHub + Google Scholar data into `src/content/generated/` |
 | `npm run media:optimize` | Rebuild optimized images/videos from `media/originals/` |
 | `npm run icons` | Regenerate favicon/app icons from `media/brand/mark.svg` |
@@ -76,7 +80,15 @@ award *plate* photo is used. Never commit `.playwright-mcp/`.
 - `src/components/terminal/*`: drop-down + `/lab` terminal, command engine, offline
   BM25 retrieval (`ask`) with an optional `NEXT_PUBLIC_ASK_ENDPOINT` for a real LLM proxy.
 - `src/components/crash/*`: the Contact "crash" (once per session; Esc / Reduced motion skip).
-- `src/lib/ticker.ts` (single shared rAF loop) and `src/lib/quality.ts` (device tiers).
+- `src/lib/ticker.ts` (single shared rAF loop) and `src/lib/quality.ts` (device tiers;
+  `gpuHint()` detects software WebGL, where the globe falls back to CSS).
+- Links: import `Link` from `@/components/link` (lint enforces it) and pass `NAV` from
+  `@/lib/nav` to `router.push`. Both tag the transition as a navigation, which is the only
+  thing the layout's page crossfade (`<ViewTransition>`) animates.
+- Robustness: every lazy island goes through `loadChunk()` (`src/lib/lazy.ts`: one retry,
+  then one reload for a stale deploy) and sits in an `ErrorBoundary`; `app/error.tsx` and
+  `app/global-error.tsx` catch the rest. Modals use `Modal` (`src/components/ui/modal.tsx`,
+  native `<dialog>`: top layer, inert background, Esc, focus restore).
 - `src/components/arcade/*`: the Arcade. `registry.ts` lists games; `game-loader.tsx`
   code-splits each one; `shell.tsx` has the walkthrough deck + level picker; `ui.tsx` the
   shared controls/palette. Games live in `games/`. ML code is in `src/lib/ml/`
@@ -120,8 +132,9 @@ award *plate* photo is used. Never commit `.playwright-mcp/`.
 - Content is **visible by default**. An inline head script adds `html.js` before first
   paint (skipped when motion is reduced); only then do `[data-stream]`, `[data-diffuse]` and
   `[data-drawable]` start in their "before" state, each with a **4 s CSS failsafe**.
-- `<Effects>` arms elements only after scroll settles (two frames), plays what's in view,
-  observes the rest, and runs a scroll sweep backstop (WebKit can skip IO entries).
+- `<Effects>` arms elements only after scroll settles (two frames, or 150 ms if the engine
+  is slow to paint: visibility never waits on frame rate), plays what's in view, observes
+  the rest, and runs a scroll sweep backstop (WebKit can skip IO entries).
 - Never put `content-visibility` on a subtree that animates.
 - Motion is **delta-time based** on the shared ticker: no fps caps, runs at the display's
   native refresh (60 Hz laptops, 200 Hz desktops). CSS animations use only
@@ -136,26 +149,31 @@ award *plate* photo is used. Never commit `.playwright-mcp/`.
 - Every new interactive surface should call `track()` (lib/progress) for meaningful moments
   and play a fitting `sfx()`. New achievements go in `content/achievements.ts` as a `test`
   over the progress record; never claim facts about the owner in achievement copy.
-- Arcade games: each needs a walkthrough (concept first, mechanics after, skippable),
-  levels with `track({ t: "best" })`, and `cleared`/`mastered` events. Game logic and
-  difficulty were tuned by headless simulation; re-check pars/thresholds if you change data.
-- Debugger training runs in a Web Worker built from `createEngine.toString()`: keep
-  `engine.ts`'s factory free of outside references (Turbopack doesn't bundle module workers
-  in a static export). It falls back to the main thread if a worker can't start.
+- Arcade games: each needs a walkthrough (concept first, mechanics after, skippable) and
+  reports results with `recordLevel(game, level, "cleared" | "mastered")` **from event
+  handlers**, never from an effect. Clear/mastery per game is derived from `GAME_RULES` in
+  `content/achievements.ts` (unit-tested against each game's level count). The progress
+  store only saves and notifies when the record actually changes. Game logic and difficulty
+  were tuned by headless simulation; `tests/unit` re-checks pars and thresholds.
+- The Debugger trains in a real Web Worker (`games/debugger/train.worker.ts`, created with
+  `new Worker(new URL("./train.worker.ts", import.meta.url), { type: "module" })`, which
+  Turbopack bundles). It falls back to the main thread only if a worker can't start.
 
 ## Performance budget
 
 Home: under ~40 MB JS heap (currently about 10), ~1.1k DOM nodes (v1 main branch: 143 MB / 18.9k).
 Server components by default; client islands small and lazy (terminal, palette, crash
 overlay, audio engine, sound effects, the `?` overlay and every Arcade game are code-split
-and load on demand). `verify` fails if the home page exceeds 40 MB heap or 1.5k DOM nodes. At most one WebGL context.
+and load on demand). The e2e suite fails if the home page exceeds 40 MB heap or 1.5k DOM
+nodes. At most one WebGL context.
 No heavy animation libraries (`motion` is intentionally not installed).
 
 ## Automation
 
-- **Deploy** (`nextjs.yml`): push to `main`, manual, and **monthly** cron. Runs `sync`,
-  builds, runs `verify` in Chromium (deploy is blocked if any page hides content, errors,
-  or overflows), then deploys. Sync failures fall back to the committed snapshot.
+- **Deploy** (`nextjs.yml`): push to `main`, manual, and **monthly** cron. `check` (lint,
+  types, unit tests, `npm audit` with zero findings) → `build` (sync + export) → `e2e` in
+  Chromium, Firefox and WebKit plus `dev` (next dev) → deploy → `live` smoke test of the real
+  URL. Any failing gate blocks the deploy. Sync failures fall back to the committed snapshot.
 - **Dependabot** monthly (grouped). There is deliberately no bot-commit/PR workflow: the
   repo's Actions token is read-only, and the deploy already syncs live data each run.
   Refresh the committed snapshot locally with `npm run sync` when convenient.
@@ -182,14 +200,40 @@ moves all media to a CDN.
 - `scripts/fix-export-segments.mjs`: Next 16 static export writes segment-prefetch files
   into nested folders **on Windows only** (path separator bug); this flattens them. No-op on CI.
 - npm `allowScripts` permits install scripts only for `ffmpeg-static` and `unrs-resolver`.
+- `overrides` swaps `@next/eslint-plugin-next`'s `fast-glob` for `tinyglobby` (same
+  `globSync` API for its one call) to drop `braces`, which has an unpatched advisory.
+  `npm audit` must stay at zero; CI enforces it.
+- `scripts/fix-404-preloads.mjs`: the exported `404.html` lacks the font preloads every
+  other page has (fonts then download twice and browsers warn); this copies them in.
+- `<Effects>` marks `<html data-ready>` once the runtime islands are hydrated; the e2e
+  fixture waits for it after every navigation. A `TimeoutError` from an aborted view
+  transition is marked handled there (react-dom leaves `transition.finished` uncaught).
+
+## Tests and the zero-noise rule
+
+The console is part of the product: **no errors, no warnings, in any browser**, and
+`npm audit` at zero. Every e2e test runs through `tests/e2e/fixtures.ts`, which fails on
+any console error or warning, uncaught exception, HTTP error or failed request, and offers
+`layoutProblems()` (nothing spills out of its box, including inside clipped panels; mark
+intentional scrollers `data-scroll-x`, intentional clipping `data-clip-ok`). Its only
+exemptions, each documented in the file: requests cancelled because the test navigates
+away, and Firefox's "preload not used within a few seconds" timing hint. Don't add more
+without a reason that holds for real visitors. Chromium runs with `--disable-audio-output`
+(a fake real-time sink) so parallel browsers never fight over the sound card.
+
+- **Every bug gets a regression test** that fails before the fix.
+- Tests must be deterministic under load (CI runs 3 workers, local 6): wait on state, not
+  time. Use `expect.poll`, record transient UI (toasts) instead of racing it, and use
+  `page.clock` for timers such as the crash phases or the `G` chord.
+- Seed state through the fixture's `site` option (`settings`, `progress`, `boot`,
+  `crashSeen`, `allow404`). `MAXED_PROGRESS` loads every game in its finished state.
 
 ## Verify before finishing
 
-`npm run check`, serve `out/`, `npm run verify` (routes, terminal, Konami both ways,
-keybind guards, crash, settings tabs, achievements, music + SFX mix, motion modes, and a
-smoke test of every Arcade game), then look at the pages yourself
-(Playwright screenshots at 390 and 1440 px). Take screenshots **sequentially** after
-waiting, since parallel tool calls capture the first frame of a stream.
+`npm run check`, then `npm run test:e2e` (all three engines) and `npm run test:dev`, then
+look at the pages yourself (Playwright screenshots at 390 and 1440 px). Take screenshots
+**sequentially** after waiting, since parallel tool calls capture the first frame of a
+stream.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

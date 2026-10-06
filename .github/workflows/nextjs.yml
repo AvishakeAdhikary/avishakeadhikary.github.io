@@ -1,10 +1,20 @@
-# Build and deploy the static site to GitHub Pages.
+# Test, build and deploy the static site to GitHub Pages.
 #
 # Runs on every push to main, on manual dispatch, and monthly on a schedule.
 # Each run refreshes live data first (GitHub repos + Google Scholar), so the
 # deployed site is always current without anyone committing anything.
 # If a data source is down, the committed snapshot is used (the build never
 # fails because of it).
+#
+# Nothing deploys unless every gate is green:
+#   check   lint (zero warnings), types, unit tests, npm audit (zero findings)
+#   build   sync + static export
+#   e2e     Playwright on the export in Chromium, Firefox and WebKit: every
+#           route at three widths, overlays, keybinds, audio, games, a11y,
+#           and a silent console (any error or warning fails)
+#   dev     the same pages under `next dev`, where React reports dev-only
+#           problems (duplicate keys, update loops, hydration mismatches)
+# After deploying, `live` smoke-tests the real URL.
 name: Deploy site
 
 on:
@@ -25,7 +35,7 @@ concurrency:
 
 jobs:
   check:
-    name: Lint & typecheck
+    name: Lint, types, unit tests, audit
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -36,6 +46,8 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm run typecheck
+      - run: npm run test:unit
+      - run: npm audit --audit-level=low
 
   build:
     name: Build
@@ -59,19 +71,67 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PORTFOLIO_SYNC_TOKEN || secrets.GITHUB_TOKEN }}
       - run: npm run build
-      - name: Browser checks (every route, no hidden content, terminal, crash flow)
-        run: |
-          npx playwright install --with-deps chromium
-          npx --yes serve out -l 3000 -n > /dev/null 2>&1 &
-          for i in $(seq 1 30); do curl -sf http://localhost:3000/ > /dev/null && break; sleep 1; done
-          npm run verify -- chromium
+      - name: Keep the export for the browser tests
+        uses: actions/upload-artifact@v7
+        with:
+          name: site
+          path: out
+          retention-days: 3
       - uses: actions/upload-pages-artifact@v5
         with:
           path: ./out
 
+  e2e:
+    name: E2E (${{ matrix.browser }})
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - uses: actions/download-artifact@v8
+        with:
+          name: site
+          path: out
+      - run: npx playwright install --with-deps ${{ matrix.browser }}
+      - run: npx playwright test --project=${{ matrix.browser }}
+      - if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: e2e-${{ matrix.browser }}
+          path: test-results
+          retention-days: 7
+
+  dev:
+    name: E2E (next dev)
+    needs: check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test --project=dev
+      - if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: e2e-dev
+          path: test-results
+          retention-days: 7
+
   deploy:
     name: Deploy
-    needs: build
+    needs: [e2e, dev]
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -79,3 +139,17 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v5
+
+  live:
+    name: Live smoke test
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test --project=live
