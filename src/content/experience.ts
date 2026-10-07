@@ -1,6 +1,55 @@
 import type { Degree, Honor, Role } from "./types";
 
 /**
+ * Minion Technologies is Avishake's current employer. While he works there the
+ * site shows `minionPublic`: his skills and the kinds of systems he builds,
+ * without employer-internal details (metrics, file counts, hardware and cloud
+ * setup, techniques, security and validation steps). The full write-up from
+ * cv.md is kept, unpublished, in `minionDetailed`.
+ *
+ * Publish the detailed version only when Avishake explicitly decides to: set
+ * MINION_DETAIL_PUBLIC to true, together with `public: true` on the four
+ * Minion projects in src/content/projects.ts.
+ */
+const MINION_DETAIL_PUBLIC = false;
+
+type RoleText = Pick<Role, "summary" | "highlights" | "skills">;
+
+const minionPublic: RoleText = {
+  summary:
+    "Building production AI for ZoyeMed, an autonomous medical-kiosk and healthcare platform deployed internationally: fine-tuning and quantizing LLMs for on-device and edge inference, multimodal and voice conversational AI, retrieval over medical knowledge, agentic tool-calling workflows and computer vision, through to the Python services and hardware integration that run them in production.",
+  highlights: [
+    "Fine-tune open-weight LLMs (MedGemma, Qwen, Gemma, DeepSeek R1, GPT-OSS) with PyTorch, LoRA/QLoRA and Unsloth, and quantize them (including MXFP4) for efficient on-device and edge inference with llama.cpp and vLLM on NVIDIA and AMD ROCm GPUs.",
+    "Build real-time voice and text conversational AI for clinical decision support, combining multimodal reasoning with tool calling across doctor, nurse and patient workflows.",
+    "Retrieval-augmented generation (RAG) over public medical and regulatory knowledge bases such as OpenFDA and ICD-11, plus multilingual medical-data processing and LOINC terminology mapping.",
+    "Distributed multi-GPU training with PyTorch DDP on HPC infrastructure.",
+    "Multimodal document understanding with vision-language models, including privacy-preserving preparation of medical data for model training.",
+    "Agentic AI workflows with LLM tool calling for business automation: lead discovery and scoring, organizational research, personalized email and SEO content generation.",
+    "Computer vision for face detection and tracking with PTZ camera control, supporting automated patient-examination workflows.",
+    "Production Python AI backends integrated with React/Electron applications, Docker and Spring Boot services, on Linux/Ubuntu kiosk systems with Bluetooth/USB medical-device and hardware integration.",
+  ],
+  skills: ["PyTorch", "LoRA/QLoRA", "Unsloth", "llama.cpp", "vLLM", "Quantization", "ROCm", "RAG", "Agentic AI", "Vision-language models", "DDP", "Computer Vision", "Docker", "Electron", "Spring Boot"],
+};
+
+/** The full Minion write-up (cv.md). Unpublished while employed there; see above. */
+export const minionDetailed: RoleText = {
+  summary:
+    "Designing, building and deploying production AI for ZoyeMed, an autonomous medical-kiosk and healthcare platform combining LLMs, multimodal AI, medical devices, edge computing, telemedicine and computer vision, deployed across international markets on on-device inference and Scaleway cloud.",
+  highlights: [
+    "Fine-tune and quantize LLMs (MedGemma, Qwen, DeepSeek R1, Gemma, GPT-OSS) with PyTorch, LoRA/QLoRA, Unsloth and llama.cpp; optimized MedGemma-27B-IT with MXFP4 precision on NVIDIA Blackwell and ROCm hardware for edge inference.",
+    "Architected an on-prem medical-record de-identification pipeline that turns hospital archives into MedGemma training corpora: provider-agnostic multimodal page reading, PHI removal from text and scans via fractional rotated zonal masking, automated leak verification, AES-256 packaging with SHA-256 manifests. Zero surviving identifiers on validation.",
+    "Scaled it to multi-terabyte archives: data-driven redaction entities eliminating O(patients × pages) matching, header-only ZIP sniffing ~20× faster than decompression across 11,631 files, and checkpointed, resumable stages.",
+    "Distributed training with DDP across multi-GPU HPC infrastructure.",
+    "Real-time voice and text conversational AI for clinical decision support with multimodal reasoning and tool calling, across Doctor, Nurse and Patient roles.",
+    "RAG over OpenFDA and ICD-11 knowledge bases, improving retrieval latency and performance by 30%.",
+    "Agentic CRM automation: lead discovery and scoring, organizational research, personalized email and SEO content generation.",
+    "PTZ-camera face detection and tracking for automated patient identification and examination workflows.",
+    "Python AI backends integrated with React/Electron, Docker and Spring Boot; Ubuntu kiosk enforcement, hardware validation tooling and Bluetooth/USB device integration.",
+  ],
+  skills: ["PyTorch", "LoRA/QLoRA", "Unsloth", "llama.cpp", "vLLM", "ROCm", "RAG", "DDP", "Computer Vision", "Docker", "Electron"],
+};
+
+/**
  * Work history, newest first. Dates follow LinkedIn; wording follows cv.md.
  *
  * Note: LinkedIn also lists a one-month "DIGITYS" role (Jan 2024). PTS
@@ -18,20 +67,7 @@ export const roles: Role[] = [
     start: "2025-06",
     end: null,
     location: "Kolkata, India · On-site",
-    summary:
-      "Designing, building and deploying production AI for ZoyeMed, an autonomous medical-kiosk and healthcare platform combining LLMs, multimodal AI, medical devices, edge computing, telemedicine and computer vision, deployed across international markets on on-device inference and Scaleway cloud.",
-    highlights: [
-      "Fine-tune and quantize LLMs (MedGemma, Qwen, DeepSeek R1, Gemma, GPT-OSS) with PyTorch, LoRA/QLoRA, Unsloth and llama.cpp; optimized MedGemma-27B-IT with MXFP4 precision on NVIDIA Blackwell and ROCm hardware for edge inference.",
-      "Architected an on-prem medical-record de-identification pipeline that turns hospital archives into MedGemma training corpora: provider-agnostic multimodal page reading, PHI removal from text and scans via fractional rotated zonal masking, automated leak verification, AES-256 packaging with SHA-256 manifests. Zero surviving identifiers on validation.",
-      "Scaled it to multi-terabyte archives: data-driven redaction entities eliminating O(patients × pages) matching, header-only ZIP sniffing ~20× faster than decompression across 11,631 files, and checkpointed, resumable stages.",
-      "Distributed training with DDP across multi-GPU HPC infrastructure.",
-      "Real-time voice and text conversational AI for clinical decision support with multimodal reasoning and tool calling, across Doctor, Nurse and Patient roles.",
-      "RAG over OpenFDA and ICD-11 knowledge bases, improving retrieval latency and performance by 30%.",
-      "Agentic CRM automation: lead discovery and scoring, organizational research, personalized email and SEO content generation.",
-      "PTZ-camera face detection and tracking for automated patient identification and examination workflows.",
-      "Python AI backends integrated with React/Electron, Docker and Spring Boot; Ubuntu kiosk enforcement, hardware validation tooling and Bluetooth/USB device integration.",
-    ],
-    skills: ["PyTorch", "LoRA/QLoRA", "Unsloth", "llama.cpp", "vLLM", "ROCm", "RAG", "DDP", "Computer Vision", "Docker", "Electron"],
+    ...(MINION_DETAIL_PUBLIC ? minionDetailed : minionPublic),
   },
   {
     id: "bvb",

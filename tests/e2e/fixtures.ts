@@ -116,7 +116,7 @@ export const ROUTES = [
   "/",
   "/work/",
   "/projects/",
-  "/projects/zoyemed/",
+  "/projects/koyox/",
   "/projects/os-portfolio/",
   "/skills/",
   "/research/",

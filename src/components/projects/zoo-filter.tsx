@@ -22,7 +22,7 @@ function parse(q: string) {
 }
 
 /**
- * Filter the zoo like a CLI (`--task cv --built-at minion llm`) or by
+ * Filter the zoo like a CLI (`--task cv --built-at pts llm`) or by
  * clicking chips, which just edit the same query. Hides server-rendered
  * cards in place; nothing re-renders.
  */
@@ -64,7 +64,7 @@ export function ZooFilter({ targetId, tasks, places, total }: { targetId: string
         <input
           value={q}
           onChange={(e) => update(e.target.value)}
-          placeholder="llm  --task cv  --built-at minion"
+          placeholder="llm  --task cv  --built-at pts"
           aria-label="Filter projects. Type words, or flags like --task cv"
           spellCheck={false}
           className="min-w-0 flex-1 bg-transparent text-foreground outline-none placeholder:text-subtle-foreground"

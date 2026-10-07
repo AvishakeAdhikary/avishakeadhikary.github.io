@@ -202,7 +202,7 @@ export function CitationPreview() {
 export function LabPreview() {
   const lines = [
     { c: "ask what did you build at PTS?", o: "KoyoX, a GPT-4 job assistant with voice and an avatar, shipped within a month of the Assistants API…" },
-    { c: "open zoyemed", o: "→ /projects/zoyemed/" },
+    { c: "open nexcpp", o: "→ /projects/nexcpp/" },
     { c: "sudo hire-me", o: "✓ access granted. drafting an email…" },
   ];
   return (

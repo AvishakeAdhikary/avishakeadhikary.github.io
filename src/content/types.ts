@@ -95,6 +95,12 @@ export interface Project {
   /** Matching GitHub repo name, for live stats. */
   repo?: string;
   status?: "active" | "shipped" | "wip" | "archived";
+  /**
+   * `false` keeps a project unpublished: it stays in the source but gets no
+   * listing, link, page, cover, sitemap or search-index entry (it is dropped
+   * in getProjects(), so its route is never generated). Omitted = public.
+   */
+  public?: boolean;
 }
 
 /** Per-repo curation applied on top of synced GitHub data. */

@@ -8,8 +8,16 @@ import type { Project, RepoOverride } from "./types";
  */
 export const projects: Project[] = [
   // ── Minion Technologies ────────────────────────────────────────────────
+  // UNPUBLISHED ON PURPOSE. These four projects belong to Avishake's current
+  // employer and stay private while he works there: `public: false` keeps them
+  // off every page, link, route, cover, sitemap and search entry (see
+  // getProjects in src/lib/projects.ts). Their content is kept intact below.
+  // Publish them only when Avishake explicitly decides to: set `public: true`
+  // (or delete the line) on each, and set MINION_DETAIL_PUBLIC in
+  // src/content/experience.ts to bring back the detailed role write-up.
   {
     slug: "zoyemed",
+    public: false,
     title: "ZoyeMed",
     tagline: "Autonomous medical kiosk & healthcare AI platform",
     description:
@@ -37,6 +45,7 @@ export const projects: Project[] = [
   },
   {
     slug: "phi-deidentification-pipeline",
+    public: false,
     title: "Clinical De-identification Pipeline",
     tagline: "Hospital archives → MedGemma training corpora, on-prem",
     description:
@@ -64,6 +73,7 @@ export const projects: Project[] = [
   },
   {
     slug: "agentic-crm-automation",
+    public: false,
     title: "Agentic CRM Automation",
     tagline: "Autonomous lead discovery, scoring and outreach",
     description:
@@ -78,6 +88,7 @@ export const projects: Project[] = [
   },
   {
     slug: "ptz-face-tracking",
+    public: false,
     title: "PTZ Face Detection & Tracking",
     tagline: "Camera control for automated patient examination",
     description:

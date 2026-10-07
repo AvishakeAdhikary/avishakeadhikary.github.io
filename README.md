@@ -10,7 +10,7 @@ Live at **https://avishakeadhikary.github.io**.
   token, photos denoise like a diffusion model, the career page is a training run, skills
   form an embedding space, research is a citation graph, and Contact… crashes. On purpose.
 - **A real terminal** (press `~`) that knows the CV: `ask what did you build at PTS?`,
-  `open zoyemed`, `sudo hire-me`. Offline retrieval, no API keys.
+  `open nexcpp`, `sudo hire-me`. Offline retrieval, no API keys.
 - **Music that is actually music.** Lo-fi, synthwave and ambient tracks composed live in the
   browser (drums, bass, chords, melody, real song structure; no audio files), or a playlist
   of public-domain CC0 tracks. Never autoplays.

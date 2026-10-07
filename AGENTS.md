@@ -52,7 +52,7 @@ cobe (globe), self-hosted fonts via `next/font/local` + `@fontsource-variable`
 |---|---|---|
 | Name, headline, location, socials, languages, claims | `src/content/profile.ts` | `claims` (e.g. "50+" certifications) are owner-confirmed and exceed public listings. Don't "correct" them. |
 | Roles, degrees, honors | `src/content/experience.ts` | Dates follow LinkedIn. PTS covers Aug 2023 – Jan 2024 (the internal "DIGITYS" rename is **not** a separate role). |
-| Projects | `src/content/projects.ts` | `roleId` = where it was built (omit = independent); `repo` links live GitHub stats. `repoOverrides` curates synced repos. |
+| Projects | `src/content/projects.ts` | `roleId` = where it was built (omit = independent); `repo` links live GitHub stats. `repoOverrides` curates synced repos. `public: false` unpublishes a project everywhere (no page, link, cover, sitemap or search entry). The four Minion projects are private on purpose, and the Minion role shows `minionPublic` (`MINION_DETAIL_PUBLIC` in `experience.ts`): publish them only when the owner says so. |
 | Skills | `src/content/skills.ts` | `production` = used professionally; `verified` = passed LinkedIn assessment. |
 | Publications | `src/content/publications.ts` | Verified against Google Scholar; `selfIndex` = owner's author position. |
 | Certifications, testimonials, gallery, audio, globe places | `src/content/*.ts` | Testimonial quotes are **verbatim**. |

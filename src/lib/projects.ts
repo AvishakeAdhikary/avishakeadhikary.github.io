@@ -90,11 +90,15 @@ export function getProjects(): ResolvedProject[] {
   const repos = new Map(github.repos.map((r) => [r.name, r]));
   const used = new Set<string>();
 
-  const merged: ResolvedProject[] = curated.map((p) => {
-    const r = p.repo ? repos.get(p.repo) : undefined;
-    if (r) used.add(r.name);
-    return { ...p, stats: r ? toStats(r) : undefined };
-  });
+  // Unpublished projects (`public: false`) never leave this function, so no
+  // page, route, cover, sitemap entry or search entry is generated for them.
+  const merged: ResolvedProject[] = curated
+    .filter((p) => p.public !== false)
+    .map((p) => {
+      const r = p.repo ? repos.get(p.repo) : undefined;
+      if (r) used.add(r.name);
+      return { ...p, stats: r ? toStats(r) : undefined };
+    });
 
   for (const r of github.repos) {
     if (used.has(r.name)) continue;

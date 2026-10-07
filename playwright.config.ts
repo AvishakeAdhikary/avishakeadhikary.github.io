@@ -20,7 +20,7 @@ const CHROMIUM_ARGS = { args: ["--disable-audio-output"] };
 // Headless Firefox on a GPU-less Linux runner turns WebGL off, which a desktop Firefox
 // never does; keep it on (software GL) so the globe pages run as visitors see them.
 const FIREFOX_PREFS = { firefoxUserPrefs: { "webgl.force-enabled": true } };
-const SITE_SPECS = /(routes|overlays|interactions|audio|achievements|arcade|a11y)\.spec\.ts/;
+const SITE_SPECS = /(routes|overlays|interactions|audio|achievements|arcade|a11y|visibility)\.spec\.ts/;
 
 export default defineConfig({
   testDir: "tests/e2e",
@@ -47,7 +47,7 @@ export default defineConfig({
       // One dev server compiles every page on demand: more parallel pages only starve it.
       workers: 2,
     },
-    { name: "live", use: { ...devices["Desktop Chrome"], baseURL: "https://avishakeadhikary.github.io" }, testMatch: /live\.spec\.ts/ },
+    { name: "live", use: { ...devices["Desktop Chrome"], baseURL: "https://avishakeadhikary.github.io" }, testMatch: /(live|visibility)\.spec\.ts/ },
   ],
   webServer: wantsLive
     ? undefined

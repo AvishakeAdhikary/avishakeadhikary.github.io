@@ -5,7 +5,7 @@ import { Pipeline } from "@/components/projects/pipeline";
 import { ZooFilter } from "@/components/projects/zoo-filter";
 import type { ProjectCategory } from "@/content/types";
 import { formatDate } from "@/lib/format";
-import { CATEGORY_LABEL, getProjects, githubSyncedAt, githubTotals } from "@/lib/projects";
+import { CATEGORY_LABEL, getProject, getProjects, githubSyncedAt, githubTotals } from "@/lib/projects";
 
 export const metadata: Metadata = {
   title: "Projects",
@@ -34,9 +34,12 @@ export default function ProjectsPage() {
         intro={`${projects.length} projects, each tagged with where it was built. ${githubTotals.repos} are public on GitHub (${githubTotals.stars} stars), and new repos show up here on their own every month. Last sync ${formatDate(githubSyncedAt)}.`}
       />
       <div className="mx-auto max-w-7xl space-y-12 px-4 py-14 sm:px-6">
-        <div data-reveal>
-          <Pipeline />
-        </div>
+        {/* The banner presents the de-identification project: shown only while that project is public. */}
+        {getProject("phi-deidentification-pipeline") ? (
+          <div data-reveal>
+            <Pipeline />
+          </div>
+        ) : null}
         <ZooFilter targetId="zoo" tasks={tasks} places={places} total={projects.length} />
         <ul id="zoo" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((p, i) => (

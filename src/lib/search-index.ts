@@ -23,6 +23,11 @@ export interface IndexDoc {
  */
 export function buildSearchIndex() {
   const projects = getProjects();
+  // Only public projects are listed; a role with none (yet) gets no sentence.
+  const builtThere = (roleId: string) => {
+    const titles = projects.filter((p) => p.roleId === roleId).map((p) => p.title);
+    return titles.length ? ` Built there: ${titles.join(", ")}.` : "";
+  };
   const docs: IndexDoc[] = [
     {
       id: "about",
@@ -34,10 +39,7 @@ export function buildSearchIndex() {
       id: `role-${r.id}`,
       title: `${r.title} at ${r.org}`,
       url: "/work/",
-      text: `${r.title} at ${r.org} (${formatRange(r.start, r.end)}, ${r.location}). ${r.summary} ${r.highlights.join(" ")} Built there: ${projects
-        .filter((p) => p.roleId === r.id)
-        .map((p) => p.title)
-        .join(", ")}.`,
+      text: `${r.title} at ${r.org} (${formatRange(r.start, r.end)}, ${r.location}). ${r.summary} ${r.highlights.join(" ")}${builtThere(r.id)}`,
     })),
     ...degrees.map((d) => ({
       id: `edu-${d.id}`,
