@@ -97,7 +97,9 @@ export function getProjects(): ResolvedProject[] {
     .map((p) => {
       const r = p.repo ? repos.get(p.repo) : undefined;
       if (r) used.add(r.name);
-      return { ...p, stats: r ? toStats(r) : undefined };
+      // A repo override can give a curated project its media; the project's own wins.
+      const o = p.repo ? repoOverrides[p.repo] : undefined;
+      return { ...p, image: p.image ?? o?.image, video: p.video ?? o?.video, stats: r ? toStats(r) : undefined };
     });
 
   for (const r of github.repos) {

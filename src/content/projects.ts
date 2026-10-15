@@ -282,9 +282,14 @@ export const projects: Project[] = [
     title: "Tone Sphere",
     tagline: "Low-latency audio routing, mixing & VST3 hosting",
     description:
-      "A real-time C++ audio engine behind a C ABI with WASAPI and ASIO backends and a VST3 host, driven by a Python control plane; Linux and macOS run the same app on PortAudio. Built because a guitarist shouldn't have to pay twice to hear their own instrument.",
+      "A real-time, multi-core C++20 audio engine with an Electron and React interface: it routes and mixes any input to any output on Windows (WASAPI, ASIO interfaces, per-app audio, VBAN), hosts VST3 effects and instruments, and lets several DAWs share one interface through its own ASIO driver. Linux runs the same engine on PipeWire. Built because a guitarist shouldn't have to pay twice to hear their own instrument.",
+    highlights: [
+      "Lock-free audio path with drift-compensated device bridges, and an engine clock that can follow an interface's own hardware clock (about 21 ms input to output on a USB interface).",
+      "Automatic multi-core DSP whose output is bit-identical to single-threaded processing, checked under ThreadSanitizer.",
+      "Every feature has a test that moves real audio; CI builds, tests and publishes the Windows installer and the Linux AppImage on each release.",
+    ],
     start: "2025-09",
-    tech: ["C++", "Python", "WASAPI", "ASIO", "VST3", "PortAudio"],
+    tech: ["C++", "TypeScript", "Electron", "React", "WASAPI", "ASIO", "VST3", "PipeWire"],
     categories: ["desktop", "systems"],
     links: { repo: "https://github.com/AvishakeAdhikary/tone-sphere", live: "https://avishakeadhikary.github.io/tone-sphere/" },
     repo: "tone-sphere",
@@ -500,6 +505,8 @@ export const projects: Project[] = [
 /**
  * Curation for repos that come in via the GitHub sync. Repos not mentioned
  * here and not linked from `projects` are shown in the "More on GitHub" list.
+ * For a curated project's repo, only `image` and `video` apply (when the
+ * project doesn't set its own).
  */
 export const repoOverrides: Record<string, RepoOverride> = {
   AvishakeAdhikary: { hide: true },
@@ -514,4 +521,6 @@ export const repoOverrides: Record<string, RepoOverride> = {
   HomeAssistantPlayitGGCustom: { title: "Playit.gg Home Assistant Add-on", categories: ["iot"] },
   My_Flutter_Card: { title: "My Flutter Card", categories: ["mobile"], image: "projects/fluttercard.png" },
   FirstReactRobotGenerator: { title: "First React Robot Generator", categories: ["web"], image: "projects/firstreactrobotgenerator.png" },
+  // Curated above; the override adds its banner (a still frame plus the animated banner as video).
+  "tone-sphere": { image: "projects/tonesphere.png", video: "projects/tonesphere.mp4" },
 };

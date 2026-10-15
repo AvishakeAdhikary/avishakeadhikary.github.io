@@ -60,4 +60,16 @@ describe("content integrity", () => {
     const images = manifest.images as Record<string, unknown>;
     for (const g of gallery) expect(images[g.image], g.image).toBeDefined();
   });
+
+  it("gives curated projects the media of their repo override, from the media pipeline", () => {
+    const tone = getProjects().find((p) => p.slug === "tone-sphere");
+    expect(tone?.image).toBe("projects/tonesphere.png");
+    expect(tone?.video).toBe("projects/tonesphere.mp4");
+    const images = manifest.images as Record<string, unknown>;
+    const videos = manifest.videos as Record<string, unknown>;
+    for (const p of getProjects()) {
+      if (p.image && !/^https?:/.test(p.image)) expect(images[p.image], p.image).toBeDefined();
+      if (p.video) expect(videos[p.video], p.video).toBeDefined();
+    }
+  });
 });

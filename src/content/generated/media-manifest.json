@@ -210,6 +210,12 @@
       "height": 484,
       "blurDataURL": "data:image/webp;base64,UklGRpQAAABXRUJQVlA4IIgAAACwAgCdASoQAA4AA4BaJYgCdIIjgpC8udTS+UXbRAAA/Z1SAs94maeQdrHMAfTAQ8OWoQRBcjpt5ZEvWB+jIsBpksKz1MvBxbbNHTCSo8rgtoeeOrwKe3nsEioXqMqtCNfd044YNba285fSA9u5aDFAoZn1FU8HBLEVyUD+c8QFuDnPqC3HUAAA"
     },
+    "projects/tonesphere.png": {
+      "src": "/media/img/projects/tonesphere.webp",
+      "width": 1322,
+      "height": 661,
+      "blurDataURL": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAABwAQCdASoQAAgAA4BaJQBOj+ADkAD+8+h3H/wkALqn+znRwyPIdF0tpmGc0Vtj7DSnvrcoZkBNBPlLSwAAAA=="
+    },
     "projects/Yujj.png": {
       "src": "/media/img/projects/yujj.webp",
       "width": 1919,
@@ -429,6 +435,13 @@
       "poster": "/media/video/projects/osportfolio.poster.webp",
       "width": 1280,
       "height": 720
+    },
+    "projects/tonesphere.mp4": {
+      "mp4": "/media/video/projects/tonesphere.mp4",
+      "webm": null,
+      "poster": "/media/video/projects/tonesphere.poster.webp",
+      "width": 1280,
+      "height": 640
     }
   },
   "audio": {
